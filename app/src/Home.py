@@ -65,7 +65,7 @@ if st.button('Sara, a Northeastern Alumni and Mentor, who works at McKinsey',
     st.session_state['first_name'] = 'Mohammad'
     st.switch_page('pages/10_USAID_Worker_Home.py')
 
-if st.button('Act as System Administrator', 
+if st.button('Billy, an Advisor at Northeastern', 
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
