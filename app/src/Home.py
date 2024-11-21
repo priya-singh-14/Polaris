@@ -34,9 +34,29 @@ SideBarLinks(show_home=True)
 
 # set the title of the page and provide a simple prompt. 
 logger.info("Loading the Home page of the app")
-st.title('Polaris')
-st.write('\n\n')
-st.write('### HI! As which user would you like to log in?')
+
+page_bg_img = '''
+<style>
+.stApp {
+    background-image: url(https://assets.science.nasa.gov/dynamicimage/assets/science/astro/universe/2023/09/swift_M31_mosaic_1600.webp?w=4096&format=png&fit=clip&crop=faces%2Cfocalpoint);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+button:hover {
+    transform: scale(1.1);
+    transition: 0.2s;
+}
+</style>
+'''
+
+
+st.markdown("<h1 style='text-align: center; color: white; font-family: Helvetica;'>Welcome to Polaris</h1>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center; color: white;'>An Orbit Product</h3>", unsafe_allow_html=True)
+
+# Display the CSS
+st.markdown(page_bg_img, unsafe_allow_html=True)
 
 # For each of the user personas for which we are implementing
 # functionality, we put a button on the screen that the user 
@@ -73,5 +93,13 @@ if st.button('Billy, an Advisor at Northeastern',
     st.session_state['first_name'] = 'SysAdmin'
     st.switch_page('pages/20_Admin_Home.py')
 
+
+if st.button('John, an Employer Looking to Fill Intern/Co-Op Roles', 
+            type = 'primary', 
+            use_container_width=True):
+    st.session_state['authenticated'] = True
+    st.session_state['role'] = 'administrator'
+    st.session_state['first_name'] = 'SysAdmin'
+    st.switch_page('pages/20_Admin_Home.py')
 
 
