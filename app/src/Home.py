@@ -34,7 +34,7 @@ SideBarLinks(show_home=True)
 
 # set the title of the page and provide a simple prompt. 
 logger.info("Loading the Home page of the app")
-st.title('CS 3200 Sample Semester Project App')
+st.title('Polaris')
 st.write('\n\n')
 st.write('### HI! As which user would you like to log in?')
 
@@ -42,7 +42,7 @@ st.write('### HI! As which user would you like to log in?')
 # functionality, we put a button on the screen that the user 
 # can click to MIMIC logging in as that mock user. 
 
-if st.button("Act as John, a Political Strategy Advisor", 
+if st.button("Tyler, a Third Year Computer Science Mentee", 
             type = 'primary', 
             use_container_width=True):
     # when user clicks the button, they are now considered authenticated
@@ -57,7 +57,7 @@ if st.button("Act as John, a Political Strategy Advisor",
     logger.info("Logging in as Political Strategy Advisor Persona")
     st.switch_page('pages/00_Pol_Strat_Home.py')
 
-if st.button('Act as Mohammad, an USAID worker', 
+if st.button('Sara, a Northeastern Alumni and Mentor, who works at McKinsey', 
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
