@@ -4,14 +4,12 @@
 ##################################################
 
 # Set up basic logging infrastructure
+import streamlit as st
 import logging
+from modules.nav import SideBarLinks
+
 logging.basicConfig(format='%(filename)s:%(lineno)s:%(levelname)s -- %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-# import the main streamlit library as well
-# as SideBarLinks function from src/modules folder
-import streamlit as st
-from modules.nav import SideBarLinks
 
 # streamlit supports reguarl and wide layout (how the controls
 # are organized/displayed on the screen).
@@ -28,42 +26,103 @@ st.session_state['authenticated'] = False
 # showSidebarNavigation = false in the [client] section
 SideBarLinks(show_home=True)
 
-# ***************************************************
-#    The major content of this page
-# ***************************************************
+st.markdown(
+    """
+    <style>
+    body {
+        background: linear-gradient(45deg, #FFEECC, #CCFFFF, #EECCFF);
+        font-family: 'Helvetica', sans-serif;
+    }
 
-# set the title of the page and provide a simple prompt. 
-logger.info("Loading the Home page of the app")
+    .parent-container {
+        position: relative;
+        width: 100%;
+        z-index: 1; /* Ensure parent container has a higher stacking context */
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: -50px;
+    }
 
-page_bg_img = '''
-<style>
-.stApp {
-    background-image: url(https://assets.science.nasa.gov/dynamicimage/assets/science/astro/universe/2023/09/swift_M31_mosaic_1600.webp?w=4096&format=png&fit=clip&crop=faces%2Cfocalpoint);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
+    .centered-card {
+        margin: 35px;
+        margin-top: 90px;
+        position: absolute;
+        background: rgba(255, 255, 255, 0.4);
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        z-index: 2; /* Ensures card appears above the graphic */
+    } 
 
-button:hover {
-    transform: scale(1.1);
-    transition: 0.2s;
-}
-</style>
-'''
+    .wide-card {
+        margin-left: 35px;
+        margin-right: 35px;
+        width: 95%;
+        height: 80px;
+        margin-top: 90px;
+        top: 300px;
+        position: absolute;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.4);
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        z-index: 2; /* Ensures card appears above the graphic */
+     }
+
+    .wide-card h2 {
+        font-size: 1.4rem;
+        font-family: monospace;
+    }
 
 
-st.markdown("<h1 style='text-align: center; color: white; font-family: Helvetica;'>Welcome to Polaris</h1>", unsafe_allow_html=True)
-st.markdown("<h2 style='text-align: center; color: white;'>An Orbit Product</h3>", unsafe_allow_html=True)
+    .centered-card h1 {
+        font-size: 3.2em;
+        font-family: monospace;
+        margin-bottom: 0px;
+    }
 
-# Display the CSS
-st.markdown(page_bg_img, unsafe_allow_html=True)
+     .centered-card h2 {
+        margin-top: -20px;
+        font-size: 1.5rem;
+        font-family: monospace;
+        color: #595959;
+    }
 
-# For each of the user personas for which we are implementing
-# functionality, we put a button on the screen that the user 
-# can click to MIMIC logging in as that mock user. 
+    .centered-card p {
+        font-size: 1rem;
+        margin-bottom: 30px;
+        color: #555;
+    }
+
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+# Card content
+st.markdown(
+    """
+    <div class="parent-container">
+    <div class="centered-card">
+        <h1>Polaris</h1>
+        <h2>An Orbit Product</h2>
+        <p>Welcome to Polaris, your guiding star as you navigate your early career and expanding network. Connect with mentors and mentees and explore job opportunities all in one place.</p>
+    </div>
+    <div class="wide-card">
+        <h2>Who Would You Like To Explore As?</h2>
+    </div>
+      </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+# Graphic
+st.markdown('<div class="graphic">', unsafe_allow_html=True)
+st.image("assets/star2.svg", use_container_width=True, width=50)
+
 
 if st.button("Tyler, a Third Year Computer Science Mentee", 
-            type = 'primary', 
+            type='secondary', 
             use_container_width=True):
     # when user clicks the button, they are now considered authenticated
     st.session_state['authenticated'] = True
@@ -78,7 +137,7 @@ if st.button("Tyler, a Third Year Computer Science Mentee",
     st.switch_page('pages/00_Pol_Strat_Home.py')
 
 if st.button('Sara, a Northeastern Alumni and Mentor, who works at McKinsey', 
-            type = 'primary', 
+            type='secondary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'usaid_worker'
@@ -86,20 +145,17 @@ if st.button('Sara, a Northeastern Alumni and Mentor, who works at McKinsey',
     st.switch_page('pages/10_USAID_Worker_Home.py')
 
 if st.button('Billy, an Advisor at Northeastern', 
-            type = 'primary', 
+            type='secondary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'administrator'
     st.session_state['first_name'] = 'SysAdmin'
     st.switch_page('pages/20_Admin_Home.py')
-
 
 if st.button('John, an Employer Looking to Fill Intern/Co-Op Roles', 
-            type = 'primary', 
+            type='secondary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'administrator'
     st.session_state['first_name'] = 'SysAdmin'
     st.switch_page('pages/20_Admin_Home.py')
-
-
