@@ -38,6 +38,8 @@ def create_app():
 
     # Register the routes from each Blueprint with the app object
     # and give a url prefix to each
+    # route is an HTTP verb and a resource (ex. GET cutomers)
+    # gives app which collection of routes to respond to
     app.logger.info('current_app(): registering blueprints with Flask app object.')   
     app.register_blueprint(simple_routes)
     app.register_blueprint(customers,   url_prefix='/c')
