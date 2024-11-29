@@ -58,7 +58,7 @@ st.markdown(
         margin-right: 35px;
         width: 95%;
         height: 80px;
-        margin-top: 90px;
+        margin-top: 120px;
         top: 300px;
         position: absolute;
         text-align: center;
