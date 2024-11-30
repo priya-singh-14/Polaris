@@ -127,35 +127,35 @@ if st.button("Tyler, a Third Year Computer Science Mentee",
     # when user clicks the button, they are now considered authenticated
     st.session_state['authenticated'] = True
     # we set the role of the current user
-    st.session_state['role'] = 'pol_strat_advisor'
+    st.session_state['role'] = 'Mentee'
     # we add the first name of the user (so it can be displayed on 
     # subsequent pages). 
-    st.session_state['first_name'] = 'John'
+    st.session_state['first_name'] = 'Tyler'
     # finally, we ask streamlit to switch to another page, in this case, the 
     # landing page for this particular user type
-    logger.info("Logging in as Political Strategy Advisor Persona")
-    st.switch_page('pages/00_Pol_Strat_Home.py')
+    logger.info("Logging in as Mentee Persona")
+    st.switch_page('pages/00_Mentee_Home.py')
 
 if st.button('Sara, a Northeastern Alumni and Mentor, who works at McKinsey', 
             type='secondary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
-    st.session_state['role'] = 'usaid_worker'
-    st.session_state['first_name'] = 'Mohammad'
-    st.switch_page('pages/10_USAID_Worker_Home.py')
+    st.session_state['role'] = 'Mentor'
+    st.session_state['first_name'] = 'Sara'
+    st.switch_page('pages/10_Mentor_Home.py')
 
 if st.button('Billy, an Advisor at Northeastern', 
             type='secondary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
-    st.session_state['role'] = 'administrator'
-    st.session_state['first_name'] = 'SysAdmin'
+    st.session_state['role'] = 'Administrator'
+    st.session_state['first_name'] = 'Billy'
     st.switch_page('pages/20_Admin_Home.py')
 
 if st.button('John, an Employer Looking to Fill Intern/Co-Op Roles', 
             type='secondary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
-    st.session_state['role'] = 'administrator'
-    st.session_state['first_name'] = 'SysAdmin'
-    st.switch_page('pages/20_Admin_Home.py')
+    st.session_state['role'] = 'Employer'
+    st.session_state['first_name'] = 'John'
+    st.switch_page('pages/31_Employer_Home.py')
