@@ -11,7 +11,7 @@ simple_routes = Blueprint('simple_routes', __name__)
 
 # ------------------------------------------------------------
 # / is the most basic route
-# Once the api container is started, in a browser, go to 
+# Once the api container is started, in a browser, go to //
 # localhost:4000/playlist
 @simple_routes.route('/')
 def welcome():

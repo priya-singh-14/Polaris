@@ -112,13 +112,15 @@ def return_match():
 
 # revist this one??
 # GET the list of mentees matched with a specific mentor
-@orbit.route('/MentorMentees', methods=['GET'])
+@orbit.route('/MentorMentees/<int:mentorId>', methods=['GET'])
+
 def get_mentor_mentees(mentorId):
     query = '''
         SELECT 
             Mentee.menteeId,
             User.name,
             User.profilepic,
+            User.major,
             Mentee.bio,
             Mentee.resume
         FROM 

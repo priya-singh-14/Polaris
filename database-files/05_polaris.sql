@@ -76,8 +76,6 @@ CREATE TABLE `Match` (
     FOREIGN KEY (menteeId) REFERENCES Mentee(menteeId)
 );
 
-
-
 CREATE TABLE JobPosting (
     jobNum INT AUTO_INCREMENT PRIMARY KEY,
     empId INT NOT NULL,

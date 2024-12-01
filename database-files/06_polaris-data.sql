@@ -1,6 +1,11 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+
+USE polaris;
+
 INSERT INTO User (name, email, profilepic, college, major, minor)
 VALUES
-    ('Tyler Dipper', 'dipper.t@example.com', 'tyler.jpg', 'Khoury', 'Computer Science', 'Math'),
+    ('Tyler Dipper', 'dipper.t@example.com', 'tyler.jpg', 'Khoury', 'Computer Science', NULL),
     ('Sara Star', 'star.s@example.com', 'sara.jpg', 'Khoury', 'Cybersecurity', NULL),
     ('Billy Blakhole', 'blakhole.b@example.com', 'billy.jpg', 'Khoury', NULL, NULL),
     ('John Aquarius', 'aquarius.j@example.com', 'john.jpg', NULL, NULL, NULL),
@@ -26,7 +31,7 @@ VALUES
 
 INSERT INTO Mentor (userid, isWorking, isInSchool, company, currentPosition, advisorId)
 VALUES
-    (2, TRUE, FALSE, 'Tesla', 'Senior Engineer', 1),
+    (2, TRUE, FALSE, 'McKinsey', 'Senior Analyst', 1),
     (6, TRUE, FALSE, 'Microsoft', 'Junior Engineer', 2);
 
 INSERT INTO Mentee (userid, bio, resume)

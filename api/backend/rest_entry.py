@@ -42,9 +42,10 @@ def create_app():
     # route is an HTTP verb and a resource (ex. GET cutomers)
     # gives app which collection of routes to respond to
     app.logger.info('current_app(): registering blueprints with Flask app object.')
+    app.register_blueprint(simple_routes)
     app.register_blueprint(orbit, url_prefix='/o')
-    # app.register_blueprint(customers,   url_prefix='/c')
-    # app.register_blueprint(products,    url_prefix='/p')
+    app.register_blueprint(customers,   url_prefix='/c')
+    app.register_blueprint(products,    url_prefix='/p')
 
     # Don't forget to return the app object
     return app
