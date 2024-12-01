@@ -116,7 +116,7 @@ CREATE TABLE Chats (
 );
 
 CREATE TABLE `Events` (
-    eventId INT NOT NULL,
+    eventId INT NOT NULL AUTO_INCREMENT,
     speakerId INT NOT NULL,
     organizerId INT NOT NULL,
     speakerName VARCHAR(50) NOT NULL,
