@@ -3,6 +3,10 @@ import pandas as pd
 from PIL import Image
 import streamlit as st
 from streamlit_extras.app_logo import add_logo
+import world_bank_data as wb
+import matplotlib.pyplot as plt
+import numpy as np
+import plotly.express as px
 from modules.nav import SideBarLinks
 
 logger = logging.getLogger(__name__)
@@ -12,7 +16,7 @@ SideBarLinks()
 if "mentee_data" not in st.session_state:
     st.session_state["mentee_data"] = None  
 
-st.title("Tyler Dipper")
+st.title("Your Profile")
 
 if st.session_state["mentee_data"] is None:
     st.warning("Profile has not been created.")
