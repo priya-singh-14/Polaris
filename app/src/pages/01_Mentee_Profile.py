@@ -1,41 +1,45 @@
 import logging
-logger = logging.getLogger(__name__)
 import pandas as pd
+from PIL import Image
 import streamlit as st
 from streamlit_extras.app_logo import add_logo
-import world_bank_data as wb
-import matplotlib.pyplot as plt
-import numpy as np
-import plotly.express as px
 from modules.nav import SideBarLinks
 
-# Call the SideBarLinks from the nav module in the modules directory
+logger = logging.getLogger(__name__)
+
 SideBarLinks()
 
-# set the header of the page
-st.header('World Bank Data')
+if "mentee_data" not in st.session_state:
+    st.session_state["mentee_data"] = None  
 
-# You can access the session state to make a more customized/personalized app experience
-st.write(f"### Hi, {st.session_state['first_name']}.")
+st.title("Tyler Dipper")
 
-# get the countries from the world bank data
-with st.echo(code_location='above'):
-    countries:pd.DataFrame = wb.get_countries()
-   
-    st.dataframe(countries)
+if st.session_state["mentee_data"] is None:
+    st.warning("Profile has not been created.")
+    if st.button('Create Your Profile', 
+                 type='primary', 
+                 use_container_width=True):
+        st.switch_page('pages/07_Mentee_Create_Profile.py')  
+else:
 
-# the with statment shows the code for this block above it 
-with st.echo(code_location='above'):
-    arr = np.random.normal(1, 1, size=100)
-    test_plot, ax = plt.subplots()
-    ax.hist(arr, bins=20)
+    mentee_data = st.session_state["mentee_data"]
 
-    st.pyplot(test_plot)
+    st.subheader("Your Profile Details")
+    st.text(f"{mentee_data['name']}")
+    st.text(f"{mentee_data['email']}")
+    st.text(f"Major: {mentee_data['major']}")
+    if mentee_data["minor"]:
+        st.text(f"Minor: {mentee_data['minor']}")
+    st.text(f"College: {mentee_data['college']}")
+
+    if mentee_data["profile_pic"]:
+        img = Image.open(mentee_data["profile_pic"])
+        st.image(img, caption="Profile Picture", use_column_width=True)
+    else:
+        st.warning("No profile picture uploaded.")
 
 
-with st.echo(code_location='above'):
-    slim_countries = countries[countries['incomeLevel'] != 'Aggregates']
-    data_crosstab = pd.crosstab(slim_countries['region'], 
-                                slim_countries['incomeLevel'],  
-                                margins = False) 
-    st.table(data_crosstab)
+    if st.button('Edit Profile', 
+                 type='primary', 
+                 use_container_width=True):
+        st.switch_page('pages/08_Mentee_Edit_Profile.py') 

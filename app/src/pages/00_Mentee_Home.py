@@ -14,7 +14,7 @@ st.write('')
 st.write('')
 st.write('### What would you like to do today?')
 
-if st.button('Build Profile', 
+if st.button('View Profile', 
              type='primary',
              use_container_width=True):
   st.switch_page('pages/01_Mentee_Profile.py')
