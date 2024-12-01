@@ -1,8 +1,6 @@
 import logging
-import pandas as pd
 from PIL import Image
 import streamlit as st
-from streamlit_extras.app_logo import add_logo
 from modules.nav import SideBarLinks
 
 logger = logging.getLogger(__name__)

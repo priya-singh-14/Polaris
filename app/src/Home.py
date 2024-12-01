@@ -118,7 +118,7 @@ st.markdown(
 
 # Graphic
 st.markdown('<div class="graphic">', unsafe_allow_html=True)
-st.image("assets/star2.svg", use_container_width=True, width=50)
+st.image("assets/star.svg", use_container_width=True, width=50)
 
 
 if st.button("Tyler, a Third Year Computer Science Mentee", 

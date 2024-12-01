@@ -16,6 +16,53 @@ from backend.db_connection import db
 # routes.
 orbit = Blueprint('orbit', __name__)
 
+@orbit.route('/createNewUser', methods=['POST'])
+def create_profile():
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    name = the_data['name']
+    email = the_data['email']
+    profilepic = the_data['profilepic']
+    college = the_data['college']
+    major = the_data['major']
+    minor = the_data['minor']
+    bio = the_data['bio']
+    resume = the_data['resume']
+
+    cursor = db.get_db().cursor()
+
+    query = f'''
+        INSERT INTO User (name, email, profilepic, college, major, minor)
+        VALUES ('{name}', '{email}', '{profilepic}', '{college}', '{major}', '{minor}')
+    '''
+   
+    cursor.execute(query)
+    db.get_db().commit()    
+
+    response = make_response("Successfully created profile")
+    response.status_code = 200
+    return response
+
+
+# @orbit.route('/viewMenteeProfile', methods=['GET'])
+# def view_profile(menteeName, menteeId):
+#     query = '''
+#         SELECT  *
+#         FROM `User` JOIN Mentee on User.userId = Mentee.userId
+#         WHERE Mentee.name = menteeName.
+#     '''
+
+#     cursor = db.get_db().cursor()
+#     cursor.execute(query) 
+#     db.get_db().commit()
+
+#     # Return a success message
+#     response = make_response("Successfully created profile")
+#     response.status_code = 200
+#     return response
+
+
 # Return a list of jobs and their information
 # GET/JobPosting
 @orbit.route('/JobPosting', methods=['GET'])
@@ -23,6 +70,41 @@ def get_job_postings():
     query = '''
         SELECT  *
         FROM JobPosting
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+
+# Return a list of jobs and their information
+# GET/JobPosting
+@orbit.route('/Mentees', methods=['GET'])
+def get_mentees():
+    query = '''
+        SELECT  *
+        FROM Mentee
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+# Return a list of jobs and their information
+# GET/JobPosting
+@orbit.route('/Users', methods=['GET'])
+def get_users():
+    query = '''
+        SELECT  *
+        FROM User
     '''
 
     cursor = db.get_db().cursor()
@@ -110,7 +192,6 @@ def return_match():
     response.status_code = 200
     return response
 
-# revist this one??
 # GET the list of mentees matched with a specific mentor
 @orbit.route('/MentorMentees/<int:mentorId>', methods=['GET'])
 
