@@ -14,17 +14,23 @@ st.write('')
 st.write('')
 st.write('### What would you like to do today?')
 
-if st.button('Predict Value Based on Regression Model', 
+if st.button('Build Profile', 
              type='primary',
              use_container_width=True):
-  st.switch_page('pages/11_Prediction.py')
+  st.switch_page('pages/11_Mentor_Profile.py')
 
-if st.button('View the Simple API Demo', 
+if st.button('View Network', 
              type='primary',
              use_container_width=True):
-  st.switch_page('pages/12_API_Test.py')
+  st.switch_page('pages/12_Mentor_Network.py')
 
-if st.button("View Classification Demo",
+if st.button("Match Mentees to Jobs",
              type='primary',
              use_container_width=True):
-  st.switch_page('pages/13_Classification.py')
+  st.switch_page('pages/13_Mentor_Matching.py')
+
+
+if st.button("Chat",
+             type='primary',
+             use_container_width=True):
+  st.switch_page('pages/14_Mentor_Chats.py')
