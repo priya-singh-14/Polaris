@@ -14,17 +14,17 @@ st.write('')
 st.write('')
 st.write('### What would you like to do today?')
 
-if st.button('Predict Value Based on Regression Model', 
+if st.button('View Active Job Postings', 
              type='primary',
              use_container_width=True):
-  st.switch_page('pages/11_Prediction.py')
+  st.switch_page('pages/41_Employer_Jobs.py')
 
-if st.button('View the Simple API Demo', 
+if st.button('Post a New Job', 
              type='primary',
              use_container_width=True):
-  st.switch_page('pages/12_API_Test.py')
+  st.switch_page('pages/42_Employer_Post_New_Job.py')
 
-if st.button("View Classification Demo",
+if st.button("Explore Candidates",
              type='primary',
              use_container_width=True):
-  st.switch_page('pages/13_Classification.py')
+  st.switch_page('pages/43_Employer_Find_Candidates.py')
