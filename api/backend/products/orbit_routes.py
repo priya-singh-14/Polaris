@@ -14,7 +14,7 @@ from backend.db_connection import db
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
 # routes.
-orbit = Blueprint('orbit_db', __name__)
+orbit = Blueprint('orbit', __name__)
 
 # Return a list of jobs and their information
 # GET/JobPosting
@@ -109,6 +109,35 @@ def return_match():
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
+
+# revist this one??
+# GET the list of mentees matched with a specific mentor
+@orbit.route('/MentorMentees', methods=['GET'])
+def get_mentor_mentees(mentorId):
+    query = '''
+        SELECT 
+            Mentee.menteeId,
+            User.name,
+            User.profilepic,
+            Mentee.bio,
+            Mentee.resume
+        FROM 
+            `Match`
+        JOIN 
+            Mentee ON Match.menteeId = Mentee.menteeId
+        JOIN 
+            User ON Mentee.userId = User.userId
+        WHERE 
+            Match.mentorId = %s;
+    '''
+    
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (mentorId,))
+    mentee_data = cursor.fetchall()
+    response = make_response(jsonify(mentee_data))
+    response.status_code = 200
+    return response
+
 
 # Create matches between mentors and mentees
 # POST/Match 
