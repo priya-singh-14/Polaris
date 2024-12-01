@@ -36,8 +36,18 @@ else:
         img = Image.open(mentee_data["profile_pic"])
         st.image(img, caption="Profile Picture", use_column_width=True)
     else:
-        st.warning("No profile picture uploaded.")
+        st.warning("No profile picture uploaded. Uploading a profile picture will make you more noticible to employers and mentors!")
 
+    if mentee_data.get("resume"):
+        st.text(mentee_data["resume"].name)  # Display resume file name (if available)
+        st.download_button(
+            label="Download Resume",
+            data=mentee_data["resume"].getvalue(),  # Get file content from session state
+            file_name=mentee_data["resume"].name,
+            mime="application/pdf"
+        )
+    else:
+        st.warning("No resume uploaded. Upload a resume for extended job opportunities!")
 
     if st.button('Edit Profile', 
                  type='primary', 

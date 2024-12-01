@@ -13,6 +13,7 @@ st.write("Fill out your profile details below to connect with mentors and other 
 with st.form(key="mentee_profile_form"):
     name = st.text_input("Name")
     profile_pic = st.file_uploader("Upload Profile Picture", type=["jpg", "png", "jpeg"])
+    uploaded_resume = st.file_uploader("Upload Resume", type=["pdf"])
     email = st.text_input("Email")
     major = st.text_input("Major")
     minor = st.text_input("Minor (if applicable)")
@@ -42,6 +43,7 @@ if submit_button:
             "major": major,
             "minor": minor,
             "college": college,
+            "resume": uploaded_resume
         }
         st.success("Profile created successfully!")
         st.write("Return to the profile page to view your details.")
