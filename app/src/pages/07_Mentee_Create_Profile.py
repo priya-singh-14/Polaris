@@ -52,6 +52,14 @@ if submit_button:
             with open(resume_path, "wb") as f:
                 f.write(uploaded_resume.getbuffer())  
 
+        generate_userid_response = requests.get('http://web-api:4000/o/generateUserID')
+        if generate_userid_response.status_code == 200:
+                new_userID = generate_userid_response.json().get("new_userID")
+                st.info(f"Generated userID: {new_userID}")
+                
+        else:
+                st.error("Error generating userID. Please try again later.")
+
         profile_data = {
             "name": name,
             "profilepic": profile_pic_path,
@@ -60,16 +68,22 @@ if submit_button:
             "minor": minor,
             "college": college,
             "bio": bio,
-            "resume": resume_path
+            "resume": resume_path,
+            "userID": new_userID
         }
       
         try:
-            response = requests.post('http://web-api:4000/o/createMenteeProfile', json=profile_data)
-            if response.status_code == 200:
-                st.success("Profile created successfully!")
-                st.write("Return to the profile page to view your details.")
+            create_user_response = requests.post('http://web-api:4000/o/createNewUser', json=profile_data)
+             
+            if create_user_response.status_code == 200:
+                st.info("View Profile Details on the Previous Page")
             else:
-                st.error(f"Error creating profile: Profile already exists under this email")
+                st.error("Error creating user profile. Please try again later.")
+
+            create_mentee_response = requests.post('http://web-api:4000/o/createNewMentee', json=profile_data)
+            if create_mentee_response.status_code == 200:
+                st.success("Mentee profile created successfully!")
+            else:
+                st.error("Error creating mentee profile. Please try again later.")
         except requests.exceptions.RequestException as e:
             st.error(f"Error connecting to server: {str(e)}")
-                            

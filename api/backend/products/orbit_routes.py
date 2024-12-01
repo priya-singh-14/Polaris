@@ -29,6 +29,7 @@ def create_profile():
     minor = the_data['minor']
     bio = the_data['bio']
     resume = the_data['resume']
+    userID = the_data['userID']
 
     cursor = db.get_db().cursor()
 
@@ -44,6 +45,52 @@ def create_profile():
     response.status_code = 200
     return response
 
+@orbit.route('/generateUserID', methods=['GET'])
+def generate_user_id():
+    cursor = db.get_db().cursor()
+
+    # Fetch the current maximum userID from the User table
+    query = '''
+        SELECT MAX(userID) AS max_userID 
+        FROM User
+    '''
+    cursor.execute(query)
+    result = cursor.fetchone()
+
+    # Increment the max userID by 1 or start at 1 if the table is empty
+    new_userID = result['max_userID'] + 1
+
+    # Return the new userID
+    response = make_response({'new_userID': new_userID})
+    response.status_code = 200
+    return response
+
+
+@orbit.route('/createNewMentee', methods=['POST'])
+def create_mentee_profile():
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    userID = the_data['userID']
+    bio = the_data['bio']
+    resume = the_data['resume']
+
+    cursor = db.get_db().cursor()
+
+
+    query = f'''
+        INSERT INTO Mentee (userID, bio, resume)
+        VALUES ('{userID}', '{bio}', '{resume}')
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query) 
+    db.get_db().commit()
+
+    # Return a success message
+    response = make_response("Successfully created profile")
+    response.status_code = 200
+    return response
 
 # @orbit.route('/viewMenteeProfile', methods=['GET'])
 # def view_profile(menteeName, menteeId):
