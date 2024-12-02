@@ -142,19 +142,13 @@ def create_match():
     response.status_code = 200
     return response
 
-'''
-CHECK THIS ONE IDRK HOW TO WRITE IT WITH NEW VARIABLES
-'''
+
 # change matches between mentors and mentees
 @orbit.route('/Match', methods = ['PUT'])
 def update_match(og_mentorId, og_menteeId, new_mentorId, new_menteeId):
     
     the_data = request.json
     current_app.logger.info(the_data)
-
-    #extracting the variable
-    menteeId = the_data['menteeId']
-    mentorId = the_data['mentorId']
 
     query = f'''
     UPDATE `Match`
@@ -284,24 +278,19 @@ def return_mentors():
     return response
 
 # add a mentor to the platform
-#####
-#### NOT WORKING YET
-######
+
 @orbit.route('/Mentor', methods=['POST'])
-def add_mentor():
+def add_mentor(mentorId, userId, isWorking, isInSchool, company, currentPosition, advisorId):
     
     # In a POST request, there is a 
     # collecting data from the request object 
     the_data = request.json
     current_app.logger.info(the_data)
 
-    #extracting the variable
-    mentorId = the_data['userId']
-    
 
     query = f'''
-        INSERT INTO Applications (mentorId)
-        VALUES ('{mentorId}')
+        INSERT INTO Mentor
+        VALUES ('{mentorId}, {userId}, {isWorking}, {isInSchool}, {company}, {currentPosition}, {advisorId}')
     '''
 
     current_app.logger.info(query)
@@ -314,6 +303,27 @@ def add_mentor():
     response = make_response("Successfully added position")
     response.status_code = 200
     return response
+
+# change mentor details
+####
+####NOT DONE
+#####
+@orbit.route('/Mentor/<mentorId>', methods = ['PUT'])
+def update_mentor_details():
+    
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    query = f'''
+    UPDATE `Match`
+    SET mentorId = {new_mentorId}, menteeId = {new_menteeId}
+    WHERE mentorId = {og_mentorId}, menteeId = {og_menteeId}
+    '''
+
+    product_info = request.json
+    current_app.logger.info(product_info)
+
+    return "Success"
 
 # remove a mentor from the system
 @orbit.route('/Mentor', methods = ['DELETE'])
