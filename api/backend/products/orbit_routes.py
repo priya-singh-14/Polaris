@@ -112,6 +112,32 @@ def update_mentee_data():
     response.status_code = 200
     return response
 
+@orbit.route('/updateMentor', methods=['PUT'])
+def update_mentor_data():
+    
+    the_data = request.json
+    current_app.logger.info('PUT /the_data')
+
+    company = the_data['company']
+    currentPosition = the_data['currentPosition']
+    isWorking = 1 if the_data['isWorking'] else 0 
+    isInSchool = 1 if the_data['isInSchool'] else 0 
+    id = the_data['id']
+
+    query = f'''
+        UPDATE Mentor 
+        SET company = %s, currentPosition = %s, isInSchool = %s, isWorking = %s
+          WHERE Mentor.userId = %s 
+    '''
+    data = (company, currentPosition, isInSchool, isWorking, id)
+    cursor = db.get_db().cursor()
+    cursor.execute(query, data)
+    db.get_db().commit()
+
+    response = make_response("Successfully updated profile")
+    response.status_code = 200
+    return response
+
 @orbit.route('/getMenteeData/<int:menteeId>', methods=['GET'])
 def get_mentee_data(menteeId):
 
@@ -119,6 +145,23 @@ def get_mentee_data(menteeId):
         SELECT User.name, Mentee.bio, Mentee.userId, Mentee.resume, User.email, User.profilepic, User.major, User.minor, User.college
         FROM Mentee Join User on Mentee.userId = User.userId
         WHERE Mentee.menteeId = '{menteeId}'
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchone()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+@orbit.route('/getMentorData/<int:mentorId>', methods=['GET'])
+def get_mentor_data(mentorId):
+
+    query = f'''
+        SELECT User.name, Mentor.userId, Mentor.isInSchool, Mentor.isWorking, Mentor.currentPosition, Mentor.company, User.email, User.profilepic, User.major, User.minor, User.college
+        FROM Mentor Join User on Mentor.userId = User.userId
+        WHERE Mentor.mentorId = '{mentorId}'
     '''
 
     cursor = db.get_db().cursor()

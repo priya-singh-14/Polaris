@@ -10,8 +10,9 @@ st.set_page_config(layout = 'wide')
 
 SideBarLinks()
 
+#instead of hardcoding the mentorID logic, use a max function so we present the most recently created Mentor --> same logic applies to mentees
 def fetch_mentor_profile(mentorId):
-    mentorId = 3
+    mentorId = 4 
 
     try:
         response = requests.get(f"http://web-api:4000/o/viewMentorProfile/{mentorId}") 
