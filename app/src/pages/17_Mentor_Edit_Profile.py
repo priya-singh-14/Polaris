@@ -59,7 +59,7 @@ if submit_button:
             "id": mentor_data.get("userId")
         }
     
-        st.write(profile_data)
+       # st.write(profile_data)
 
         try:
             update_user_response = requests.put('http://web-api:4000/o/updateUser', json=profile_data)

@@ -23,7 +23,7 @@ st.markdown(
 
     .centered-card {
         margin: 35px;
-        margin-top: 90px;
+        margin-top: 30px;
         position: absolute;
         background: rgba(255, 255, 255, 0.7);
         padding: 30px;
@@ -60,5 +60,5 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.image("assets/about.jpg", use_container_width=True, width=50)
+st.image("assets/star.svg", use_container_width=True, width=50)
 
