@@ -60,12 +60,22 @@ if submit_button:
             "college": college,
             "bio": bio,
             "resume": resume_path,
+            "id": mentee_data.get("userId")
         }
       
-        try:
-            create_mentee_response = requests.post('http://web-api:4000/o/updateMentee', json=profile_data)
+        st.write(profile_data)
 
-            if create_mentee_response.status_code == 200:
+        try:
+            update_user_response = requests.put('http://web-api:4000/o/updateUser', json=profile_data)
+
+            if update_user_response.status_code == 200:
+                st.success("User profile updated successfully!")
+            else:
+                st.error("Error updating user profile. Please try again later.")
+
+            update_mentee_response = requests.put('http://web-api:4000/o/updateMentee', json=profile_data)
+
+            if update_mentee_response.status_code == 200:
                 st.success("Mentee profile updated successfully!")
             else:
                 st.error("Error updating mentee profile. Please try again later.")

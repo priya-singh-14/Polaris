@@ -60,6 +60,57 @@ def generate_user_id():
     return response
 
 
+@orbit.route('/updateUser', methods=['PUT'])
+def update_user_data():
+    
+    the_data = request.json
+    name = the_data['name']
+    email = the_data['email']
+    major = the_data['major']
+    minor = the_data['minor']
+    college = the_data['college']
+    id = the_data['id']
+    current_app.logger.info('PUT /the_data')
+
+    query = f'''
+        UPDATE User 
+        SET name = %s, email = %s, major = %s, minor = %s, college = %s 
+          WHERE User.userId = %s 
+    '''
+
+    data = (name, email, major, minor, college, id)
+    cursor = db.get_db().cursor()
+    cursor.execute(query, data)
+    db.get_db().commit()
+
+    response = make_response("Successfully updated profile")
+    response.status_code = 200
+    return response
+
+@orbit.route('/updateMentee', methods=['PUT'])
+def update_mentee_data():
+    
+    the_data = request.json
+    current_app.logger.info('PUT /the_data')
+
+    bio = the_data['bio']
+    resume = the_data['resume']
+    id = the_data['id']
+
+    query = f'''
+        UPDATE Mentee 
+        SET bio = %s, resume = %s
+          WHERE Mentee.userId = %s 
+    '''
+    data = (bio, resume, id)
+    cursor = db.get_db().cursor()
+    cursor.execute(query, data)
+    db.get_db().commit()
+
+    response = make_response("Successfully updated profile")
+    response.status_code = 200
+    return response
+
 @orbit.route('/getMenteeData/<int:menteeId>', methods=['GET'])
 def get_mentee_data(menteeId):
 
