@@ -46,7 +46,6 @@ def create_profile():
 def generate_user_id():
     cursor = db.get_db().cursor()
 
-    # Fetch the current maximum userID from the User table
     query = '''
         SELECT MAX(userID) AS max_userID 
         FROM User
@@ -54,10 +53,8 @@ def generate_user_id():
     cursor.execute(query)
     result = cursor.fetchone()
 
-    # Increment the max userID by 1 or start at 1 if the table is empty
     new_userID = result['max_userID'] + 1
 
-    # Return the new userID
     response = make_response({'new_userID': new_userID})
     response.status_code = 200
     return response
@@ -99,7 +96,48 @@ def view_profile(menteeId):
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
-   
+
+
+@orbit.route('/createNewMentor', methods=['POST'])
+def create_mentor_profile():
+    the_data = request.json
+    current_app.logger.info(f"Received data for mentor creation: {the_data}")
+
+    userID = the_data['userID']
+    isWorking = 1 if the_data['isWorking'] else 0  # Convert boolean to integer
+    isInSchool = 1 if the_data['isInSchool'] else 0  # Convert boolean to integer
+    company = the_data['company']
+    currentPosition = the_data['currentPosition']
+    advisorID = the_data['advisorID']
+
+    query = f'''
+        INSERT INTO Mentor (userID, isWorking, isInSchool, company, currentPosition, advisorID)
+        VALUES ('{userID}', '{isWorking}', '{isInSchool}', '{company}', '{currentPosition}', '{advisorID}')
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query) 
+    db.get_db().commit()
+
+    response = make_response("Successfully created profile", 200)
+
+    return response
+
+
+@orbit.route('/viewMentorProfile/<int:mentorId>', methods=['GET'])
+def view_mentor_profile(mentorId):
+    cursor = db.get_db().cursor()
+    query = f'''
+        SELECT User.userID, User.name, User.email, User.profilepic, User.major, User.minor, User.college, Mentor.isWorking, Mentor.isInSchool, Mentor.company, Mentor.currentPosition
+        FROM User Join Mentor ON User.userId = Mentor.userId
+        WHERE mentorId = '{mentorId}'
+    '''
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
 
 # Return a list of jobs and their information
 # GET/JobPosting
@@ -119,13 +157,28 @@ def get_job_postings():
     return response
 
 
-# Return a list of jobs and their information
-# GET/JobPosting
+# Return all mentees
 @orbit.route('/Mentees', methods=['GET'])
 def get_mentees():
     query = '''
         SELECT  *
         FROM Mentee
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+# Return all advisors
+@orbit.route('/Advisors', methods=['GET'])
+def get_advisors():
+    query = '''
+        SELECT  *
+        FROM Advisor
     '''
 
     cursor = db.get_db().cursor()

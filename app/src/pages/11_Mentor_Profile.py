@@ -3,47 +3,50 @@ logger = logging.getLogger(__name__)
 
 import streamlit as st
 from modules.nav import SideBarLinks
+import requests
+from PIL import Image
 
 st.set_page_config(layout = 'wide')
 
-# Display the appropriate sidebar links for the role of the logged in user
 SideBarLinks()
 
-if "mentor_data" not in st.session_state:
-    st.session_state["mentor_data"] = None  
+def fetch_mentor_profile(mentorId):
+    mentorId = 3
 
-st.title("Your Profile")
+    try:
+        response = requests.get(f"http://web-api:4000/o/viewMentorProfile/{mentorId}") 
+        if response.status_code == 200:
+            return response.json()
+        else:
+            st.error(f"Error retrieving profile: {response.json().get('error', 'Unknown error')}")
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error connecting to server: {str(e)}")
+    return None
 
-if st.session_state["mentor_data"] is None:
-    st.warning("Profile has not been created.")
-    if st.button('Create Your Profile', 
-                 type='primary', 
-                 use_container_width=True):
-        st.switch_page('pages/16_Mentor_Create_Profile.py')  
-else:
+mentorId = 3
+mentor_data = fetch_mentor_profile(mentorId)
 
-    mentor_data = st.session_state["mentor_data"]
+if mentor_data:
+    mentor_data = mentor_data[0] 
 
-    st.subheader("Your Profile Details")
-    st.text(f"{mentor_data['name']}")
-    st.text(f"{mentor_data['email']}")
-    st.text(f"Major: {mentor_data['major']}")
-
-    if mentor_data["isWorking"] == True:
-        st.text(f"Currently Works as: {mentor_data['currentPosition']}")
-
-    if mentor_data["minor"]:
-        st.text(f"Minor: {mentor_data['minor']}")
-    st.text(f"College: {mentor_data['college']}")
-
-    if mentor_data["profile_pic"]:
-        img = Image.open(mentor_data["profile_pic"])
-        st.image(img, caption="Profile Picture", use_column_width=True)
+    if mentor_data.get("profilepic"):
+        img = Image.open(mentor_data['profilepic']) 
+        st.image(img, width=200)
     else:
         st.warning("No profile picture uploaded.")
 
-
-    if st.button('Edit Profile', 
-                 type='primary', 
-                 use_container_width=True):
-        st.switch_page('pages/17_Mentor_Edit_Profile.py') 
+    st.subheader(f"{mentor_data['name']}")
+    st.text(f"Email: {mentor_data['email']}")
+    st.text(f"Major: {mentor_data['major']}")
+    
+    if mentor_data.get("minor"):
+        st.text(f"Minor: {mentor_data['minor']}")
+    
+    st.text(f"College: {mentor_data['college']}")
+   
+    if st.button('Edit Profile', type='primary', use_container_width=True):
+        st.switch_page('pages/17_Mentor_Edit_Profile.py')
+else:
+    st.warning("No profile information found. Please Create Your Profile.")
+    if st.button('Create Profile', type='primary', use_container_width=True):
+        st.switch_page('pages/16_Mentor_Create_Profile.py')
