@@ -1,41 +1,42 @@
 import logging
-logger = logging.getLogger(__name__)
 import pandas as pd
 import streamlit as st
-from streamlit_extras.app_logo import add_logo
-import world_bank_data as wb
-import matplotlib.pyplot as plt
-import numpy as np
-import plotly.express as px
+import requests
 from modules.nav import SideBarLinks
 
-# Call the SideBarLinks from the nav module in the modules directory
+logger = logging.getLogger(__name__)
+
 SideBarLinks()
 
-# set the header of the page
-st.header('World Bank Data')
-
-# You can access the session state to make a more customized/personalized app experience
-st.write(f"### Hi, {st.session_state['first_name']}.")
-
-# get the countries from the world bank data
-with st.echo(code_location='above'):
-    countries:pd.DataFrame = wb.get_countries()
-   
-    st.dataframe(countries)
-
-# the with statment shows the code for this block above it 
-with st.echo(code_location='above'):
-    arr = np.random.normal(1, 1, size=100)
-    test_plot, ax = plt.subplots()
-    ax.hist(arr, bins=20)
-
-    st.pyplot(test_plot)
+st.header(f"Hi, {st.session_state.get('first_name', 'User')}!")
+st.write('### Here are Some Jobs Related to Your Interests')
 
 
-with st.echo(code_location='above'):
-    slim_countries = countries[countries['incomeLevel'] != 'Aggregates']
-    data_crosstab = pd.crosstab(slim_countries['region'], 
-                                slim_countries['incomeLevel'],  
-                                margins = False) 
-    st.table(data_crosstab)
+def get_all_jobs():
+    try:
+        response = requests.get("http://web-api:4000/o/JobPosting") 
+        if response.status_code == 200:
+            return response.json()
+        else:
+            st.error(f"Error retrieving jobs: {response.json().get('error', 'Unknown error')}")
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error connecting to server: {str(e)}")
+    return None
+
+all_jobs = get_all_jobs()
+
+if all_jobs:
+
+    if all_jobs:
+
+        for idx, job in enumerate(all_jobs):
+         st.subheader(job['name'])
+         st.text(f"Role: {job['role']}")
+         st.text(f"Description: {job['jobDesc']}")
+         if st.button('Apply to Job', key=f"apply_button_{idx}"):
+            st.success(f"Application submitted for {job['role']} at {job['name']}")
+
+    
+
+else:
+    st.write("No jobs found. Please check back later!")

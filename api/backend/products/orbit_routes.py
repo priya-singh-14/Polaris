@@ -144,8 +144,8 @@ def view_mentor_profile(mentorId):
 @orbit.route('/JobPosting', methods=['GET'])
 def get_job_postings():
     query = '''
-        SELECT  *
-        FROM JobPosting
+        SELECT JobPosting.jobDesc, JobPosting.role, Company.name
+        FROM JobPosting JOIN Company on JobPosting.companyId = Company.companyId 
     '''
 
     cursor = db.get_db().cursor()
