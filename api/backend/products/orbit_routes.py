@@ -60,6 +60,23 @@ def generate_user_id():
     return response
 
 
+@orbit.route('/getMenteeData/<int:menteeId>', methods=['GET'])
+def get_mentee_data(menteeId):
+
+    query = f'''
+        SELECT User.name, Mentee.bio, Mentee.userId, Mentee.resume, User.email, User.profilepic, User.major, User.minor, User.college
+        FROM Mentee Join User on Mentee.userId = User.userId
+        WHERE Mentee.menteeId = '{menteeId}'
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchone()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
 @orbit.route('/createNewMentee', methods=['POST'])
 def create_mentee_profile():
     the_data = request.json
@@ -69,13 +86,13 @@ def create_mentee_profile():
     bio = the_data['bio']
     resume = the_data['resume']
 
-    query = f'''
+    query = '''
         INSERT INTO Mentee (userID, bio, resume)
-        VALUES ('{userID}', '{bio}', '{resume}')
+        VALUES (%s, %s, %s)
     '''
 
     cursor = db.get_db().cursor()
-    cursor.execute(query) 
+    cursor.execute(query, (userID, bio, resume) ) 
     db.get_db().commit()
 
     response = make_response("Successfully created profile")
@@ -543,22 +560,22 @@ def add_mentor(mentorId, userId, isWorking, isInSchool, company, currentPosition
 ####
 ####NOT DONE
 #####
-@orbit.route('/Mentor/<mentorId>', methods = ['PUT'])
-def update_mentor_details():
+# @orbit.route('/Mentor/<mentorId>', methods = ['PUT'])
+# def update_mentor_details():
     
-    the_data = request.json
-    current_app.logger.info(the_data)
+#     the_data = request.json
+#     current_app.logger.info(the_data)
 
-    query = f'''
-    UPDATE `Match`
-    SET mentorId = {new_mentorId}, menteeId = {new_menteeId}
-    WHERE mentorId = {og_mentorId}, menteeId = {og_menteeId}
-    '''
+#     query = f'''
+#     UPDATE `Match`
+#     SET mentorId = {new_mentorId}, menteeId = {new_menteeId}
+#     WHERE mentorId = {og_mentorId}, menteeId = {og_menteeId}
+#     '''
 
-    product_info = request.json
-    current_app.logger.info(product_info)
+#     product_info = request.json
+#     current_app.logger.info(product_info)
 
-    return "Success"
+#     return "Success"
 
 # remove a mentor from the system
 @orbit.route('/Mentor', methods = ['DELETE'])
@@ -698,6 +715,7 @@ def return_applicant():
     response.status_code = 200
     return response
 
+
 @orbit.route('/Metrics/<menteeId>', methods=['GET'])
 def view_mentee_progress():
 
@@ -720,34 +738,36 @@ def view_mentee_progress():
     response.status_code = 200
     return response
 
-    @orbit.route('/Events', methods=['POST'])
-def create_event():
-        speakerId = the_data['speakerId']
-        organizerId = the_data['organizerId']
-        speakerName = the_data['speakerName']
-        industry = the_data['industry']
-        when = the_data['when']  # Expecting a datetime string in ISO 8601 format
 
-   
-    when = datetime.datetime.strptime(event_when, "%Y-%m-%dT%H:%M:%S")
+# @orbit.route('/Events', methods=['POST'])
+# def create_event():
+#     the_data = request.json
 
-    query = f'''
+#     speakerId = the_data['speakerId']
+#     organizerId = the_data['organizerId']
+#     speakerName = the_data['speakerName']
+#     industry = the_data['industry']
+#     when = the_data['when']  # Expecting a datetime string in ISO 8601 format
+
+#     when = datetime.datetime.strptime(event_when, "%Y-%m-%dT%H:%M:%S")
+
+#     query = f'''
         
-        INSERT INTO Events (speakerId, organizerId, speakerName, industry, `when`)
-        VALUES ('{speakerId}, {organizerId}, {speakerName}, {industry}, {when}')
+#         INSERT INTO Events (speakerId, organizerId, speakerName, industry, `when`)
+#         VALUES ('{speakerId}, {organizerId}, {speakerName}, {industry}, {when}')
     
-    '''
+#     '''
 
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    theData = cursor.fetchall()
+#     cursor = db.get_db().cursor()
+#     cursor.execute(query)
+#     theData = cursor.fetchall()
     
-    response = make_response(jsonify(theData))
-    response.status_code = 200
-    return response
+#     response = make_response(jsonify(theData))
+#     response.status_code = 200
+#     return response
 
 @orbit.route('/Applications/<jobId>', methods=['GET'])
-def view_mentee_progress():
+def view_applications_for_job():
 
     the_data = request.json
     current_app.logger.info(the_data)
@@ -756,8 +776,8 @@ def view_mentee_progress():
 
     query = f'''
         SELECT *
-FROM Applications
-WHERE jobId = {jobId}
+        FROM Applications
+        WHERE jobId = {jobId}
     '''
 
     cursor = db.get_db().cursor()
