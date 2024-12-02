@@ -123,6 +123,20 @@ def create_mentor_profile():
 
     return response
 
+# view all mentors
+@orbit.route('/viewMentorList', methods=['GET'])
+def view_mentor_list():
+    cursor = db.get_db().cursor()
+    query = f'''
+        SELECT *
+        FROM User Join Mentor ON User.userId = Mentor.userId
+    '''
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
 
 @orbit.route('/viewMentorProfile/<int:mentorId>', methods=['GET'])
 def view_mentor_profile(mentorId):
