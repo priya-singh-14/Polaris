@@ -27,8 +27,6 @@ all_jobs = get_all_jobs()
 
 if all_jobs:
 
-    if all_jobs:
-
         for idx, job in enumerate(all_jobs):
          st.subheader(job['name'])
          st.text(f"Role: {job['role']}")
