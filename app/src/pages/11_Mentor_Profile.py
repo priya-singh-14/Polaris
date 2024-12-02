@@ -4,35 +4,49 @@ logger = logging.getLogger(__name__)
 import streamlit as st
 from modules.nav import SideBarLinks
 import requests
+from PIL import Image
 
 st.set_page_config(layout = 'wide')
 
-# Display the appropriate sidebar links for the role of the logged in user
 SideBarLinks()
 
-st.title('Prediction with Regression')
+def fetch_mentor_profile(mentorId):
+    mentorId = 3
 
-# create a 2 column layout
-col1, col2 = st.columns(2)
+    try:
+        response = requests.get(f"http://web-api:4000/o/viewMentorProfile/{mentorId}") 
+        if response.status_code == 200:
+            return response.json()
+        else:
+            st.error(f"Error retrieving profile: {response.json().get('error', 'Unknown error')}")
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error connecting to server: {str(e)}")
+    return None
 
-# add one number input for variable 1 into column 1
-with col1:
-  var_01 = st.number_input('Variable 01:',
-                           step=1)
+mentorId = 3
+mentor_data = fetch_mentor_profile(mentorId)
 
-# add another number input for variable 2 into column 2
-with col2:
-  var_02 = st.number_input('Variable 02:',
-                           step=1)
+if mentor_data:
+    mentor_data = mentor_data[0] 
 
-logger.info(f'var_01 = {var_01}')
-logger.info(f'var_02 = {var_02}')
+    if mentor_data.get("profilepic"):
+        img = Image.open(mentor_data['profilepic']) 
+        st.image(img, width=200)
+    else:
+        st.warning("No profile picture uploaded.")
 
-# add a button to use the values entered into the number field to send to the 
-# prediction function via the REST API
-if st.button('Calculate Prediction',
-             type='primary',
-             use_container_width=True):
-  results = requests.get(f'http://api:4000/c/prediction/{var_01}/{var_02}').json()
-  st.dataframe(results)
-  
+    st.subheader(f"{mentor_data['name']}")
+    st.text(f"Email: {mentor_data['email']}")
+    st.text(f"Major: {mentor_data['major']}")
+    
+    if mentor_data.get("minor"):
+        st.text(f"Minor: {mentor_data['minor']}")
+    
+    st.text(f"College: {mentor_data['college']}")
+   
+    if st.button('Edit Profile', type='primary', use_container_width=True):
+        st.switch_page('pages/17_Mentor_Edit_Profile.py')
+else:
+    st.warning("No profile information found. Please Create Your Profile.")
+    if st.button('Create Profile', type='primary', use_container_width=True):
+        st.switch_page('pages/16_Mentor_Create_Profile.py')

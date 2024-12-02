@@ -14,15 +14,206 @@ from backend.db_connection import db
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
 # routes.
-orbit = Blueprint('orbit_db', __name__)
+orbit = Blueprint('orbit', __name__)
+
+@orbit.route('/createNewUser', methods=['POST'])
+def create_profile():
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    name = the_data['name']
+    email = the_data['email']
+    profilepic = the_data['profilepic']
+    college = the_data['college']
+    major = the_data['major']
+    minor = the_data['minor']
+
+    cursor = db.get_db().cursor()
+
+    query = f'''
+        INSERT INTO User (name, email, profilepic, college, major, minor)
+        VALUES ('{name}', '{email}', '{profilepic}', '{college}', '{major}', '{minor}')
+    '''
+   
+    cursor.execute(query)
+    db.get_db().commit()    
+
+    response = make_response("Successfully created profile")
+    response.status_code = 200
+    return response
+
+@orbit.route('/generateUserID', methods=['GET'])
+def generate_user_id():
+    cursor = db.get_db().cursor()
+
+    query = '''
+        SELECT MAX(userID) AS max_userID 
+        FROM User
+    '''
+    cursor.execute(query)
+    result = cursor.fetchone()
+
+    new_userID = result['max_userID'] + 1
+
+    response = make_response({'new_userID': new_userID})
+    response.status_code = 200
+    return response
+
+
+@orbit.route('/createNewMentee', methods=['POST'])
+def create_mentee_profile():
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    userID = the_data['userID']
+    bio = the_data['bio']
+    resume = the_data['resume']
+
+    query = f'''
+        INSERT INTO Mentee (userID, bio, resume)
+        VALUES ('{userID}', '{bio}', '{resume}')
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query) 
+    db.get_db().commit()
+
+    response = make_response("Successfully created profile")
+    response.status_code = 200
+    return response
+
+@orbit.route('/viewMenteeProfile/<int:menteeId>', methods=['GET'])
+def view_profile(menteeId):
+    cursor = db.get_db().cursor()
+    query = f'''
+        SELECT User.userID, User.name, User.email, User.profilepic, User.major, User.minor, User.college, Mentee.bio, Mentee.resume
+        FROM User Join Mentee ON User.userId = Mentee.userId
+        WHERE menteeId = '{menteeId}'
+    '''
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+
+@orbit.route('/createNewMentor', methods=['POST'])
+def create_mentor_profile():
+    the_data = request.json
+    current_app.logger.info(f"Received data for mentor creation: {the_data}")
+
+    userID = the_data['userID']
+    isWorking = 1 if the_data['isWorking'] else 0  # Convert boolean to integer
+    isInSchool = 1 if the_data['isInSchool'] else 0  # Convert boolean to integer
+    company = the_data['company']
+    currentPosition = the_data['currentPosition']
+    advisorID = the_data['advisorID']
+
+    query = f'''
+        INSERT INTO Mentor (userID, isWorking, isInSchool, company, currentPosition, advisorID)
+        VALUES ('{userID}', '{isWorking}', '{isInSchool}', '{company}', '{currentPosition}', '{advisorID}')
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query) 
+    db.get_db().commit()
+
+    response = make_response("Successfully created profile", 200)
+
+    return response
+
+
+@orbit.route('/viewMentorProfile/<int:mentorId>', methods=['GET'])
+def view_mentor_profile(mentorId):
+    cursor = db.get_db().cursor()
+    query = f'''
+        SELECT User.userID, User.name, User.email, User.profilepic, User.major, User.minor, User.college, Mentor.isWorking, Mentor.isInSchool, Mentor.company, Mentor.currentPosition
+        FROM User Join Mentor ON User.userId = Mentor.userId
+        WHERE mentorId = '{mentorId}'
+    '''
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
 
 # Return a list of jobs and their information
 # GET/JobPosting
 @orbit.route('/JobPosting', methods=['GET'])
 def get_job_postings():
     query = '''
+        SELECT JobPosting.jobDesc, JobPosting.role, Company.name
+        FROM JobPosting JOIN Company on JobPosting.companyId = Company.companyId 
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+
+# Return all mentees
+@orbit.route('/Mentees', methods=['GET'])
+def get_mentees():
+    query = '''
         SELECT  *
-        FROM JobPosting
+        FROM Mentee
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+# Return all mentees
+@orbit.route('/Applications', methods=['GET'])
+def get_applicationss():
+    query = '''
+        SELECT  *
+        FROM Applications
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+
+# Return all advisors
+@orbit.route('/Advisors', methods=['GET'])
+def get_advisors():
+    query = '''
+        SELECT  *
+        FROM Advisor
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+
+# Return a list of jobs and their information
+# GET/JobPosting
+@orbit.route('/Users', methods=['GET'])
+def get_users():
+    query = '''
+        SELECT  *
+        FROM User
     '''
 
     cursor = db.get_db().cursor()
@@ -109,6 +300,36 @@ def return_match():
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
+
+# GET the list of mentees matched with a specific mentor
+@orbit.route('/MentorMentees/<int:mentorId>', methods=['GET'])
+
+def get_mentor_mentees(mentorId):
+    query = '''
+        SELECT 
+            Mentee.menteeId,
+            User.name,
+            User.profilepic,
+            User.major,
+            Mentee.bio,
+            Mentee.resume
+        FROM 
+            `Match`
+        JOIN 
+            Mentee ON Match.menteeId = Mentee.menteeId
+        JOIN 
+            User ON Mentee.userId = User.userId
+        WHERE 
+            Match.mentorId = %s;
+    '''
+    
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (mentorId,))
+    mentee_data = cursor.fetchall()
+    response = make_response(jsonify(mentee_data))
+    response.status_code = 200
+    return response
+
 
 # Create matches between mentors and mentees
 # POST/Match 
