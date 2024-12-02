@@ -746,3 +746,24 @@ def create_event():
     response.status_code = 200
     return response
 
+@orbit.route('/Applications/<jobId>', methods=['GET'])
+def view_mentee_progress():
+
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    jobId = the_data['jobId']
+
+    query = f'''
+        SELECT *
+FROM Applications
+WHERE jobId = {jobId}
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
