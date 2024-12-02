@@ -10,3 +10,5 @@ st.set_page_config(layout = 'wide')
 SideBarLinks()
 
 st.title(f"Explore Candidates, {st.session_state['first_name']}.")
+
+

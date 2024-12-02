@@ -10,3 +10,4 @@ st.set_page_config(layout = 'wide')
 SideBarLinks()
 
 st.title(f"Post a New Job, {st.session_state['first_name']}.")
+
