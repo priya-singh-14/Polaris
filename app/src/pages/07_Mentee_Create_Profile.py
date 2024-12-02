@@ -1,8 +1,8 @@
+import streamlit as st
+import requests
 import logging
 logger = logging.getLogger(__name__)
-import streamlit as st
 from modules.nav import SideBarLinks
-import requests
 import os
 
 SideBarLinks()
@@ -11,7 +11,6 @@ directory = "assets/"
 
 st.title("Mentee Profile")
 st.write("Fill out your profile details below to connect with mentors and other students!")
-
 
 with st.form(key="mentee_profile_form"):
     name = st.text_input("Name")
@@ -40,13 +39,13 @@ if submit_button:
         st.error("College is required.")
      else:
         
-        profile_pic_path = None
+        profile_pic_path = ""
         if profile_pic:
             profile_pic_path = os.path.join(directory, profile_pic.name)
             with open(profile_pic_path, "wb") as f:
                 f.write(profile_pic.getbuffer())
 
-        resume_path = None
+        resume_path = ""
         if uploaded_resume:
             resume_path = os.path.join(directory, uploaded_resume.name)
             with open(resume_path, "wb") as f:
@@ -81,9 +80,11 @@ if submit_button:
                 st.error("Error creating user profile. Please try again later.")
 
             create_mentee_response = requests.post('http://web-api:4000/o/createNewMentee', json=profile_data)
+
             if create_mentee_response.status_code == 200:
                 st.success("Mentee profile created successfully!")
             else:
                 st.error("Error creating mentee profile. Please try again later.")
+                
         except requests.exceptions.RequestException as e:
             st.error(f"Error connecting to server: {str(e)}")

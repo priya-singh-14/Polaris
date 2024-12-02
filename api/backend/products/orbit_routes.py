@@ -27,9 +27,6 @@ def create_profile():
     college = the_data['college']
     major = the_data['major']
     minor = the_data['minor']
-    bio = the_data['bio']
-    resume = the_data['resume']
-    userID = the_data['userID']
 
     cursor = db.get_db().cursor()
 
@@ -75,9 +72,6 @@ def create_mentee_profile():
     bio = the_data['bio']
     resume = the_data['resume']
 
-    cursor = db.get_db().cursor()
-
-
     query = f'''
         INSERT INTO Mentee (userID, bio, resume)
         VALUES ('{userID}', '{bio}', '{resume}')
@@ -87,28 +81,25 @@ def create_mentee_profile():
     cursor.execute(query) 
     db.get_db().commit()
 
-    # Return a success message
     response = make_response("Successfully created profile")
     response.status_code = 200
     return response
 
-# @orbit.route('/viewMenteeProfile', methods=['GET'])
-# def view_profile(menteeName, menteeId):
-#     query = '''
-#         SELECT  *
-#         FROM `User` JOIN Mentee on User.userId = Mentee.userId
-#         WHERE Mentee.name = menteeName.
-#     '''
-
-#     cursor = db.get_db().cursor()
-#     cursor.execute(query) 
-#     db.get_db().commit()
-
-#     # Return a success message
-#     response = make_response("Successfully created profile")
-#     response.status_code = 200
-#     return response
-
+@orbit.route('/viewMenteeProfile/<int:menteeId>', methods=['GET'])
+def view_profile(menteeId):
+    cursor = db.get_db().cursor()
+    query = f'''
+        SELECT User.userID, User.name, User.email, User.profilepic, User.major, User.minor, User.college, Mentee.bio, Mentee.resume
+        FROM User Join Mentee ON User.userId = Mentee.userId
+        WHERE menteeId = '{menteeId}'
+    '''
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+   
 
 # Return a list of jobs and their information
 # GET/JobPosting
