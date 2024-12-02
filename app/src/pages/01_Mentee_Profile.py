@@ -45,7 +45,7 @@ if mentee_data:
 
     if mentee_data.get("resume") and mentee_data["resume"].lower() != "none":
         resume_path = mentee_data['resume']  
-        st.text(f"Resume: {resume_path}")  
+        st.text(f"Resume:")  
         st.download_button(
             label="Download Resume",
             data=open(resume_path, "rb").read(),
