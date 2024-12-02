@@ -301,10 +301,43 @@ def get_mentees():
 
 # Return all mentees
 @orbit.route('/Applications', methods=['GET'])
-def get_applicationss():
+def get_applications():
     query = '''
         SELECT  *
         FROM Applications
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+# Return all employers
+@orbit.route('/Employers', methods=['GET'])
+def get_employers():
+    query = '''
+        SELECT  *
+        FROM Employer
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+# Return all jobs posted by a specific employer
+@orbit.route('/EmployerJobs/<int:empId>', methods=['GET'])
+def get_employer_applications(empId):
+    query = f'''
+        SELECT  *
+        FROM JobPosting
+        WHERE JobPosting.empId = '{empId}'
     '''
 
     cursor = db.get_db().cursor()
