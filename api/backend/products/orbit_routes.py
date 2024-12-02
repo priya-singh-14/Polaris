@@ -752,16 +752,26 @@ def view_mentee_progress():
 #     when = datetime.datetime.strptime(event_when, "%Y-%m-%dT%H:%M:%S")
 
 #     query = f'''
+#     query = f'''
         
 #         INSERT INTO Events (speakerId, organizerId, speakerName, industry, `when`)
 #         VALUES ('{speakerId}, {organizerId}, {speakerName}, {industry}, {when}')
+#         INSERT INTO Events (speakerId, organizerId, speakerName, industry, `when`)
+#         VALUES ('{speakerId}, {organizerId}, {speakerName}, {industry}, {when}')
     
+#     '''
 #     '''
 
 #     cursor = db.get_db().cursor()
 #     cursor.execute(query)
 #     theData = cursor.fetchall()
+#     cursor = db.get_db().cursor()
+#     cursor.execute(query)
+#     theData = cursor.fetchall()
     
+#     response = make_response(jsonify(theData))
+#     response.status_code = 200
+#     return response
 #     response = make_response(jsonify(theData))
 #     response.status_code = 200
 #     return response
