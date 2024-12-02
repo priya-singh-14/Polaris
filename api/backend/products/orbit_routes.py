@@ -720,31 +720,32 @@ def view_mentee_progress():
     response.status_code = 200
     return response
 
-    @orbit.route('/Events', methods=['POST'])
-def create_event():
-        speakerId = the_data['speakerId']
-        organizerId = the_data['organizerId']
-        speakerName = the_data['speakerName']
-        industry = the_data['industry']
-        when = the_data['when']  # Expecting a datetime string in ISO 8601 format
+# @orbit.route('/Events', methods=['POST'])
+# def create_event():
+#         speakerId = the_data['speakerId']
+#         organizerId = the_data['organizerId']
+#         speakerName = the_data['speakerName']
+#         industry = the_data['industry']
+#         when = the_data['when']  # Expecting a datetime string in ISO 8601 format
 
    
-    when = datetime.datetime.strptime(event_when, "%Y-%m-%dT%H:%M:%S")
+#    ``
+#     when = datetime.datetime.strptime(event_when, "%Y-%m-%dT%H:%M:%S")
 
-    query = f'''
+#     query = f'''
         
-        INSERT INTO Events (speakerId, organizerId, speakerName, industry, `when`)
-        VALUES ('{speakerId}, {organizerId}, {speakerName}, {industry}, {when}')
+#         INSERT INTO Events (speakerId, organizerId, speakerName, industry, `when`)
+#         VALUES ('{speakerId}, {organizerId}, {speakerName}, {industry}, {when}')
     
-    '''
+#     '''
 
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    theData = cursor.fetchall()
+#     cursor = db.get_db().cursor()
+#     cursor.execute(query)
+#     theData = cursor.fetchall()
     
-    response = make_response(jsonify(theData))
-    response.status_code = 200
-    return response
+#     response = make_response(jsonify(theData))
+#     response.status_code = 200
+#     return response
 
 @orbit.route('/Applications/<jobId>', methods=['GET'])
 def view_mentee_progress():
