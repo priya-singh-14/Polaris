@@ -66,6 +66,7 @@ def update_user_data():
     the_data = request.json
     name = the_data['name']
     email = the_data['email']
+    profilepic = the_data['profilepic']
     major = the_data['major']
     minor = the_data['minor']
     college = the_data['college']
@@ -74,11 +75,11 @@ def update_user_data():
 
     query = f'''
         UPDATE User 
-        SET name = %s, email = %s, major = %s, minor = %s, college = %s 
+        SET name = %s, profilepic = %s, email = %s, major = %s, minor = %s, college = %s 
           WHERE User.userId = %s 
     '''
 
-    data = (name, email, major, minor, college, id)
+    data = (name, profilepic, email, major, minor, college, id)
     cursor = db.get_db().cursor()
     cursor.execute(query, data)
     db.get_db().commit()
