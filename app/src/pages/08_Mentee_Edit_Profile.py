@@ -42,28 +42,28 @@ if submit_button:
         profile_pic_path = mentee_data.get("profilepic")
         if profile_pic:
             profile_pic_path = os.path.join(directory, profile_pic.name)
-        with open(profile_pic_path, "wb") as f:
+            with open(profile_pic_path, "wb") as f:
                 f.write(profile_pic.getbuffer())
 
         resume_path = mentee_data.get("resume")
         if uploaded_resume:
             resume_path = os.path.join(directory, uploaded_resume.name)
-        with open(resume_path, "wb") as f:
-                f.write(uploaded_resume.getbuffer())  
+            with open(resume_path, "wb") as f:
+                f.write(uploaded_resume.getbuffer())
 
         profile_data = {
             "name": name,
-            "profilepic": profile_pic_path or mentee_data.get("profilepic"),
+            "profilepic": profile_pic_path,
             "email": email,
             "major": major,
             "minor": minor,
             "college": college,
             "bio": bio,
-            "resume": resume_path or mentee_data.get("resume"),
+            "resume": resume_path,
             "id": mentee_data.get("userId")
         }
     
-        # st.write(profile_data)
+        st.write(profile_data)
 
         try:
             update_user_response = requests.put('http://web-api:4000/o/updateUser', json=profile_data)
@@ -82,3 +82,4 @@ if submit_button:
                 
         except requests.exceptions.RequestException as e:
             st.error(f"Error connecting to server: {str(e)}")
+

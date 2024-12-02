@@ -26,7 +26,6 @@ mentee_data = fetch_mentee_profile(menteeId)
 if mentee_data:
     mentee_data = mentee_data[0] 
     
-
     if mentee_data.get("profilepic"):
         img = Image.open(mentee_data['profilepic']) 
         st.image(img, width=200)
