@@ -28,8 +28,8 @@ with st.form(key="mentor_profile_form"):
     minor = st.text_input("minor", mentor_data.get("minor"))
     isInSchool = st.checkbox("Are you currently a student?", mentor_data.get("isInSchool"))
     isWorking = st.checkbox("Are you currently working?", mentor_data.get("isWorking"))
-    currentPosition = st.text_input("If you work, what is your title and position")
-    company = st.text_input("Which company do you work?")
+    currentPosition = st.text_input("If you work, what is your title and position", mentor_data.get("currentPosition"))
+    company = st.text_input("Which company do you work?", mentor_data.get("company"))
     college = st.selectbox(
         "College When Admitted",
         ["College of Engineering", "College of Social Sciences and Humanities", "Khoury College of Computer Science", 
