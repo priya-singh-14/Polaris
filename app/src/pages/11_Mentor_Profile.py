@@ -45,6 +45,8 @@ if mentor_data:
     
     st.text(f"College: {mentor_data['college']}")
    
+    if mentor_data.get("isWorking"):
+        st.text(f"{mentor_data['currentPosition']} at {mentor_data['company']}")
     if st.button('Edit Profile', type='primary', use_container_width=True):
         st.switch_page('pages/17_Mentor_Edit_Profile.py')
 else:
