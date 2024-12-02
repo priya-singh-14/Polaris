@@ -24,8 +24,8 @@ if get_mentee_data.status_code == 200:
 
 with st.form(key="mentee_profile_form"):
     name = st.text_input("Name", mentee_data.get("name"))
-    profile_pic = st.file_uploader("Upload Profile Picture", type=["jpg", "png", "jpeg"])
-    uploaded_resume = st.file_uploader("Upload Resume", type=["pdf"])
+    profile_pic = st.file_uploader("Upload New Profile Picture", type=["jpg", "png", "jpeg"])
+    uploaded_resume = st.file_uploader("Upload New Resume", type=["pdf"])
     email = st.text_input("email", mentee_data.get("email"))
     major = st.text_input("major", mentee_data.get("major"))
     minor = st.text_input("minor", mentee_data.get("minor"))
@@ -39,25 +39,27 @@ with st.form(key="mentee_profile_form"):
     submit_button = st.form_submit_button(label="Submit")
 
 if submit_button:
-        profile_pic_path = ""
-        profile_pic_path = os.path.join(directory, profile_pic.name)
+        profile_pic_path = mentee_data.get("profilepic")
+        if profile_pic:
+            profile_pic_path = os.path.join(directory, profile_pic.name)
         with open(profile_pic_path, "wb") as f:
                 f.write(profile_pic.getbuffer())
 
-        resume_path = ""
-        resume_path = os.path.join(directory, uploaded_resume.name)
+        resume_path = mentee_data.get("resume")
+        if uploaded_resume:
+            resume_path = os.path.join(directory, uploaded_resume.name)
         with open(resume_path, "wb") as f:
                 f.write(uploaded_resume.getbuffer())  
 
         profile_data = {
             "name": name,
-            "profilepic": profile_pic_path,
+            "profilepic": profile_pic_path or mentee_data.get("profilepic"),
             "email": email,
             "major": major,
             "minor": minor,
             "college": college,
             "bio": bio,
-            "resume": resume_path,
+            "resume": resume_path or mentee_data.get("resume"),
             "id": mentee_data.get("userId")
         }
     
