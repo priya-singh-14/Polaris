@@ -173,6 +173,23 @@ def get_mentees():
     response.status_code = 200
     return response
 
+# Return all mentees
+@orbit.route('/Applications', methods=['GET'])
+def get_applicationss():
+    query = '''
+        SELECT  *
+        FROM Applications
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+
 # Return all advisors
 @orbit.route('/Advisors', methods=['GET'])
 def get_advisors():
@@ -188,6 +205,7 @@ def get_advisors():
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
+
 
 # Return a list of jobs and their information
 # GET/JobPosting
