@@ -65,8 +65,8 @@ else :
     chat_history = fetch_chats(menteeId, recipientId)
 
     for chat in chat_history:
-            senderId = chat['senderId']
-            role = "user" if menteeId == senderId else "assistant"
+        senderId = chat['senderId']
+        role = "user" if menteeId == senderId else "assistant"
     with st.chat_message(role):
             st.markdown(chat["text"])
 
