@@ -24,6 +24,7 @@ SideBarLinks()
 
 empId = 1
 companyId = 1
+status = False
 
 st.title(f"Post a New Job, {st.session_state['first_name']}.")
 with st.form(key="new_job_form"):
@@ -47,7 +48,17 @@ with st.form(key="new_job_form"):
             "companyId": companyId,
             "jobDesc": description,
             "role": role,
-            "filledBool": False
+            "filledBool": status
         }
+
+        try:
+            create_new_job = requests.post('http://web-api:4000/o/NewJobPosting', json=job_data)
+             
+            if create_new_job.status_code == 200:
+                st.info("View Profile Details on the Previous Page")
+            else:
+                st.error("Error creating user profile. Please try again later.") 
+        except requests.exceptions.RequestException as e:
+            st.error(f"Error connecting to server: {str(e)}")
 
     

@@ -387,7 +387,7 @@ def get_users():
     
 # Add new job/co-op opportunities to the database for students to apply to. 
 # POST/JobPosting
-@orbit.route('/JobPosting', methods=['POST'])
+@orbit.route('/NewJobPosting', methods=['POST'])
 def add_new_product():
     
     # In a POST request, there is a 
@@ -400,13 +400,14 @@ def add_new_product():
     companyId = the_data['companyId']
     role = the_data['role']
     jobDesc = the_data['jobDesc']
+    filledBool = the_data['filledBool']
 
     query = f'''
         INSERT INTO JobPosting (empId,
                               companyId,
                               role, 
-                              jobDesc)
-        VALUES ('{empId}', '{companyId}', '{role}', {jobDesc})
+                              jobDesc, filledbool)
+        VALUES ('{empId}', '{companyId}', '{role}', {jobDesc}, {filledBool})
     '''
 
     current_app.logger.info(query)
