@@ -70,7 +70,9 @@ if submit_button:
             "resume": resume_path,
             "userID": new_userID
         }
-      
+
+        st.session_state["profile_built"] = True
+        
         try:
             create_user_response = requests.post('http://web-api:4000/o/createNewUser', json=profile_data)
              

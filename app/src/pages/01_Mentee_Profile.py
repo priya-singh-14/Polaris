@@ -7,7 +7,6 @@ SideBarLinks()
 
 st.title("Your Profile")
 
-
 def fetch_mentee():
     response = requests.get("http://web-api:4000/o/mostRecentMentee")
     
