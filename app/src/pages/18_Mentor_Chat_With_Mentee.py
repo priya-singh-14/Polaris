@@ -14,7 +14,7 @@ st.title("Chat With Your Mentee")
 
 st.write(st.session_state['recipientId'])
 # write routes to set these vals to the max menteeID and mentorID, consider limiting behavior to those two tables only
-menteeId = 2 
+mentorId = 2 
 recipientId = st.session_state['recipientId']
 
 def fetch_chats(senderId, recipientId):
@@ -31,11 +31,11 @@ def fetch_chats(senderId, recipientId):
 if "messages" not in st.session_state:
    st.session_state.messages = []
   
-chat_history = fetch_chats(menteeId, recipientId)
+chat_history = fetch_chats(mentorId, recipientId)
 
 for chat in chat_history:
     senderId = chat['senderId']
-    role = "user" if menteeId == senderId else "assistant"
+    role = "user" if mentorId == senderId else "assistant"
     with st.chat_message(role):
         st.markdown(chat["text"])
 
@@ -46,7 +46,7 @@ if chat := st.chat_input("Type Here"):
     st.markdown(chat)
   
   chat_data = {
-     "senderId" : menteeId,
+     "senderId" : mentorId,
      "recipientId" : recipientId,
      "text" : chat,
   }
