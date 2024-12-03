@@ -12,6 +12,7 @@ SideBarLinks()
 st.subheader(f"Here are some potential mentees, {st.session_state['first_name']}.")
 
 # session state these values somewhere
+mentorId = 3
 college = "Khoury"
 major = "Computer Science"
 minor = "Finance"
@@ -79,8 +80,20 @@ if mentees:
                 st.write("Resume not available.")
 
             if st.button(f"Add to Network", type='primary', key={mentee['name']}):
-                st.session_state['menteeId'] = {mentee['name']}
-                st.success("Added to Network")
-                # add post request here to add mentee to mentor network
+
+                match_data = {
+                "menteeId": mentee['menteeId'],
+                "mentorId": mentorId,
+                }
+
+                try:
+                        add_mentee = requests.post('http://web-api:4000/o/MatchMentees', json=match_data)
+             
+                        if add_mentee.status_code == 200:
+                            st.success("Added to Network")
+                        else:
+                            st.error("Error adding mentee. Has your profile been completed?.")
+                except requests.exceptions.RequestException as e:
+                    st.error(f"Error connecting to server: {str(e)}")
 else:
     st.write("No mentees found.")

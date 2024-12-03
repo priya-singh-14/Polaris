@@ -159,7 +159,7 @@ def get_mentee_data(menteeId):
 def get_relevant_mentee(college, major, minor):
 
     query = f'''
-        SELECT User.name, Mentee.bio, Mentee.userId, Mentee.resume, User.email, User.profilepic, User.major, User.minor, User.college
+        SELECT User.name, Mentee.bio, Mentee.userId, Mentee.menteeId, Mentee.resume, User.email, User.profilepic, User.major, User.minor, User.college
         FROM Mentee Join User on Mentee.userId = User.userId
         WHERE User.college = '{college}' OR User.major = '{major}' OR User.minor = '{minor}'
     '''
@@ -559,7 +559,7 @@ def get_mentor_mentees(mentorId):
 
 # Create matches between mentors and mentees
 # POST/Match 
-@orbit.route('/Match', methods=['POST'])
+@orbit.route('/MatchMentees', methods=['POST'])
 def create_match():
     
     # In a POST request, there is a 
@@ -573,8 +573,7 @@ def create_match():
     
 
     query = f'''
-        INSERT INTO `Match` (menteeId,
-                              mentorId)
+        INSERT INTO `Match` (menteeId, mentorId)
         VALUES ('{menteeId}', '{mentorId}')
     '''
 
