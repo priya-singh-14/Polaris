@@ -32,8 +32,13 @@ def fetch_matched_mentor(menteeId):
         return []
 
 # write routes to set these vals to the max menteeID and mentorID, consider limiting behavior to those two tables only
-menteeId = fetch_mentee().get("MAX(menteeId)")
-recipientId = fetch_matched_mentor(menteeId)
+menteeId = 3
+# recipientId = fetch_matched_mentor(menteeId)
+
+if len(fetch_matched_mentor(menteeId)) == 0 :
+    recipientId = 0
+else :
+    recipientId = fetch_matched_mentor(menteeId)
 
 def fetch_chats(senderId, recipientId):
   try:
@@ -49,17 +54,19 @@ def fetch_chats(senderId, recipientId):
 if "messages" not in st.session_state:
    st.session_state.messages = []
 
-chat_history = fetch_chats(menteeId, recipientId)
-
-if chat_history is not None:
-  for chat in chat_history:
-      senderId = chat['senderId']
-      role = "user" if menteeId == senderId else "assistant"
-  with st.chat_message(role):
-       st.markdown(chat["text"])
+# st.write(recipientId)
+   
+if recipientId is 0:
+    st.warning("You Don't Have a Mentor to Chat with Yet")
 
 else :
-    st.warning("You Don't Have a Mentor to Chat with Yet")
+    chat_history = fetch_chats(menteeId, recipientId)
+
+    for chat in chat_history:
+            senderId = chat['senderId']
+            role = "user" if menteeId == senderId else "assistant"
+    with st.chat_message(role):
+            st.markdown(chat["text"])
 
 # st.write(chat_history)
 
