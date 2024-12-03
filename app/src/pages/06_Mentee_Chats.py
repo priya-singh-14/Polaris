@@ -38,7 +38,9 @@ menteeId = 3
 if len(fetch_matched_mentor(menteeId)) == 0 :
     recipientId = 0
 else :
-    recipientId = fetch_matched_mentor(menteeId)
+    recipientId = fetch_matched_mentor(menteeId)[0].get("mentorId")
+
+st.write(recipientId)
 
 def fetch_chats(senderId, recipientId):
   try:
