@@ -27,9 +27,11 @@ def fetch_mentee_profile(menteeId):
         st.error(f"Error connecting to server: {str(e)}")
     return None
 
+menteeId = fetch_mentee().get("MAX(menteeId)")
 st.write(st.session_state['profile_built'])
+st.write(menteeId)
 
-if st.session_state['profile_built'] :
+if menteeId == 3 :
     menteeId = fetch_mentee().get("MAX(menteeId)")
     mentee_data = fetch_mentee_profile(menteeId)
 

@@ -17,30 +17,23 @@ st.write('')
 st.write('')
 st.write('### What would you like to do today?')
 
-if st.session_state['profile_built']:
-  if st.button('View Profile', 
+if st.button('View Profile', 
              type='primary',
              use_container_width=True):
-    st.switch_page('pages/01_Mentee_Profile.py')
+  st.switch_page('pages/01_Mentee_Profile.py')
 
 # if st.button('Expand Network', 
 #              type='primary',
 #              use_container_width=True):
 #   st.switch_page('pages/02_Mentee_Network.py')
 
-  if st.button('Apply To Jobs', 
+if st.button('Apply To Jobs', 
              type='primary',
              use_container_width=True):
-    st.switch_page('pages/05_Mentee_Jobs.py')
+  st.switch_page('pages/05_Mentee_Jobs.py')
 
-  if st.button('Chat', 
+if st.button('Chat', 
              type='primary',
              use_container_width=True):
-    st.switch_page('pages/06_Mentee_Chats.py')
+  st.switch_page('pages/06_Mentee_Chats.py')
   
-else :
-  st.info("It seems like you haven't built your profile yet. Add your details and unlock aditional functionality", icon="⚠️")
-  if st.button('View Profile', 
-             type='primary',
-             use_container_width=True):
-      st.switch_page('pages/01_Mentee_Profile.py')
