@@ -216,8 +216,8 @@ def create_mentor_profile():
     current_app.logger.info(f"Received data for mentor creation: {the_data}")
 
     userID = the_data['userID']
-    isWorking = 1 if the_data['isWorking'] else 0  # Convert boolean to integer
-    isInSchool = 1 if the_data['isInSchool'] else 0  # Convert boolean to integer
+    isWorking = 1 if the_data['isWorking'] else 0   
+    isInSchool = 1 if the_data['isInSchool'] else 0  
     company = the_data['company']
     currentPosition = the_data['currentPosition']
     advisorID = the_data['advisorID']
@@ -432,7 +432,7 @@ def delete_job():
 
     query = f'''
         DELETE FROM JobPosting
-        WHERE jobId = {jobId}
+        WHERE jobNum = {jobId}
         '''
 
     cursor = db.get_db().cursor()
@@ -565,18 +565,13 @@ def delete_match():
     return response
 
 # return a list of applications for a specific position
-@orbit.route('/Applications/<jobId>', methods=['GET'])
-def return_spec_apps():
-
-    the_data = request.json
-    current_app.logger.info(the_data)
-
-    jobId = the_data['jobId']
+@orbit.route('/JobApplications/<int:jobNum>', methods=['GET'])
+def return_spec_apps(jobNum):
 
     query = f'''
-        SELECT  *
-        FROM Applications
-        WHERE jobId = {jobId}
+        SELECT User.name, User.major, User.minor, Applications.timeApplied, Mentee.resume, Mentee.menteeId
+        FROM Applications JOIN Mentee ON Applications.studentId = Mentee.menteeId JOIN User ON Mentee.menteeId = User.userId
+        WHERE jobId = {jobNum}
     '''
 
     cursor = db.get_db().cursor()

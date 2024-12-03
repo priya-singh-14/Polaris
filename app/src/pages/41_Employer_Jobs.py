@@ -36,4 +36,5 @@ if all_jobs:
         st.text(f"Position: {all_jobs['role']}")
         st.text(f"Position Status : {status}")
         if st.button('View Applications', type='primary', use_container_width=True):
+            st.session_state['jobNum'] = {all_jobs['jobNum']}
             st.switch_page('pages/44_Employer_View_Applicants.py')
