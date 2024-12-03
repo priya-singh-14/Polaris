@@ -774,6 +774,24 @@ def return_chats():
     response.status_code = 200
     return response
 
+# return all chat logs between all users
+@orbit.route('/Chats/<int:senderId>/<int:recipientId>', methods=['GET'])
+def return_chat_history(senderId, recipientId):
+    query = '''
+        SELECT senderId, text, timestamp 
+        FROM Chats 
+        WHERE (senderId = %s AND recipientId = %s) 
+        OR (senderId = %s AND recipientId = %s) 
+        ORDER BY timestamp ASC
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (senderId, recipientId, recipientId, senderId))
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
 # returns a list of networking events and information
 @orbit.route('/Events', methods=['GET'])
 def return_events():
