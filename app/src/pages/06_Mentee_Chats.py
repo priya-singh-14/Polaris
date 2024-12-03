@@ -3,25 +3,28 @@ logger = logging.getLogger(__name__)
 import streamlit as st
 from streamlit_extras.app_logo import add_logo
 import requests
-import random
 import time
 from modules.nav import SideBarLinks
+from datetime import datetime, timezone
+
+now_utc = datetime.now(timezone.utc)
+formatted_datetime = now_utc.strftime("%a, %d %b %Y %H:%M:%S GMT")
+
 
 SideBarLinks()
 
 add_logo("assets/logo.svg", height=400)
 
-st.title("Chat with your mentor?")
+st.title("Chat With Your Mentor")
 
 # write routes to set these vals to the max menteeID and mentorID, consider limiting behavior to those two tables only
-senderId = 2
-recipientId = 1
+senderId = 1 
+recipientId = 2
 
 def fetch_chats(senderId, recipientId):
   try:
         response = requests.get(f"http://web-api:4000/o/Chats/{senderId}/{recipientId}") 
         if response.status_code == 200:
-            st.write("chats returned")
             return response.json()
         else:
             st.error(f"Error retrieving chats: {response.json().get('error', 'Unknown error')}")
@@ -37,21 +40,16 @@ chat_history = fetch_chats(senderId, recipientId)
 for chat in chat_history:
    st.markdown(chat["text"])
 
-# if prompt := st.chat_input("What is up?"):
-#   # Display user message in chat message container
-#   with st.chat_message("user"):
-#     st.markdown(prompt)
+if chat := st.chat_input("Type Here"):
+  with st.chat_message("user"):
+    st.markdown(chat)
   
-#   # Add user message to chat history
-#   st.session_state.messages.append({"role": "user", "content": prompt})
+  chat_data = {
+     "senderId" : senderId,
+     "recipientId" : recipientId,
+     "text" : chat,
+     "timestamp": formatted_datetime
+  }
 
-#   response = f"Echo: {prompt}"
-
-#   # Display assistant response in chat message container
-#   with st.chat_message("assistant"):
-#     # st.markdown(response)
-#     response = st.write_stream(response_generator())
-
-#   # Add assistant response to chat history
-#   st.session_state.messages.append({"role": "assistant", "content": response})
+  st.write(chat_data)
 
