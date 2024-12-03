@@ -42,22 +42,20 @@ for mentee in results:
     # Display mentee details
 
     # Load the JPG image
-    image_path = f"/appcode/assets/{mentee_info[0]['profilepic']}"  # Replace with your image file path
+    image_path = f"/appcode/assets/{mentee_info[0]['profilepic']}" 
     image = Image.open(image_path)
-    st.image(image, caption="This is a JPG image", use_container_width=True)
+    st.image(image, width=700)
 
     st.subheader(f"Name: {mentee_info[0]['name']}")
     st.text(f"Major: {mentee_info[0]['major']} Minor: {mentee_info[0]['minor']}")
     st.text(f"Bio: {mentee_info[0]['bio']}")
+    st.text(f"Email: {mentee_info[0]['email']}")
 
-            # Dynamic file path for the PDF
-    file_name = mentee['resume']  # Ensure mentee['resume'] contains the PDF filename
+    file_name = mentee['resume'] 
     pdf_path = Path(f"/appcode/assets/{file_name}")
 
 # Check if the file exists
     if pdf_path.exists():
-        st.success(f"Displaying PDF: {pdf_path}")
-
         # Read PDF data and encode it properly
         with open(pdf_path, "rb") as pdf_file:
             pdf_bytes = pdf_file.read()
@@ -71,6 +69,5 @@ for mentee in results:
         )
     else:
         st.error(f"File not found: {pdf_path}")
-            # Unique key for each file uploader to avoid conflicts
 
     st.markdown("---")  # Divider for better readability
