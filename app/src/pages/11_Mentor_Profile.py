@@ -3,7 +3,7 @@ logger = logging.getLogger(__name__)
 import streamlit as st
 from modules.nav import SideBarLinks
 import requests
-from PIL import Image
+from PIL import Image, ImageDraw
 
 st.set_page_config(layout = 'wide')
 
@@ -45,8 +45,25 @@ if mentor_data:
     mentor_data = mentor_data[0] 
 
     if mentor_data.get("profilepic"):
-        img = Image.open(mentor_data['profilepic']) 
-        st.image(img, width=200)
+                img = Image.open(mentor_data['profilepic']) 
+                width, height = img.size
+                min_side = min(width, height)
+                left = (width - min_side) / 2
+                top = (height - min_side) / 2
+                right = (width + min_side) / 2
+                bottom = (height + min_side) / 2
+                img = img.crop((left, top, right, bottom))
+        
+                mask = Image.new("L", (min_side, min_side), 0)
+                draw = ImageDraw.Draw(mask)
+                draw.ellipse((0, 0, min_side, min_side), fill=255)
+
+
+                img = img.resize((140, 140)) 
+                circular_img = Image.new("RGBA", (140, 140), (0, 0, 0, 0))
+                circular_img.paste(img, (0, 0), mask.resize((140, 140)))
+        
+                st.image(circular_img)
     else:
         st.warning("No profile picture uploaded.")
 
