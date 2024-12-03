@@ -10,7 +10,6 @@ st.set_page_config(layout = 'wide')
 
 SideBarLinks()
 
-#instead of hardcoding the mentorID logic, use a max function so we present the most recently created Mentor --> same logic applies to mentees
 def fetch_mentor_profile(mentorId):
     try:
         response = requests.get(f"http://web-api:4000/o/viewMentorProfile/{mentorId}") 
@@ -31,8 +30,13 @@ def fetch_mentor():
         st.error(f"Error fetching mentees: {response.json().get('error')}")
         return []
 
-mentorId = fetch_mentor().get("MAX(mentorId)")
-mentor_data = fetch_mentor_profile(mentorId)
+if st.session_state['profile_built'] :
+    mentorId = fetch_mentor().get("MAX(mentorId)")
+    mentor_data = fetch_mentor_profile(mentorId)
+
+else :
+    mentorId = fetch_mentor().get("MAX(mentorId)") + 1
+    mentor_data = fetch_mentor_profile(mentorId)
 
 if mentor_data:
     st.session_state['profile_built'] = True

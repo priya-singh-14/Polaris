@@ -40,6 +40,7 @@ if st.session_state['profile_built']:
     st.switch_page('pages/14_Mentor_Chats.py')
 
 else :
+  st.info("It seems like you haven't built your profile yet. Add your details and unlock aditional functionality", icon="⚠️")
   if st.button('View Profile', 
              type='primary',
              use_container_width=True):
