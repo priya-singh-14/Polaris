@@ -24,32 +24,45 @@ st.title(f"Your Network, {st.session_state['first_name']}.")
 
 mentees = fetch_mentees(1)
 
+
+# if all_jobs:
+#     for job in all_jobs:
+#         status = "Open" if job['filledBool'] == 0 else "Filled"
+
+#         with st.container(border=True):
+#             st.text(f"{job['jobDesc']}")
+#             st.text(f"Position: {job['role']}")
+#             st.text(f"Position Status : {status}")
+#             if st.button(f"View Applications for Job {job['jobNum']}", key=job['jobNum']):
+#                 st.session_state['jobNum'] = job['jobNum']
+#                 st.switch_page('pages/44_Employer_View_Applicants.py')
+                
 if mentees:
     for idx, mentee in enumerate(mentees):
-        img_path = os.path.join(directory, mentee["profilepic"])
-        if os.path.exists(img_path):
-            img = Image.open(img_path)
-            st.image(img, width=200)
-        else:
-            st.write("No profile picture available.")
+        with st.container(border=True):
+            img_path = os.path.join(directory, mentee["profilepic"])
+            if os.path.exists(img_path):
+                img = Image.open(img_path)
+                st.image(img, width=200)
+            else:
+                st.write("No profile picture available.")
 
-        st.write(f"**Name**: {mentee['name']}")
-        st.write(f"**Major**: {mentee['major']}")
-        st.write(f"**Bio**: {mentee['bio']}")
+            st.write(f"**Name**: {mentee['name']}")
+            st.write(f"**Major**: {mentee['major']}")
+            st.write(f"**Bio**: {mentee['bio']}")
 
-        if mentee['resume'] and mentee['resume'].lower() != "none":
-            resume_path = os.path.join(directory, mentee['resume'])
-            if os.path.exists(resume_path):
-                st.download_button(
+            if mentee['resume'] and mentee['resume'].lower() != "none":
+                resume_path = os.path.join(directory, mentee['resume'])
+                if os.path.exists(resume_path):
+                    st.download_button(
                     label="Download Resume",
                     data=open(resume_path, "rb").read(),
                     file_name=f"{mentee['name']}_Resume.pdf",
                     mime="application/pdf",
                     key=f"resume_{idx}" 
                 )
-        else:
-            st.write("Resume not available.")
-        st.markdown("---")
+            else:
+                st.write("Resume not available.")
 else:
     st.write("No mentees found.")
 
