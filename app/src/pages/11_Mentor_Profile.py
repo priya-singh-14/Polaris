@@ -12,8 +12,6 @@ SideBarLinks()
 
 #instead of hardcoding the mentorID logic, use a max function so we present the most recently created Mentor --> same logic applies to mentees
 def fetch_mentor_profile(mentorId):
-    mentorId = 4 
-
     try:
         response = requests.get(f"http://web-api:4000/o/viewMentorProfile/{mentorId}") 
         if response.status_code == 200:
@@ -28,6 +26,7 @@ mentorId = 3
 mentor_data = fetch_mentor_profile(mentorId)
 
 if mentor_data:
+    st.session_state['profile_built'] = True
     mentor_data = mentor_data[0] 
 
     if mentor_data.get("profilepic"):
@@ -52,5 +51,6 @@ if mentor_data:
         st.switch_page('pages/17_Mentor_Edit_Profile.py')
 else:
     st.warning("No profile information found. Please Create Your Profile.")
+    st.session_state['profile_built'] = False
     if st.button('Create Profile', type='primary', use_container_width=True):
         st.switch_page('pages/16_Mentor_Create_Profile.py')

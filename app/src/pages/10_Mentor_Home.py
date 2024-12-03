@@ -14,7 +14,8 @@ st.write('')
 st.write('')
 st.write('### What would you like to do today?')
 
-st.session_state['profile_built'] = False
+if 'profile_built' not in st.session_state:
+    st.session_state['profile_built'] = False
 
 if st.session_state['profile_built']:
   if st.button('View Profile', 
