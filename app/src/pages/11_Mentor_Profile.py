@@ -22,7 +22,16 @@ def fetch_mentor_profile(mentorId):
         st.error(f"Error connecting to server: {str(e)}")
     return None
 
-mentorId = 3
+def fetch_mentor():
+    response = requests.get("http://web-api:4000/o/mostRecentMentor")
+    
+    if response.status_code == 200:
+        return response.json() 
+    else:
+        st.error(f"Error fetching mentees: {response.json().get('error')}")
+        return []
+
+mentorId = fetch_mentor().get("MAX(mentorId)")
 mentor_data = fetch_mentor_profile(mentorId)
 
 if mentor_data:
