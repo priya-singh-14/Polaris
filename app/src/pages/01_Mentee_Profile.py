@@ -28,6 +28,7 @@ def fetch_mentee_profile(menteeId):
     return None
 
 menteeId = fetch_mentee().get("MAX(menteeId)")
+
 st.write(st.session_state['profile_built'])
 st.write(menteeId)
 

@@ -28,8 +28,11 @@ def fetch_mentor():
     else:
         st.error(f"Error fetching mentees: {response.json().get('error')}")
         return []
+    
 
-if st.session_state['profile_built'] :
+mentorId = fetch_mentor().get("MAX(mentorId)")
+
+if mentorId == 3 :
     mentorId = fetch_mentor().get("MAX(mentorId)")
     mentor_data = fetch_mentor_profile(mentorId)
 
