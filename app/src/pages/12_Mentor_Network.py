@@ -22,20 +22,8 @@ def fetch_mentees(mentor_id):
 
 st.title(f"Your Network, {st.session_state['first_name']}.")
 
+# instead of hardcoding, use the max mentorID implementation
 mentees = fetch_mentees(1)
-
-
-# if all_jobs:
-#     for job in all_jobs:
-#         status = "Open" if job['filledBool'] == 0 else "Filled"
-
-#         with st.container(border=True):
-#             st.text(f"{job['jobDesc']}")
-#             st.text(f"Position: {job['role']}")
-#             st.text(f"Position Status : {status}")
-#             if st.button(f"View Applications for Job {job['jobNum']}", key=job['jobNum']):
-#                 st.session_state['jobNum'] = job['jobNum']
-#                 st.switch_page('pages/44_Employer_View_Applicants.py')
                 
 if mentees:
     for idx, mentee in enumerate(mentees):
