@@ -12,7 +12,6 @@ SideBarLinks()
 
 st.title(f"Jobs You've Posted, {st.session_state['first_name']}.")
 
-
 def fetch_job_postings(empId):
     try:
         response = requests.get(f"http://web-api:4000/o/EmployerJobs/{empId}") 
@@ -37,4 +36,6 @@ if all_jobs:
         st.text(f"Position Status : {status}")
         if st.button('View Applications', type='primary', use_container_width=True):
             st.session_state['jobNum'] = {all_jobs['jobNum']}
-            st.switch_page('pages/44_Employer_View_Applicants.py')
+            st.session_state['empId'] = {all_jobs['empId']}
+            st.session_state['companyId'] = {all_jobs['companyId']}
+            st.switch_page('pages/44_Employer_View_Applicants.py') 

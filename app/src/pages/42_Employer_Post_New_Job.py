@@ -10,9 +10,42 @@ st.set_page_config(layout = 'wide')
 # Show appropriate sidebar links for the role of the currently logged in user
 SideBarLinks()
 
+
+empId = st.session_state['empId']
+if isinstance(empId, set):
+    empId = next(iter(empId)) 
+
+companyId = st.session_state['companyId']
+if isinstance(companyId, set):
+    companyId = next(iter(companyId))
+    
+# st.write(empId)
+# st.write(companyId)
+
+
 st.title(f"Post a New Job, {st.session_state['first_name']}.")
+with st.form(key="new_job_form"):
+    role = st.text_input("Role")
+    description = st.text_input("Description")
+    company = st.text_input("Company")
 
-FLASK_BACKEND = "http://api:4000"
-results = requests.get(f"{FLASK_BACKEND}/o/JobPosting").json()
+    submit_button = st.form_submit_button(label="Post Job")
 
-st.write(results)
+    if submit_button:
+        if not role:
+         st.error("Role is required.")
+        elif not description:
+         st.error("Job description is required.")
+        elif not company:
+         st.error("Company is required.")
+
+    else:
+        job_data = {
+            "empId": empId,
+            "companyId": companyId,
+            "jobDesc": description,
+            "role": role,
+            "filledBool": False
+        }
+
+    
