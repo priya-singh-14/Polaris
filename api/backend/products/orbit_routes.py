@@ -636,7 +636,7 @@ def return_spec_apps(jobNum):
 
     query = f'''
         SELECT User.name, User.major, User.minor, Applications.timeApplied, Mentee.resume, Mentee.menteeId
-        FROM Applications JOIN Mentee ON Applications.studentId = Mentee.menteeId JOIN User ON Mentee.menteeId = User.userId
+        FROM Applications JOIN Mentee ON Applications.studentId = Mentee.menteeId JOIN User ON Mentee.userId = User.userId
         WHERE jobId = {jobNum}
     '''
 
