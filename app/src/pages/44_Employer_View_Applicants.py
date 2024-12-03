@@ -28,7 +28,7 @@ def fetch_job_applications(jobId):
     return None
 
 
-all_applications = fetch_job_applications(2)
+all_applications = fetch_job_applications(jobId)
 if all_applications:
         for application in all_applications:
             with st.container():
