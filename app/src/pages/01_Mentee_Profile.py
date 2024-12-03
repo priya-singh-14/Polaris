@@ -7,9 +7,16 @@ SideBarLinks()
 
 st.title("Your Profile")
 
-def fetch_mentee_profile(menteeId):
-    menteeId = 3
+def fetch_mentee():
+    response = requests.get("http://web-api:4000/o/mostRecentMentee")
+    
+    if response.status_code == 200:
+        return response.json() 
+    else:
+        st.error(f"Error fetching mentees: {response.json().get('error')}")
+        return []
 
+def fetch_mentee_profile(menteeId):
     try:
         response = requests.get(f"http://web-api:4000/o/viewMenteeProfile/{menteeId}") 
         if response.status_code == 200:
@@ -20,10 +27,21 @@ def fetch_mentee_profile(menteeId):
         st.error(f"Error connecting to server: {str(e)}")
     return None
 
-menteeId = 3
-mentee_data = fetch_mentee_profile(menteeId)
+menteeId = fetch_mentee().get("MAX(menteeId)")
+
+st.write(st.session_state['profile_built'])
+st.write(menteeId)
+
+if menteeId == 4 :
+    menteeId = fetch_mentee().get("MAX(menteeId)")
+    mentee_data = fetch_mentee_profile(menteeId)
+
+else :
+    menteeId = fetch_mentee().get("MAX(menteeId)") + 1
+    mentee_data = fetch_mentee_profile(menteeId)
 
 if mentee_data:
+    st.session_state['profile_built'] = True
     mentee_data = mentee_data[0] 
     
     if mentee_data.get("profilepic"):
@@ -59,5 +77,6 @@ if mentee_data:
         st.switch_page('pages/08_Mentee_Edit_Profile.py')
 else:
     st.warning("No profile information found. Please Create Your Profile.")
+    st.session_state['profile_built'] = False
     if st.button('Create Profile', type='primary', use_container_width=True):
         st.switch_page('pages/07_Mentee_Create_Profile.py')

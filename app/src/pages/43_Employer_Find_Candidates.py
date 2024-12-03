@@ -44,7 +44,7 @@ for mentee in results:
     # Load the JPG image
     image_path = f"/appcode/assets/{mentee_info[0]['profilepic']}" 
     image = Image.open(image_path)
-    st.image(image, width=700)
+    st.image(image, width=300)
 
     st.subheader(f"Name: {mentee_info[0]['name']}")
     st.text(f"Major: {mentee_info[0]['major']} Minor: {mentee_info[0]['minor']}")
@@ -64,7 +64,7 @@ for mentee in results:
         # Render the PDF with an iframe
         pdf_data_url = f"data:application/pdf;base64,{base64_pdf}"
         st.markdown(
-            f'<iframe src="{pdf_data_url}" width="700" height="500"></iframe>',
+            f'<iframe src="{pdf_data_url}" width="300" height="400"></iframe>',
             unsafe_allow_html=True,
         )
     else:

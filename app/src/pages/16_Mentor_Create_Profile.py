@@ -123,6 +123,7 @@ if submit_button:
         st.write(profile_data['company'])
         st.write(profile_data['currentPosition'])
         st.write(profile_data['advisorID'])
+        st.session_state['profile_built'] = True
 
         try:
             create_user_response = requests.post('http://web-api:4000/o/createNewUser', json=profile_data)
@@ -136,6 +137,7 @@ if submit_button:
 
             if create_mentor_response.status_code == 200:
                 st.success("Mentor profile created successfully!")
+                st.session_state['profile_built'] = True
             else:
                 st.error("Error creating mentor profile. Please try again later.")
                 

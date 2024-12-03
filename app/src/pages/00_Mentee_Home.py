@@ -9,6 +9,9 @@ st.set_page_config(layout = 'wide')
 # Show appropriate sidebar links for the role of the currently logged in user
 SideBarLinks()
 
+if 'profile_built' not in st.session_state:
+    st.session_state['profile_built'] = False
+
 st.title(f"Welcome to your Mentee Profile, {st.session_state['first_name']}.")
 st.write('')
 st.write('')

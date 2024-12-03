@@ -17,67 +17,63 @@ add_logo("assets/logo.png", height=400)
 # Page title
 st.title("Mentee Chat Dashboard 💬")
 
-# Page description
-st.markdown("""
-Welcome to your mentee chat dashboard! Use this space to ask questions, seek guidance, and connect with your mentor or peers in your field of interest.
-""")
 
-# Initialize session state
+def fetch_mentee():
+    response = requests.get("http://web-api:4000/o/mostRecentMentee")
+    
+    if response.status_code == 200:
+        return response.json() 
+    else:
+        st.error(f"Error fetching mentees: {response.json().get('error')}")
+        return []
+    
+def fetch_matched_mentor(menteeId):
+    response = requests.get(f"http://web-api:4000/o/Match/{menteeId}")
+    
+    if response.status_code == 200:
+        return response.json() 
+    else:
+        st.error(f"Error fetching mentees: {response.json().get('error')}")
+        return []
+
+# write routes to set these vals to the max menteeID and mentorID, consider limiting behavior to those two tables only
+menteeId = 4
+# recipientId = fetch_matched_mentor(menteeId)
+
+if len(fetch_matched_mentor(menteeId)) == 0 :
+    recipientId = 0
+else :
+    recipientId = fetch_matched_mentor(menteeId)[0].get("mentorId")
+
+st.write(recipientId)
+
+def fetch_chats(senderId, recipientId):
+  try:
+        response = requests.get(f"http://web-api:4000/o/Chats/{senderId}/{recipientId}") 
+        if response.status_code == 200:
+            return response.json()
+        else:
+            st.error(f"Error retrieving chats: {response.json().get('error', 'Unknown error')}")
+  except requests.exceptions.RequestException as e:
+        st.error(f"Error connecting to server: {str(e)}")
+        return None
+  
 if "messages" not in st.session_state:
-    st.session_state.messages = []
-if "suggested_mentors" not in st.session_state:
-    st.session_state.suggested_mentors = [
-        {"name": "Sarah Star", "field": "Finance", "company": "McKinsey", "tags": ["Finance", "Investment"]},
-        {"name": "Alan Turing", "field": "AI Research", "company": "Google", "tags": ["AI", "Research", "CS"]}
-    ]
-if "job_suggestions" not in st.session_state:
-    st.session_state.job_suggestions = [
-        {"title": "Software Engineering Co-op", "company": "Google", "location": "Remote", "tags": ["CS", "AI"]},
-        {"title": "Data Analyst Internship", "company": "Meta", "location": "New York", "tags": ["Math", "Analytics"]}
-    ]
+   st.session_state.messages = []
 
-# Suggested Mentors Section
-st.subheader("Suggested Mentors")
-for mentor in st.session_state.suggested_mentors:
-    st.markdown(f"**Name:** {mentor['name']}")
-    st.markdown(f"**Field:** {mentor['field']}")
-    st.markdown(f"**Company:** {mentor['company']}")
-    st.markdown(f"**Tags:** {', '.join(mentor['tags'])}")
-    st.markdown("---")
+# st.write(recipientId)
+   
+if recipientId is 0:
+    st.warning("You Don't Have a Mentor to Chat with Yet")
 
-# Suggested Jobs Section
-st.subheader("Job Opportunities")
-for job in st.session_state.job_suggestions:
-    st.markdown(f"**Title:** {job['title']}")
-    st.markdown(f"**Company:** {job['company']}")
-    st.markdown(f"**Location:** {job['location']}")
-    st.markdown(f"**Tags:** {', '.join(job['tags'])}")
-    st.markdown("---")
+else :
+    chat_history = fetch_chats(menteeId, recipientId)
 
-# File Upload for Resume
-st.subheader("Upload Your Resume")
-uploaded_file = st.file_uploader("Upload your resume (PDF only)", type="pdf")
-if uploaded_file:
-    st.success("Resume uploaded successfully!")
-    st.write(f"Uploaded: {uploaded_file.name}")
-
-# Response Generator for Chat
-def response_generator():
-    responses = [
-        "That's a great question! Let me help you with that.",
-        "Have you considered applying to internships in AI research?",
-        "Networking is key! Reach out to alumni in your desired field."
-    ]
-    response = random.choice(responses)
-    for word in response.split():
-        yield word + " "
-        time.sleep(0.05)
-
-# Display Chat History
-st.subheader("Chat History")
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+    for chat in chat_history:
+        senderId = chat['senderId']
+        role = "user" if menteeId == senderId else "assistant"
+    with st.chat_message(role):
+            st.markdown(chat["text"])
 
 # Handle User Input
 if prompt := st.chat_input("Ask your mentor or peers a question..."):

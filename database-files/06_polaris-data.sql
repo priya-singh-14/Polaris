@@ -5,8 +5,8 @@ USE polaris;
 
 INSERT INTO User (name, email, profilepic, college, major, minor)
 VALUES
-    ('Tyler Dipper', 'dipper.t@example.com', 'tyler.jpg', 'Khoury', 'Computer Science', NULL),
-    ('Sara Star', 'star.s@example.com', 'sara.jpg', 'Khoury', 'Cybersecurity', NULL),
+    ('Isla North', 'north.i@example.com', 'isla.jpg', 'Khoury', 'Computer Science', NULL),
+    ('Andy Romeda', 'romeda.a@example.com', 'andy.jpg', 'Khoury', 'Cybersecurity', NULL),
     ('Billy Blakhole', 'blakhole.b@example.com', 'billy.jpg', 'Khoury', NULL, NULL),
     ('John Aquarius', 'aquarius.j@example.com', 'john.jpg', NULL, NULL, NULL),
     ('Sandra Cao', 'cao.s@example.com', 'sandra.jpg', 'Khoury', 'Data Science', 'Design'),
@@ -31,12 +31,12 @@ VALUES
 
 INSERT INTO Mentor (userid, isWorking, isInSchool, company, currentPosition, advisorId)
 VALUES
-    (2, TRUE, FALSE, 'McKinsey', 'Senior Analyst', 1),
+    (2, TRUE, FALSE, 'Tesla', 'Data Analyst', 1),
     (6, TRUE, FALSE, 'Microsoft', 'Junior Engineer', 2);
 
 INSERT INTO Mentee (userid, bio, resume)
 VALUES
-    (1, 'Aspiring developer interested in tech startups.', 'resume_tyler.pdf'),
+    (1, 'Aspiring developer interested in tech startups.', 'resume_isla.pdf'),
     (5, 'Designer and Developer, looking for UX roles.', 'resume_sandra.pdf');
 
 INSERT INTO `Match` (mentorId, menteeId)
@@ -58,11 +58,19 @@ VALUES
 
 INSERT INTO Chats (senderId, recipientId, text)
 VALUES
-    (1, 2, 'Hi Sara, can you help me with my application?'),
-    (2, 1, 'Sure, Tyler! Let me know the details.'),
+    (1, 2, 'Hi Andy, can you help me with my application?'),
+    (2, 1, 'Sure, Isla! Let me know the details.'),
     (6, 5, 'Here is a role that I thought would be a good fit!'),
     (5, 6, 'Thanks! I will take a look!');
 
 INSERT INTO Events (eventID, speakerID, organizerID, speakerName, industry, `when`)
 VALUES
     (1, 1, 1, 'John Aquarius', 'Finance and Community Relations', '2024-12-01 10:00:00');
+
+INSERT INTO User (name, email, profilepic, college, major, minor)
+VALUES
+    ('James Night', 'night.j@example.com', 'james.jpg', 'College of Engineering', 'Data Science', 'Finance');
+
+INSERT INTO Mentee (userid, bio, resume)
+VALUES
+    (9, 'Interested in the intersection of tech and finance.', 'resume_james.pdf');

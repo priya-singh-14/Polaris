@@ -1,19 +1,15 @@
 import logging
 logger = logging.getLogger(__name__)
-
 import streamlit as st
 from modules.nav import SideBarLinks
 import requests
-from PIL import Image
+from PIL import Image, ImageDraw
 
 st.set_page_config(layout = 'wide')
 
 SideBarLinks()
 
-#instead of hardcoding the mentorID logic, use a max function so we present the most recently created Mentor --> same logic applies to mentees
 def fetch_mentor_profile(mentorId):
-    mentorId = 4 
-
     try:
         response = requests.get(f"http://web-api:4000/o/viewMentorProfile/{mentorId}") 
         if response.status_code == 200:
@@ -24,15 +20,50 @@ def fetch_mentor_profile(mentorId):
         st.error(f"Error connecting to server: {str(e)}")
     return None
 
-mentorId = 3
-mentor_data = fetch_mentor_profile(mentorId)
+def fetch_mentor():
+    response = requests.get("http://web-api:4000/o/mostRecentMentor")
+    
+    if response.status_code == 200:
+        return response.json() 
+    else:
+        st.error(f"Error fetching mentees: {response.json().get('error')}")
+        return []
+    
+
+mentorId = fetch_mentor().get("MAX(mentorId)")
+
+if mentorId == 3 :
+    mentorId = fetch_mentor().get("MAX(mentorId)")
+    mentor_data = fetch_mentor_profile(mentorId)
+
+else :
+    mentorId = fetch_mentor().get("MAX(mentorId)") + 1
+    mentor_data = fetch_mentor_profile(mentorId)
 
 if mentor_data:
+    st.session_state['profile_built'] = True
     mentor_data = mentor_data[0] 
 
     if mentor_data.get("profilepic"):
-        img = Image.open(mentor_data['profilepic']) 
-        st.image(img, width=200)
+                img = Image.open(mentor_data['profilepic']) 
+                width, height = img.size
+                min_side = min(width, height)
+                left = (width - min_side) / 2
+                top = (height - min_side) / 2
+                right = (width + min_side) / 2
+                bottom = (height + min_side) / 2
+                img = img.crop((left, top, right, bottom))
+        
+                mask = Image.new("L", (min_side, min_side), 0)
+                draw = ImageDraw.Draw(mask)
+                draw.ellipse((0, 0, min_side, min_side), fill=255)
+
+
+                img = img.resize((140, 140)) 
+                circular_img = Image.new("RGBA", (140, 140), (0, 0, 0, 0))
+                circular_img.paste(img, (0, 0), mask.resize((140, 140)))
+        
+                st.image(circular_img)
     else:
         st.warning("No profile picture uploaded.")
 
@@ -52,5 +83,6 @@ if mentor_data:
         st.switch_page('pages/17_Mentor_Edit_Profile.py')
 else:
     st.warning("No profile information found. Please Create Your Profile.")
+    st.session_state['profile_built'] = False
     if st.button('Create Profile', type='primary', use_container_width=True):
         st.switch_page('pages/16_Mentor_Create_Profile.py')

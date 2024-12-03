@@ -155,6 +155,23 @@ def get_mentee_data(menteeId):
     response.status_code = 200
     return response
 
+@orbit.route('/Mentees/<string:college>/<string:major>/<string:minor>', methods=['GET'])
+def get_relevant_mentee(college, major, minor):
+
+    query = f'''
+        SELECT User.name, Mentee.bio, Mentee.userId, Mentee.menteeId, Mentee.resume, User.email, User.profilepic, User.major, User.minor, User.college
+        FROM Mentee Join User on Mentee.userId = User.userId
+        WHERE User.college = '{college}' OR User.major = '{major}' OR User.minor = '{minor}'
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
 @orbit.route('/getMentorData/<int:mentorId>', methods=['GET'])
 def get_mentor_data(mentorId):
 
@@ -270,7 +287,7 @@ def view_mentor_profile(mentorId):
 @orbit.route('/JobPosting', methods=['GET'])
 def get_job_postings():
     query = '''
-        SELECT JobPosting.jobDesc, JobPosting.role, Company.name
+        SELECT JobPosting.jobDesc, JobPosting.role, Company.name, JobPosting.empId, JobPosting.jobNum
         FROM JobPosting JOIN Company on JobPosting.companyId = Company.companyId 
     '''
 
@@ -349,6 +366,40 @@ def get_employer_applications(empId):
     return response
 
 
+# Return the most recently created mentor profile
+@orbit.route('/mostRecentMentor', methods=['GET'])
+def get_recent_mentor():
+    query = f'''
+        SELECT MAX(mentorId)
+        FROM Mentor
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchone()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+
+# Return the most recently created mentee profile
+@orbit.route('/mostRecentMentee', methods=['GET'])
+def get_recent_mentee():
+    query = f'''
+        SELECT MAX(menteeId)
+        FROM Mentee
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchone()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+
 # Return all advisors
 @orbit.route('/Advisors', methods=['GET'])
 def get_advisors():
@@ -420,7 +471,7 @@ def post_new_job():
 
 # Remove a job opportunity that is no longer available or hiring. 
 # DELETE/JobPosting/<jobId>
-@orbit.route('/JobPosting/<jobId>', methods = ['DELETE'])
+@orbit.route('/JobPosting/<int:jobId>', methods = ['DELETE'])
 def delete_job():
 
     the_data = request.json
@@ -448,6 +499,24 @@ def return_match():
     query = '''
         SELECT  *
         FROM `Match`
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+# Returns mentor assigned to a given mentee 
+# GET/Match
+@orbit.route('/Match/<int:menteeId>', methods=['GET'])
+def return_matched_mentor(menteeId):
+    query = f'''
+        SELECT  Match.mentorId
+        FROM `Match` Join Mentee on Match.menteeId = Mentee.menteeId
+        Where Match.menteeId = {menteeId}
     '''
 
     cursor = db.get_db().cursor()
@@ -490,7 +559,7 @@ def get_mentor_mentees(mentorId):
 
 # Create matches between mentors and mentees
 # POST/Match 
-@orbit.route('/Match', methods=['POST'])
+@orbit.route('/MatchMentees', methods=['POST'])
 def create_match():
     
     # In a POST request, there is a 
@@ -504,8 +573,7 @@ def create_match():
     
 
     query = f'''
-        INSERT INTO `Match` (menteeId,
-                              mentorId)
+        INSERT INTO `Match` (menteeId, mentorId)
         VALUES ('{menteeId}', '{mentorId}')
     '''
 
@@ -568,7 +636,7 @@ def return_spec_apps(jobNum):
 
     query = f'''
         SELECT User.name, User.major, User.minor, Applications.timeApplied, Mentee.resume, Mentee.menteeId
-        FROM Applications JOIN Mentee ON Applications.studentId = Mentee.menteeId JOIN User ON Mentee.menteeId = User.userId
+        FROM Applications JOIN Mentee ON Applications.studentId = Mentee.menteeId JOIN User ON Mentee.userId = User.userId
         WHERE jobId = {jobNum}
     '''
 
@@ -581,7 +649,7 @@ def return_spec_apps(jobNum):
     return response
 
 # submit an application to a specific job
-@orbit.route('/Applications/<jobId>', methods=['POST'])
+@orbit.route('/NewApplications', methods=['POST'])
 def add_application():
     
     # In a POST request, there is a 
@@ -591,13 +659,16 @@ def add_application():
 
     #extracting the variable
     jobId = the_data['jobId']
+    empId = the_data['empId']
+    completed = 1 if the_data['completed'] else 0 
     studentId = the_data['studentId']
+    timeApplied = the_data['timeApplied']
     
 
     query = f'''
         INSERT INTO Applications (studentId,
-                              jobId)
-        VALUES ('{studentId}', '{jobId}')
+                              jobId, empId, completed, timeApplied)
+        VALUES ('{studentId}', '{jobId}', '{empId}', '{completed}', '{timeApplied}')
     '''
 
     current_app.logger.info(query)
@@ -710,6 +781,28 @@ def delete_mentor():
     query = f'''
         DELETE FROM Mentor
         WHERE mentorId = {mentorId};
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+        
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+# remove a mentor from the system
+@orbit.route('/Mentee', methods = ['DELETE'])
+def delete_mentee():
+
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    menteeId = the_data['menteeId']
+
+    query = f'''
+        DELETE FROM Mentee
+        WHERE mentorId = {menteeId};
     '''
 
     cursor = db.get_db().cursor()

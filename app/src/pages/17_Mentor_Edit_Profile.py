@@ -13,7 +13,7 @@ st.title("Edit Mentor Profile")
 st.write("Edit your profile details!")
 
 
-mentorId = 4
+mentorId = 3
 mentor_data = {}
 
 get_mentor_data = requests.get(f'http://web-api:4000/o/getMentorData/{mentorId}')
@@ -73,6 +73,7 @@ if submit_button:
 
             if update_mentor_response.status_code == 200:
                 st.success("Mentor profile updated successfully!")
+                st.session_state['profile_built'] = True
             else:
                 st.error("Error updating mentor profile. Please try again later.")
                 
