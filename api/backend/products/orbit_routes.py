@@ -471,7 +471,7 @@ def post_new_job():
 
 # Remove a job opportunity that is no longer available or hiring. 
 # DELETE/JobPosting/<jobId>
-@orbit.route('/JobPosting/<jobId>', methods = ['DELETE'])
+@orbit.route('/JobPosting/<int:jobId>', methods = ['DELETE'])
 def delete_job():
 
     the_data = request.json
@@ -779,6 +779,28 @@ def delete_mentor():
     query = f'''
         DELETE FROM Mentor
         WHERE mentorId = {mentorId};
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+        
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+# remove a mentor from the system
+@orbit.route('/Mentee', methods = ['DELETE'])
+def delete_mentee():
+
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    menteeId = the_data['menteeId']
+
+    query = f'''
+        DELETE FROM Mentee
+        WHERE mentorId = {menteeId};
     '''
 
     cursor = db.get_db().cursor()
