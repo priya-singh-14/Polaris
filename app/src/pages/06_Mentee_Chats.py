@@ -33,13 +33,12 @@ if "messages" not in st.session_state:
 chat_history = fetch_chats(menteeId, recipientId)
 
 for chat in chat_history:
-    senderId = chat['senderId']  # Extract the senderId from the fetched data
+    senderId = chat['senderId']
     role = "user" if menteeId == senderId else "assistant"
     with st.chat_message(role):
         st.markdown(chat["text"])
 
-
-st.write(chat_history)
+# st.write(chat_history)
 
 if chat := st.chat_input("Type Here"):
   with st.chat_message("user"):
@@ -51,7 +50,7 @@ if chat := st.chat_input("Type Here"):
      "text" : chat,
   }
 
-  st.write(chat_data)
+  # st.write(chat_data)
 
   try:
             create_new_chat = requests.post('http://web-api:4000/o/createNewChat', json=chat_data)
