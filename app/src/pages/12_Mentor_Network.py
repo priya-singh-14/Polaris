@@ -29,7 +29,7 @@ if mentees:
     for idx, mentee in enumerate(mentees):
         with st.container(border=True):
             img_path = os.path.join(directory, mentee["profilepic"])
-            if os.path.exists(img_path):
+            if img_path!= "assets/":
                 img = Image.open(img_path)
                 st.image(img, width=200)
             else:

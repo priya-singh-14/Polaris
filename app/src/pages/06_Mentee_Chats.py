@@ -38,7 +38,9 @@ menteeId = 3
 if len(fetch_matched_mentor(menteeId)) == 0 :
     recipientId = 0
 else :
-    recipientId = fetch_matched_mentor(menteeId)
+    recipientId = fetch_matched_mentor(menteeId)[0].get("mentorId")
+
+st.write(recipientId)
 
 def fetch_chats(senderId, recipientId):
   try:
@@ -63,8 +65,8 @@ else :
     chat_history = fetch_chats(menteeId, recipientId)
 
     for chat in chat_history:
-            senderId = chat['senderId']
-            role = "user" if menteeId == senderId else "assistant"
+        senderId = chat['senderId']
+        role = "user" if menteeId == senderId else "assistant"
     with st.chat_message(role):
             st.markdown(chat["text"])
 

@@ -66,3 +66,11 @@ VALUES
 INSERT INTO Events (eventID, speakerID, organizerID, speakerName, industry, `when`)
 VALUES
     (1, 1, 1, 'John Aquarius', 'Finance and Community Relations', '2024-12-01 10:00:00');
+
+INSERT INTO User (name, email, profilepic, college, major, minor)
+VALUES
+    ('James Night', 'night.j@example.com', 'james.jpg', 'College of Engineering', 'Data Science', 'Finance');
+
+INSERT INTO Mentee (userid, bio, resume)
+VALUES
+    (9, 'Interested in the intersection of tech and finance.', 'resume_james.pdf');
