@@ -287,7 +287,7 @@ def view_mentor_profile(mentorId):
 @orbit.route('/JobPosting', methods=['GET'])
 def get_job_postings():
     query = '''
-        SELECT JobPosting.jobDesc, JobPosting.role, Company.name
+        SELECT JobPosting.jobDesc, JobPosting.role, Company.name, JobPosting.empId, JobPosting.jobNum
         FROM JobPosting JOIN Company on JobPosting.companyId = Company.companyId 
     '''
 
@@ -649,7 +649,7 @@ def return_spec_apps(jobNum):
     return response
 
 # submit an application to a specific job
-@orbit.route('/Applications/<jobId>', methods=['POST'])
+@orbit.route('/NewApplications', methods=['POST'])
 def add_application():
     
     # In a POST request, there is a 
@@ -659,13 +659,16 @@ def add_application():
 
     #extracting the variable
     jobId = the_data['jobId']
+    empId = the_data['empId']
+    completed = 1 if the_data['completed'] else 0 
     studentId = the_data['studentId']
+    timeApplied = the_data['timeApplied']
     
 
     query = f'''
         INSERT INTO Applications (studentId,
-                              jobId)
-        VALUES ('{studentId}', '{jobId}')
+                              jobId, empId, completed, timeApplied)
+        VALUES ('{studentId}', '{jobId}', '{empId}', '{completed}', '{timeApplied}')
     '''
 
     current_app.logger.info(query)
