@@ -11,17 +11,19 @@ st.set_page_config(layout = 'wide')
 SideBarLinks()
 
 
-empId = st.session_state['empId']
-if isinstance(empId, set):
-    empId = next(iter(empId)) 
+# empId = st.session_state['empId']
+# if isinstance(empId, set):
+#     empId = next(iter(empId)) 
 
-companyId = st.session_state['companyId']
-if isinstance(companyId, set):
-    companyId = next(iter(companyId))
+# companyId = st.session_state['companyId']
+# if isinstance(companyId, set):
+#     companyId = next(iter(companyId))
     
 # st.write(empId)
 # st.write(companyId)
 
+empId = 1
+companyId = 1
 
 st.title(f"Post a New Job, {st.session_state['first_name']}.")
 with st.form(key="new_job_form"):
