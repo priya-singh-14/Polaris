@@ -12,18 +12,18 @@ st.set_page_config(layout='wide')
 SideBarLinks()
 
 def fetch_mentees(mentor_id):
-    response = requests.get("http://web-api:4000/o/MentorMentees/1", params={"mentor_id": mentor_id})
+    response = requests.get(f"http://web-api:4000/o/MentorMentees/{mentor_id}", params={"mentor_id": mentor_id})
     
     if response.status_code == 200:
         return response.json() 
     else:
-        st.error(f"Error fetching mentees: {response.json().get('error')}")
+        st.error(f"Error fetching mentees: Please Build Profile First{response.json().get('error')}")
         return []
 
 st.title(f"Your Network, {st.session_state['first_name']}.")
 
 # instead of hardcoding, use the max mentorID implementation
-mentees = fetch_mentees(1)
+mentees = fetch_mentees(3)
                 
 if mentees:
     for idx, mentee in enumerate(mentees):

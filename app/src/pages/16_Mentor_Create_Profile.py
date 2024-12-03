@@ -136,6 +136,7 @@ if submit_button:
 
             if create_mentor_response.status_code == 200:
                 st.success("Mentor profile created successfully!")
+                st.session_state['profile_built'] = True
             else:
                 st.error("Error creating mentor profile. Please try again later.")
                 

@@ -349,6 +349,23 @@ def get_employer_applications(empId):
     return response
 
 
+# Return all jobs posted by a specific employer
+@orbit.route('/mostRecentMentor', methods=['GET'])
+def get_recent_mentor():
+    query = f'''
+        SELECT MAX(mentorId)
+        FROM Mentor
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchone()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+
 # Return all advisors
 @orbit.route('/Advisors', methods=['GET'])
 def get_advisors():
