@@ -26,7 +26,6 @@ mentee_data = fetch_mentee_profile(menteeId)
 if mentee_data:
     mentee_data = mentee_data[0] 
     
-
     if mentee_data.get("profilepic"):
         img = Image.open(mentee_data['profilepic']) 
         st.image(img, width=200)
@@ -45,7 +44,7 @@ if mentee_data:
 
     if mentee_data.get("resume") and mentee_data["resume"].lower() != "none":
         resume_path = mentee_data['resume']  
-        st.text(f"Resume: {resume_path}")  
+        st.text(f"Resume:")  
         st.download_button(
             label="Download Resume",
             data=open(resume_path, "rb").read(),

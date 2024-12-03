@@ -10,8 +10,9 @@ st.set_page_config(layout = 'wide')
 
 SideBarLinks()
 
+#instead of hardcoding the mentorID logic, use a max function so we present the most recently created Mentor --> same logic applies to mentees
 def fetch_mentor_profile(mentorId):
-    mentorId = 3
+    mentorId = 4 
 
     try:
         response = requests.get(f"http://web-api:4000/o/viewMentorProfile/{mentorId}") 
@@ -44,6 +45,9 @@ if mentor_data:
     
     st.text(f"College: {mentor_data['college']}")
    
+    if mentor_data.get("isWorking"):
+        st.text(f"{mentor_data['currentPosition']} at {mentor_data['company']}")
+        
     if st.button('Edit Profile', type='primary', use_container_width=True):
         st.switch_page('pages/17_Mentor_Edit_Profile.py')
 else:
