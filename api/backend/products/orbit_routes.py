@@ -792,6 +792,29 @@ def return_chat_history(senderId, recipientId):
     response.status_code = 200
     return response
 
+@orbit.route('/createNewChat', methods=['POST'])
+def create_new_chat():
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    senderId = the_data['senderId']
+    recipientId = the_data['recipientId']
+    text = the_data['text']
+    cursor = db.get_db().cursor()
+
+    query = '''
+        INSERT INTO Chats (senderId, recipientId, text)
+        VALUES (%s, %s, %s)
+    '''
+   
+    cursor.execute(query, (senderId, recipientId, text))
+    db.get_db().commit()    
+
+    response = make_response("Successfully created profile")
+    response.status_code = 200
+    return response
+
+
 # returns a list of networking events and information
 @orbit.route('/Events', methods=['GET'])
 def return_events():

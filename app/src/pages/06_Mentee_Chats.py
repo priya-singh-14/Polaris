@@ -4,10 +4,6 @@ import streamlit as st
 from streamlit_extras.app_logo import add_logo
 import requests
 from modules.nav import SideBarLinks
-from datetime import datetime, timezone
-
-now_utc = datetime.now(timezone.utc)
-formatted_datetime = now_utc.strftime("%a, %d %b %Y %H:%M:%S GMT")
 
 
 SideBarLinks()
@@ -50,11 +46,21 @@ if chat := st.chat_input("Type Here"):
     st.markdown(chat)
   
   chat_data = {
-     "senderId" : senderId,
+     "senderId" : menteeId,
      "recipientId" : recipientId,
      "text" : chat,
-     "timestamp": formatted_datetime
   }
 
   st.write(chat_data)
+
+  try:
+            create_new_chat = requests.post('http://web-api:4000/o/createNewChat', json=chat_data)
+            if create_new_chat.status_code == 200:
+                st.info("View Profile Details on the Previous Page")
+            else:
+                st.error("Error creating user profile. Please try again later.")
+
+  except requests.exceptions.RequestException as e:
+            st.error(f"Error connecting to server: {str(e)}")
+
 
