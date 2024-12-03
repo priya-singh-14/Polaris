@@ -388,7 +388,7 @@ def get_users():
 # Add new job/co-op opportunities to the database for students to apply to. 
 # POST/JobPosting
 @orbit.route('/NewJobPosting', methods=['POST'])
-def add_new_product():
+def post_new_job():
     
     # In a POST request, there is a 
     # collecting data from the request object 
@@ -402,19 +402,16 @@ def add_new_product():
     jobDesc = the_data['jobDesc']
     filledBool = the_data['filledBool']
 
-    query = f'''
-        INSERT INTO JobPosting (empId,
-                              companyId,
-                              role, 
-                              jobDesc, filledbool)
-        VALUES ('{empId}', '{companyId}', '{role}', {jobDesc}, {filledBool})
+    query = '''
+        INSERT INTO JobPosting (empId, companyId, role, jobDesc, filledbool)
+        VALUES (%s, %s, %s, %s, %s )
     '''
 
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    cursor.execute(query, (empId, companyId, role, jobDesc, filledBool))
     db.get_db().commit()
     
     response = make_response("Successfully added position")

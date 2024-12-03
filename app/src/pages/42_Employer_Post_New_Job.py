@@ -42,22 +42,25 @@ with st.form(key="new_job_form"):
         elif not company:
          st.error("Company is required.")
 
-    else:
-        job_data = {
+        else:
+            job_data = {
             "empId": empId,
             "companyId": companyId,
             "jobDesc": description,
             "role": role,
             "filledBool": status
-        }
+            }
+
+        st.write(job_data)
+
 
         try:
             create_new_job = requests.post('http://web-api:4000/o/NewJobPosting', json=job_data)
              
             if create_new_job.status_code == 200:
-                st.info("View Profile Details on the Previous Page")
+                st.info("Job Posted")
             else:
-                st.error("Error creating user profile. Please try again later.") 
+                st.error("Error posting this job. Please try again later.") 
         except requests.exceptions.RequestException as e:
             st.error(f"Error connecting to server: {str(e)}")
 

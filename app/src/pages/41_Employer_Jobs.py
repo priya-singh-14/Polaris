@@ -26,14 +26,13 @@ def fetch_job_postings(empId):
 all_jobs = fetch_job_postings(1)
 
 if all_jobs:
-    all_jobs = all_jobs[0] 
+    for job in all_jobs:
+        status = "Open" if job['filledBool'] == 0 else "Filled"
 
-    status = "Open" if all_jobs['filledBool'] == 0 else "Filled" 
-
-    with st.container(border=True):
-        st.text(f"{all_jobs['jobDesc']}")
-        st.text(f"Position: {all_jobs['role']}")
-        st.text(f"Position Status : {status}")
-        if st.button('View Applications', type='primary', use_container_width=True):
-            st.session_state['jobNum'] = {all_jobs['jobNum']}
-            st.switch_page('pages/44_Employer_View_Applicants.py') 
+        with st.container(border=True):
+            st.text(f"{job['jobDesc']}")
+            st.text(f"Position: {job['role']}")
+            st.text(f"Position Status : {status}")
+            if st.button(f"View Applications for Job {job['jobNum']}", key=job['jobNum']):
+                st.session_state['jobNum'] = job['jobNum']
+                st.switch_page('pages/44_Employer_View_Applicants.py')
