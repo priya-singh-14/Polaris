@@ -78,6 +78,7 @@ if submit_button:
              
             if create_user_response.status_code == 200:
                 st.info("View Profile Details on the Previous Page")
+                st.session_state['profile_built'] = True
             else:
                 st.error("Error creating user profile. Please try again later.")
 
@@ -85,6 +86,7 @@ if submit_button:
 
             if create_mentee_response.status_code == 200:
                 st.success("Mentee profile created successfully!")
+                st.session_state['profile_built'] = True
             else:
                 st.error("Error creating mentee profile. Please try again later.")
                 

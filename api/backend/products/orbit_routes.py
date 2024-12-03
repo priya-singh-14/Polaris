@@ -492,6 +492,24 @@ def return_match():
     response.status_code = 200
     return response
 
+# Returns mentor assigned to a given mentee 
+# GET/Match
+@orbit.route('/Match/<int:menteeId>', methods=['GET'])
+def return_matched_mentor(menteeId):
+    query = f'''
+        SELECT  Match.mentorId
+        FROM `Match` Join Mentee on Match.menteeId = Mentee.menteeId
+        Where Match.menteeId = {menteeId}
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
 # GET the list of mentees matched with a specific mentor
 @orbit.route('/MentorMentees/<int:mentorId>', methods=['GET'])
 

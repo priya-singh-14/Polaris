@@ -12,9 +12,28 @@ add_logo("assets/logo.svg", height=400)
 
 st.title("Chat With Your Mentor")
 
+
+def fetch_mentee():
+    response = requests.get("http://web-api:4000/o/mostRecentMentee")
+    
+    if response.status_code == 200:
+        return response.json() 
+    else:
+        st.error(f"Error fetching mentees: {response.json().get('error')}")
+        return []
+    
+def fetch_matched_mentor(menteeId):
+    response = requests.get(f"http://web-api:4000/o/Match/{menteeId}")
+    
+    if response.status_code == 200:
+        return response.json() 
+    else:
+        st.error(f"Error fetching mentees: {response.json().get('error')}")
+        return []
+
 # write routes to set these vals to the max menteeID and mentorID, consider limiting behavior to those two tables only
-menteeId = 1 
-recipientId = 2
+menteeId = fetch_mentee().get("MAX(menteeId)")
+recipientId = fetch_matched_mentor(menteeId)
 
 def fetch_chats(senderId, recipientId):
   try:
@@ -29,14 +48,18 @@ def fetch_chats(senderId, recipientId):
   
 if "messages" not in st.session_state:
    st.session_state.messages = []
-  
+
 chat_history = fetch_chats(menteeId, recipientId)
 
-for chat in chat_history:
-    senderId = chat['senderId']
-    role = "user" if menteeId == senderId else "assistant"
-    with st.chat_message(role):
-        st.markdown(chat["text"])
+if chat_history is not None:
+  for chat in chat_history:
+      senderId = chat['senderId']
+      role = "user" if menteeId == senderId else "assistant"
+  with st.chat_message(role):
+       st.markdown(chat["text"])
+
+else :
+    st.warning("You Don't Have a Mentor to Chat with Yet")
 
 # st.write(chat_history)
 
