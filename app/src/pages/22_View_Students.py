@@ -1,4 +1,6 @@
-###
+### Mentor and Mentee Management
+### View mentors and mentees and add/drop if needed
+### user stories 4, 5
 import logging
 logger = logging.getLogger(__name__)
 
