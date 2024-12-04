@@ -72,7 +72,7 @@ if mentors:
     st.title('Active Mentors')
     for idx, mentor in enumerate(mentors):
         with st.container(border=True):
-            img_path = os.path.join(directory, mentors["profilepic"])
+            img_path = os.path.join(directory, mentors[0]["profilepic"])
             if os.path.exists(img_path):
                 img = Image.open(img_path)
                 st.image(img, width=200)
@@ -108,7 +108,7 @@ if mentees:
     st.title('Active Mentees')
     for idx, mentee in enumerate(mentees):
         with st.container(border=True):
-            img_path = os.path.join(directory, mentee["profilepic"])
+            img_path = os.path.join(directory, mentee[0]["profilepic"])
             if os.path.exists(img_path):
                 img = Image.open(img_path)
                 st.image(img, width=200)
