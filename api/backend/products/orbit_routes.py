@@ -948,18 +948,13 @@ def delete_event():
     return response
 
 # returns information about a specific application for a position
-@orbit.route('/Applications/<userId>', methods=['GET'])
-def return_applicant():
-
-    the_data = request.json
-    current_app.logger.info(the_data)
-
-    userId = the_data['userId']
+@orbit.route('/Applications/<int:menteeId>', methods=['GET'])
+def return_applicant(menteeId):
 
     query = f'''
-        SELECT  *
-        FROM Applications a JOIN Users u ON a.studentId = u.userId
-        WHERE userId = {userId}
+        SELECT *
+        FROM Applications a JOIN Mentee m ON a.studentId = m.menteeId
+        WHERE menteeId = {menteeId}
     '''
 
     cursor = db.get_db().cursor()
