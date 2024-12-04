@@ -832,7 +832,7 @@ def delete_mentee():
 
 # return user information 
 @orbit.route('/User', methods=['GET'])
-def return_user_info():
+def return_gen_user_info():
     query = '''
         SELECT  *
         FROM User
