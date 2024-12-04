@@ -21,10 +21,10 @@ if st.button('View Mentors and Mentees',
              use_container_width=True):
   st.switch_page('pages/22_View_Students.py')
 
-  if st.button('Update Mentor Resources', 
+if st.button('Schedule a Networking Event', 
              type='primary',
              use_container_width=True):
-    st.switch_page('pages/23_Mentor_Resources.py')
+  st.switch_page('pages/23_Create_Event.py')
 
 if st.button('Update Mentor/Mentee Matches', 
              type='primary',
@@ -36,7 +36,3 @@ if st.button('Chat with Other Users',
              use_container_width=True):
   st.switch_page('pages/25_Advisor_Chat.py')
 
-if st.button('Schedule a Networking Event', 
-             type='primary',
-             use_container_width=True):
-  st.switch_page('pages/26_Create_Event.py')

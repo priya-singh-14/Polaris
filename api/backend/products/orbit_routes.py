@@ -993,43 +993,49 @@ def view_mentee_progress():
     response.status_code = 200
     return response
 
+# create an event
+@orbit.route('/createEvent', methods=['POST'])
+def createEvent():
+    the_data = request.json
+    current_app.logger.info(the_data)
 
-# @orbit.route('/Events', methods=['POST'])
-# def create_event():
-#     the_data = request.json
+    eventId = the_data['eventId']
+    speakerId = the_data['speakerId']
+    organizerId = the_data['organizerId']
+    speakerName = the_data['speakerName']
+    industry = the_data['industry']
+    when = the_data['when']
 
-#     speakerId = the_data['speakerId']
-#     organizerId = the_data['organizerId']
-#     speakerName = the_data['speakerName']
-#     industry = the_data['industry']
-#     when = the_data['when']  # Expecting a datetime string in ISO 8601 format
+    query = '''
+        INSERT INTO `EVENTS` (eventId, speakerId, organizerId, speakerName, industry, `when`)
+        VALUES (%s, %s, %s, %s, %s, %s)
+    '''
 
-#     when = datetime.datetime.strptime(event_when, "%Y-%m-%dT%H:%M:%S")
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (eventId, speakerId, organizerId, speakerName, industry, when) ) 
+    db.get_db().commit()
 
-#     query = f'''
-#     query = f'''
-        
-#         INSERT INTO Events (speakerId, organizerId, speakerName, industry, `when`)
-#         VALUES ('{speakerId}, {organizerId}, {speakerName}, {industry}, {when}')
-#         INSERT INTO Events (speakerId, organizerId, speakerName, industry, `when`)
-#         VALUES ('{speakerId}, {organizerId}, {speakerName}, {industry}, {when}')
-    
-#     '''
-#     '''
+    response = make_response("Successfully scheduled event")
+    response.status_code = 200
+    return response
 
-#     cursor = db.get_db().cursor()
-#     cursor.execute(query)
-#     theData = cursor.fetchall()
-#     cursor = db.get_db().cursor()
-#     cursor.execute(query)
-#     theData = cursor.fetchall()
-    
-#     response = make_response(jsonify(theData))
-#     response.status_code = 200
-#     return response
-#     response = make_response(jsonify(theData))
-#     response.status_code = 200
-#     return response
+# generate event id
+@orbit.route('/generateEventId', methods=['GET'])
+def generate_event_id():
+    cursor = db.get_db().cursor()
+
+    query = '''
+        SELECT MAX(eventId) AS max_eventId 
+        FROM `Events`
+    '''
+    cursor.execute(query)
+    result = cursor.fetchone()
+
+    new_eventId = result['max_eventId'] + 1
+
+    response = make_response({'new_userID': new_eventId})
+    response.status_code = 200
+    return response
 
 @orbit.route('/Applications/<jobId>', methods=['GET'])
 def view_applications_for_job():
