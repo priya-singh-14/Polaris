@@ -30,6 +30,17 @@ def fetch_mentor():
         st.error(f"Error fetching mentees: {response.json().get('error')}")
         return []
     
+
+def fetch_jobs(mentee_id):
+    response = requests.get(f"http://web-api:4000/o/MatchingJobs/{mentee_id}", params={"mentee_id": mentee_id})
+    
+    if response.status_code == 200:
+            return response.json()
+    else:
+        st.error(f"Error fetching jobs: {response.status_code} - {response.text}")
+        return []
+
+
 mentorId = fetch_mentor().get("MAX(mentorId)")
 
 if mentorId == 15 :
@@ -87,8 +98,21 @@ if mentees:
                     )
                 else:
                     st.write("Resume not available.")
-            
-        
     st.markdown("---")
+else:
+    st.write("No mentees found.")
 
-    st.subheader(f"Recommended Jobs for {selected_mentee['name']}")
+st.subheader(f"Recommended Jobs for {selected_mentee['name']}")
+
+st.write(selected_mentee['menteeId'])
+
+relevant_jobs = fetch_jobs(selected_mentee['menteeId'])
+if relevant_jobs:
+    for idx, job in enumerate(relevant_jobs):
+        with st.container(border=True):
+            st.text(f"Role: {job['role']}")
+            st.text(f"Description: {job['jobDesc']}")
+else :
+            st.text("No Matching Jobs at This Time")             
+
+
