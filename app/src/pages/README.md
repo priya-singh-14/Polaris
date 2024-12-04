@@ -17,3 +17,15 @@ Advisors are the administrators behind the network. They match mentors and mente
 ## Employer Resources and Functionality
 Employers can use the platform to locate students to fill positions at their companies. They can view a student's robust profile, receive applications directly through the site, and connect with students at networking events where they can talk about what their company is working on and gauge interest. 
 
+## How to Install and Run 
+Create and run the docker containers using the docker-compose.yaml file that connects the API, webpage, and SQL database. Then, run on your machine using the local port. 
+Necessary packages and files include:
+- Streamlit library for app functionality and UI
+- Flask for API design and use
+
+## How to Use
+The home page displays four personas you can enter as. User authentication is not required and you can access the page of any persona! You can choose to navigate the website as a mentee, mentor, advisor, or an employer, and each have different functionalities and uses for the site. Navigate through the pages using the buttons that prompt your accessible actions and resources. Additions to a profile, chat log, event, etc. will be added to the database for future reference and use. 
+
+## Credits
+This project was created for CS3200 Database Design taught by Dr. Mark Fontenot in the fall of 2024 at Northeastern University. 
+Northeastern students Priya Singh, Lucas Gay, Ava Knight, Raphael Sogueco, and Sandra Cao designed, programmed, implemented, and currently maintain all aspects of this app including the intial concepting and planning, the SQL database, the sample data, the REST API, and the app layout, design, and functionality. 
