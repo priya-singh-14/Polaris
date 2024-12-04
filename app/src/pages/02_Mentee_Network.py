@@ -44,7 +44,7 @@ if events:
      for event in events:
             with st.container(border=True):
                 st.write(f"**Industry:** {event['industry']}")
-                st.write(f"**Speaker:** {event['speakerId']}")
+                st.write(f"**Speaker:** {event['speakerName']}")
                 st.write(f"**Date:** {event['when']}")
 else:
     st.write("No events found.")
