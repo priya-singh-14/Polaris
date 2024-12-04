@@ -74,7 +74,24 @@ else :
     with st.chat_message(role):
             st.markdown(chat["text"])
 
-if prompt := st.chat_input("Ask your mentor a question..."):
-    with st.chat_message("user"):
-        st.markdown(f"**You:** {prompt}")
-        st.session_state.messages.append({"role": "user", "content": prompt})
+if chat := st.chat_input("Ask your mentor a question..."):
+  with st.chat_message("user"):
+    st.markdown(chat)
+  
+  chat_data = {
+     "senderId" : menteeId,
+     "recipientId" : recipientId,
+     "text" : chat,
+  }
+
+  # st.write(chat_data)
+
+  try:
+            create_new_chat = requests.post('http://web-api:4000/o/createNewChat', json=chat_data)
+            if create_new_chat.status_code == 200:
+                st.info("View Profile Details on the Previous Page")
+            else:
+                st.error("Error creating user profile. Please try again later.")
+
+  except requests.exceptions.RequestException as e:
+            st.error(f"Error connecting to server: {str(e)}")
