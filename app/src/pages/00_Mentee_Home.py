@@ -32,6 +32,11 @@ if st.button('Apply To Jobs',
              use_container_width=True):
   st.switch_page('pages/05_Mentee_Jobs.py')
 
+if st.button('View Your Applications', 
+             type='primary',
+             use_container_width=True):
+  st.switch_page('pages/09_Mentee_Applications.py')
+
 if st.button('Chat', 
              type='primary',
              use_container_width=True):
