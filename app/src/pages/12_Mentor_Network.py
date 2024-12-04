@@ -11,7 +11,7 @@ import numpy as np
 directory = 'assets/'
 st.set_page_config(layout='wide')
 
-mentorId = 3
+mentorId = 15
 
 SideBarLinks()
 
@@ -44,7 +44,7 @@ def fetch_application_data(mentee_id):
     
 
 # instead of hardcoding, use the max mentorID implementation
-mentees = fetch_mentees(3)
+mentees = fetch_mentees(mentorId)
 
 # x = np.linspace(0, 31)
 # y = np.linspace(0, 30)
