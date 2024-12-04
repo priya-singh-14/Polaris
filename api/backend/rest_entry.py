@@ -2,9 +2,8 @@ from flask import Flask
 
 from backend.db_connection import db
 from backend.customers.customer_routes import customers
-from backend.products.products_routes import products
+from backend.orbit.orbit_routes import orbit
 from backend.simple.simple_routes import simple_routes
-from backend.products.orbit_routes import orbit
 import os
 from dotenv import load_dotenv
 
