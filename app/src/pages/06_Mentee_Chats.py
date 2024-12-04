@@ -74,14 +74,7 @@ else :
     with st.chat_message(role):
             st.markdown(chat["text"])
 
-# Handle User Input
-if prompt := st.chat_input("Ask your mentor or peers a question..."):
-    # Display user's message
+if prompt := st.chat_input("Ask your mentor a question..."):
     with st.chat_message("user"):
         st.markdown(f"**You:** {prompt}")
         st.session_state.messages.append({"role": "user", "content": prompt})
-
-    # Generate bot response
-    with st.chat_message("assistant"):
-        response = st.write_stream(response_generator())
-        st.session_state.messages.append({"role": "assistant", "content": response})
