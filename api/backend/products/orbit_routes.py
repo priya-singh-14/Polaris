@@ -987,13 +987,8 @@ def return_applicant(menteeId):
     return response
 
 
-@orbit.route('/Metrics/<menteeId>', methods=['GET'])
-def view_mentee_progress():
-
-    the_data = request.json
-    current_app.logger.info(the_data)
-
-    menteeId = the_data['menteeId']
+@orbit.route('/Metrics/<int:menteeId>', methods=['GET'])
+def view_mentee_progress(menteeId):
 
     query = f'''
         SELECT  menteeId, progressNotes, adjustmentNotes
@@ -1072,5 +1067,46 @@ def view_applications_for_job():
     theData = cursor.fetchall()
     
     response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+@orbit.route('/ApplicationTotal/<int:menteeId>', methods=['GET'])
+def view_application_total(menteeId):
+
+    query = f'''
+        SELECT COUNT(*) as total
+        FROM Applications
+        WHERE Applications.studentId = {menteeId}
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+@orbit.route('/createMetric', methods=['POST'])
+def post_new_metrics():
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+
+    mentorId = the_data['mentorId']
+    menteeId = the_data['menteeId']
+    progressNotes = the_data['progressNotes']
+    adjustmentNotes = the_data['adjustmentNotes']
+
+    query = '''
+        INSERT INTO Metrics (mentorId, menteeId, progressNotes, adjustmentNotes)
+        VALUES (%s, %s, %s, %s)
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (mentorId, menteeId, progressNotes, adjustmentNotes))
+    db.get_db().commit()
+    
+    response = make_response(jsonify(the_data))
     response.status_code = 200
     return response

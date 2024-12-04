@@ -5,9 +5,13 @@ from modules.nav import SideBarLinks
 import requests
 from PIL import Image
 import os
+import matplotlib.pyplot as plt
+import numpy as np
 
 directory = 'assets/'
 st.set_page_config(layout='wide')
+
+mentorId = 3
 
 SideBarLinks()
 
@@ -20,10 +24,37 @@ def fetch_mentees(mentor_id):
         st.error(f"Error fetching mentees: Please Build Profile First{response.json().get('error')}")
         return []
 
-st.title(f"Your Network, {st.session_state['first_name']}.")
+def fetch_metrics(mentee_id):
+    response = requests.get(f"http://web-api:4000/o/Metrics/{menteeId}")
+    
+    if response.status_code == 200:
+       return response.json() 
+    else:
+        st.error(f"Error fetching metrics")
+        return []
+    
+def fetch_application_data(mentee_id):
+    response = requests.get(f"http://web-api:4000/o/ApplicationTotal/{menteeId}")
+    
+    if response.status_code == 200:
+       return response.json() 
+    else:
+        st.error(f"Error fetching metrics")
+        return []
+    
 
 # instead of hardcoding, use the max mentorID implementation
 mentees = fetch_mentees(3)
+
+# x = np.linspace(0, 31)
+# y = np.linspace(0, 30)
+
+# fig, ax = plt.subplots()
+
+# ax.plot(x, y) 
+# st.pyplot(fig)
+
+st.title(f"Your Network, {st.session_state['first_name']}.")
                 
 if mentees:
     for idx, mentee in enumerate(mentees):
@@ -51,6 +82,57 @@ if mentees:
                 )
             else:
                 st.write("Resume not available.")
+            
+            st.markdown("---")
+            menteeId = mentee['menteeId']   
+            st.write("***Metrics***:")
+
+            metrics = fetch_metrics(menteeId)
+            applications = fetch_application_data(menteeId)
+
+            if metrics :
+                for metric in metrics:
+                    st.text(f"Progress: {metric['progressNotes']}")
+                    st.text(f"Adjustment: {metric['adjustmentNotes']}")
+
+            else :
+                st.text("No Metrics Available at This Time")
+
+                
+
+            if applications :
+                st.text(f"Applications Submitted: {applications[0]['total']}")
+
+            else :
+                st.text("No Application Data Available at This Time")
+            
+            with st.expander("Add Notes", expanded=False):
+                with st.form(key=f"MetricsForm_{idx}"):
+                    progressNotes = st.text_input("Progress Notes")
+                    adjustmentNotes = st.text_input("Adjustment Notes")
+
+                    submit_button = st.form_submit_button(label="Save")
+
+                    if submit_button:
+                        metric_data = {
+                            "progressNotes": progressNotes,
+                            "adjustmentNotes": adjustmentNotes,
+                            "mentorId": mentorId, 
+                            "menteeId": menteeId
+                        }
+
+                        st.write("Data to be submitted:", metric_data)
+
+                        try:
+                            create_metric = requests.post('http://web-api:4000/o/createMetric', json=metric_data)
+
+                            if create_metric.status_code == 200:
+                                st.info("Metrics Added")
+                                st.session_state['profile_built'] = True
+                            else:
+                                st.error(f"Error creating metrics. Status code: {create_metric.status_code}")
+                        except requests.exceptions.RequestException as e:
+                            st.error(f"Error connecting to server: {str(e)}")
 else:
     st.write("No mentees found.")
 
