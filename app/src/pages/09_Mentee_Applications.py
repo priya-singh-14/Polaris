@@ -24,7 +24,7 @@ def get_applications(menteeId):
     return None
 
 
-menteeId = 15
+menteeId = 27
 mentee_applications = get_applications(menteeId)
 
 if mentee_applications:
