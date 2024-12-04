@@ -469,18 +469,17 @@ def post_new_job():
     role = the_data['role']
     jobDesc = the_data['jobDesc']
     filledBool = the_data['filledBool']
-    majors = the_data['majors']
 
     query = '''
-        INSERT INTO JobPosting (empId, companyId, role, jobDesc, majors, filledbool)
-        VALUES (%s, %s, %s, %s, %s, %s )
+        INSERT INTO JobPosting (empId, companyId, role, jobDesc, filledbool)
+        VALUES (%s, %s, %s, %s, %s )
     '''
 
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
-    cursor.execute(query, (empId, companyId, role, jobDesc, majors, filledBool))
+    cursor.execute(query, (empId, companyId, role, jobDesc, filledBool))
     db.get_db().commit()
     
     response = make_response("Successfully added position")
@@ -833,30 +832,10 @@ def delete_mentee():
 
 # return user information 
 @orbit.route('/User', methods=['GET'])
-def return_gen_user_info():
+def return_user_info():
     query = '''
         SELECT  *
         FROM User
-    '''
-
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    theData = cursor.fetchall()
-    
-    response = make_response(jsonify(theData))
-    response.status_code = 200
-    return response
-
-# return user information 
-@orbit.route('/MatchingJobs/<int:menteeId>', methods=['GET'])
-def match_jobs_to_mentee(menteeId):
-
-    query = f'''
-        SELECT jp.role, jp.jobDesc
-        FROM JobPosting jp JOIN Mentee m Join User on m.userId = User.userId 
-        ON jp.majors LIKE CONCAT('%', User.major, '%') 
-        OR jp.majors LIKE CONCAT('%', User.minor, '%')
-        WHERE m.menteeId = {menteeId}
     '''
 
     cursor = db.get_db().cursor()
