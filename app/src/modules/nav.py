@@ -14,6 +14,15 @@ def MenteeHomeNav():
 def MenteeProfileNav():
     st.sidebar.page_link("01_Mentee_Profile.py", label="Profile", icon="📒")
 
+ #### ------------------------ Mentor ------------------------
+def MentorHomeNav():
+    st.sidebar.page_link("00_Mentor_Home.py", label="Home", icon="🏠")
+
+
+
+def MentorProfileNav():
+    st.sidebar.page_link("01_Mentor_Profile.py", label="Profile", icon="📒")
+
 
 #### ------------------------ General ------------------------
 def HomeNav():
@@ -96,9 +105,8 @@ def SideBarLinks(show_home=False):
 
         # If the user role is usaid worker, show the Api Testing page
         if st.session_state["role"] == "mentor":
-            PredictionNav()
-            ApiTestNav()
-            ClassificationNav()
+            MentorHomeNav()
+            MentorProfileNav()
 
         # If the user is an administrator, give them access to the administrator pages
         if st.session_state["role"] == "administrator":
