@@ -1,16 +1,21 @@
 import logging
-logger = logging.getLogger(__name__)
 import streamlit as st
 from streamlit_extras.app_logo import add_logo
-import requests
+import random
+import time
 from modules.nav import SideBarLinks
 
+# Logging setup
+logger = logging.getLogger(__name__)
 
+# Add Sidebar Links
 SideBarLinks()
 
-add_logo("assets/logo.svg", height=400)
+# Add Logo
+add_logo("assets/logo.png", height=400)
 
-st.title("Chat With Your Mentor")
+# Page title
+st.title("Mentee Chat Dashboard 💬")
 
 
 def fetch_mentee():
@@ -70,28 +75,14 @@ else :
     with st.chat_message(role):
             st.markdown(chat["text"])
 
-# st.write(chat_history)
+# Handle User Input
+if prompt := st.chat_input("Ask your mentor or peers a question..."):
+    # Display user's message
+    with st.chat_message("user"):
+        st.markdown(f"**You:** {prompt}")
+        st.session_state.messages.append({"role": "user", "content": prompt})
 
-if chat := st.chat_input("Type Here"):
-  with st.chat_message("user"):
-    st.markdown(chat)
-  
-  chat_data = {
-     "senderId" : menteeId,
-     "recipientId" : recipientId,
-     "text" : chat,
-  }
-
-  # st.write(chat_data)
-
-  try:
-            create_new_chat = requests.post('http://web-api:4000/o/createNewChat', json=chat_data)
-            if create_new_chat.status_code == 200:
-                st.info("View Profile Details on the Previous Page")
-            else:
-                st.error("Error creating user profile. Please try again later.")
-
-  except requests.exceptions.RequestException as e:
-            st.error(f"Error connecting to server: {str(e)}")
-
-
+    # Generate bot response
+    with st.chat_message("assistant"):
+        response = st.write_stream(response_generator())
+        st.session_state.messages.append({"role": "assistant", "content": response})
