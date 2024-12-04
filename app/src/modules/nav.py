@@ -113,7 +113,7 @@ def SideBarLinks(show_home=False):
             AdminPageNav()
 
         if st.session_state["role"] == "employer":
-            AdminPageNav()
+
 
     # Always show the About page at the bottom of the list of links
     AboutPageNav()
