@@ -846,6 +846,26 @@ def return_gen_user_info():
     response.status_code = 200
     return response
 
+# return user information 
+@orbit.route('/MatchingJobs/<int:menteeId>', methods=['GET'])
+def match_jobs_to_mentee(menteeId):
+
+    query = f'''
+        SELECT jp.role, jp.jobDesc
+        FROM JobPosting jp JOIN Mentee m Join User on m.userId = User.userId 
+        ON jp.majors LIKE CONCAT('%', User.major, '%') 
+        OR jp.majors LIKE CONCAT('%', User.minor, '%')
+        WHERE m.menteeId = {menteeId}
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
 # select user by uid 
 @orbit.route('/User/<userid>', methods=['GET'])
 def return_user_info(userid):
