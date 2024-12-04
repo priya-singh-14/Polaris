@@ -22,10 +22,10 @@ if st.button('View Profile',
              use_container_width=True):
   st.switch_page('pages/01_Mentee_Profile.py')
 
-# if st.button('Expand Network', 
-#              type='primary',
-#              use_container_width=True):
-#   st.switch_page('pages/02_Mentee_Network.py')
+if st.button('View Events', 
+             type='primary',
+             use_container_width=True):
+  st.switch_page('pages/02_Mentee_Network.py')
 
 if st.button('Apply To Jobs', 
              type='primary',
