@@ -16,12 +16,18 @@ def MenteeProfileNav():
 
  #### ------------------------ Mentor ------------------------
 def MentorHomeNav():
-    st.sidebar.page_link("00_Mentor_Home.py", label="Home", icon="🏠")
+    st.sidebar.page_link("10_Mentor_Home.py", label="Home", icon="🏠")
 
 
 
 def MentorProfileNav():
-    st.sidebar.page_link("01_Mentor_Profile.py", label="Profile", icon="📒")
+    st.sidebar.page_link("11_Mentor_Profile.py", label="Profile", icon="📒")
+
+ #### ------------------------ Employer ------------------------
+def EmployerHomeNav():
+    st.sidebar.page_link("40_Employer_Home.py", label="Home", icon="🏠")
+
+
 
 
 #### ------------------------ General ------------------------
@@ -32,38 +38,8 @@ def HomeNav():
 def AboutPageNav():
     st.sidebar.page_link("pages/30_About.py", label="About", icon="🧠")
 
-#### ------------------------ Examples for Role of pol_strat_advisor ------------------------
-def PolStratAdvHomeNav():
-    st.sidebar.page_link(
-        "pages/00_Pol_Strat_Home.py", label="Political Strategist Home", icon="👤"
-    )
 
 
-def WorldBankVizNav():
-    st.sidebar.page_link(
-        "pages/01_World_Bank_Viz.py", label="World Bank Visualization", icon="🏦"
-    )
-
-
-def MapDemoNav():
-    st.sidebar.page_link("pages/02_Map_Demo.py", label="Map Demonstration", icon="🗺️")
-
-
-## ------------------------ Examples for Role of usaid_worker ------------------------
-def ApiTestNav():
-    st.sidebar.page_link("pages/12_API_Test.py", label="Test the API", icon="🛜")
-
-
-def PredictionNav():
-    st.sidebar.page_link(
-        "pages/11_Prediction.py", label="Regression Prediction", icon="📈"
-    )
-
-
-def ClassificationNav():
-    st.sidebar.page_link(
-        "pages/13_Classification.py", label="Classification Demo", icon="🌺"
-    )
 
 
 #### ------------------------ System Admin Role ------------------------
@@ -113,6 +89,7 @@ def SideBarLinks(show_home=False):
             AdminPageNav()
 
         if st.session_state["role"] == "employer":
+            MentorHomeNav()
 
 
     # Always show the About page at the bottom of the list of links
