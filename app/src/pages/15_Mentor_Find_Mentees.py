@@ -47,9 +47,13 @@ def fetch_relevant_mentees(college, major, minor):
 
 if option == "All" :
      mentees = fetch_all_mentees()
+     total = len(mentees)
+     st.info(f"Here are all {total} registered mentees")
 
 elif option == "Related to You" :
     mentees = fetch_relevant_mentees(college, major, minor)
+    total = len(mentees)
+    st.info(f"Here are all {total} mentees that share your major, minor, or college")
 
 else :   
     mentees = []
