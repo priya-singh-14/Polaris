@@ -846,6 +846,22 @@ def return_user_info():
     response.status_code = 200
     return response
 
+# select user by uid 
+@orbit.route('/User/<userid>', methods=['GET'])
+def return_user_info(userid):
+    query = '''
+        SELECT *
+        FROM User
+        WHERE userId = %s
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (userid,))
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
 # remove users that are no longer active or to whom the platform does not suit
 @orbit.route('/User', methods = ['DELETE'])
 def delete_user():

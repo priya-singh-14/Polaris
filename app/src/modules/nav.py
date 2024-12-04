@@ -5,6 +5,25 @@
 import streamlit as st
 
 
+#### ------------------------ Mentee ------------------------
+def MenteeHomeNav():
+    st.sidebar.page_link("00_Mentee_Home.py", label="Home", icon="🏠")
+
+
+
+def MenteeProfileNav():
+    st.sidebar.page_link("01_Mentee_Profile.py", label="Profile", icon="📒")
+
+ #### ------------------------ Mentor ------------------------
+def MentorHomeNav():
+    st.sidebar.page_link("00_Mentor_Home.py", label="Home", icon="🏠")
+
+
+
+def MentorProfileNav():
+    st.sidebar.page_link("01_Mentor_Profile.py", label="Profile", icon="📒")
+
+
 #### ------------------------ General ------------------------
 def HomeNav():
     st.sidebar.page_link("Home.py", label="Home", icon="🏠")
@@ -75,22 +94,26 @@ def SideBarLinks(show_home=False):
 
     # Show the other page navigators depending on the users' role.
     if st.session_state["authenticated"]:
+        
 
-        # Show World Bank Link and Map Demo Link if the user is a political strategy advisor role.
-        if st.session_state["role"] == "pol_strat_advisor":
-            PolStratAdvHomeNav()
-            WorldBankVizNav()
-            MapDemoNav()
+        # Show appropriate pages if you are a mentee.
+        if st.session_state["role"] == "mentee":
+            MenteeHomeNav()
+            MenteeProfileNav()
+
+
 
         # If the user role is usaid worker, show the Api Testing page
-        if st.session_state["role"] == "usaid_worker":
-            PredictionNav()
-            ApiTestNav()
-            ClassificationNav()
+        if st.session_state["role"] == "mentor":
+            MentorHomeNav()
+            MentorProfileNav()
 
         # If the user is an administrator, give them access to the administrator pages
         if st.session_state["role"] == "administrator":
             AdminPageNav()
+
+        if st.session_state["role"] == "employer":
+
 
     # Always show the About page at the bottom of the list of links
     AboutPageNav()
