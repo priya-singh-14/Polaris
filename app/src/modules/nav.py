@@ -5,6 +5,16 @@
 import streamlit as st
 
 
+#### ------------------------ Mentee ------------------------
+def MenteeHomeNav():
+    st.sidebar.page_link("00_Mentee_Home.py", label="Home", icon="🏠")
+
+
+
+def MenteeProfileNav():
+    st.sidebar.page_link("01_Mentee_Profile.py", label="Profile", icon="📒")
+
+
 #### ------------------------ General ------------------------
 def HomeNav():
     st.sidebar.page_link("Home.py", label="Home", icon="🏠")
