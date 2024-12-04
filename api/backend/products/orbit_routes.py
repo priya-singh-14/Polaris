@@ -848,7 +848,7 @@ def return_user_info():
 
 # select user by uid 
 @orbit.route('/User/<userid>', methods=['GET'])
-def return_user_info(userid):
+def return_user_info_by_id(userid):
     query = '''
         SELECT *
         FROM User
