@@ -32,30 +32,31 @@ all_jobs = get_all_jobs()
 if all_jobs:
 
         for idx, job in enumerate(all_jobs):
-         st.subheader(job['name'])
-         st.text(f"Role: {job['role']}")
-         st.text(f"Description: {job['jobDesc']}")
-         if st.button('Apply to Job', key=f"apply_button_{idx}"):
+         with st.container(border=True):
+            st.subheader(job['name'])
+            st.text(f"Role: {job['role']}")
+            st.text(f"Description: {job['jobDesc']}")
+            if st.button('Apply to Job', key=f"apply_button_{idx}"):
             
-            applicant_data = {
-            "studentId": menteeId,
-            "jobId": job['jobNum'],
-            "empId": job['empId'],
-            "completed": False,
-            "timeApplied": formatted_timestamp
-        }
+                applicant_data = {
+                "studentId": menteeId,
+                "jobId": job['jobNum'],
+                "empId": job['empId'],
+                "completed": False,
+                "timeApplied": formatted_timestamp
+            }
             
-            st.write(applicant_data)
+                st.write(applicant_data)
 
-            try:
-                create_application = requests.post(f'http://web-api:4000/o/NewApplications', json=applicant_data)
-             
-                if create_application.status_code == 200:
-                    st.success(f"Application submitted for {job['role']} at {job['name']}")
-                else:
-                    st.error("Error creating user profile. Please try again later.")
-            except requests.exceptions.RequestException as e:
-                st.error(f"Error connecting to server: {str(e)}")
+                try:
+                    create_application = requests.post(f'http://web-api:4000/o/NewApplications', json=applicant_data)
+                
+                    if create_application.status_code == 200:
+                        st.success(f"Application submitted for {job['role']} at {job['name']}")
+                    else:
+                        st.error("Error creating user profile. Please try again later.")
+                except requests.exceptions.RequestException as e:
+                    st.error(f"Error connecting to server: {str(e)}")
 
 else:
     st.write("No jobs found. Please check back later!")
