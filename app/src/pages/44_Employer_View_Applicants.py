@@ -31,14 +31,14 @@ def fetch_job_applications(jobId):
 all_applications = fetch_job_applications(jobId)
 if all_applications:
         for application in all_applications:
-            with st.container():
+            with st.container(border=True):
                 st.subheader(application['name'])
                 st.write(f"**Major:** {application['major']}")
                 st.write(f"**Minor:** {application['minor'] if application['minor'] else 'Not specified'}")
                 st.write(f"**Application Submitted:** {application['timeApplied']}")
                 
-                if st.button(f"Visit {application['name']}'s Profile"):
-                    st.session_state['menteeId'] = application['menteeId']
-                    st.switch_page('pages/45_Employer_Visit_Profile.py')
+                # if st.button(f"Visit {application['name']}'s Profile"):
+                #     st.session_state['menteeId'] = application['menteeId']
+                #     st.switch_page('pages/45_Employer_Visit_Profile.py')
 else:
         st.warning("No applications found.")
