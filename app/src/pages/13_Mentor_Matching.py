@@ -48,8 +48,7 @@ if mentorId == 15 :
     mentees = fetch_mentees(mentorId)
 
 else :
-    mentorId = 2 
-    # fetch_mentor().get("MAX(mentorId)") + 1
+    mentorId = fetch_mentor().get("MAX(mentorId)") + 1
     mentees = fetch_mentees(mentorId)
 
 if mentees:

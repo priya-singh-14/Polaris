@@ -41,7 +41,7 @@ if mentee_applications:
                 st.write(application_data)
                 jobId = application['jobId']
 
-                if st.button(f"Withdraw from Job"):
+                if st.button(f"Withdraw from Job", key=application['jobId']):
                     try:
                         response = requests.delete(f"http://web-api:4000/o/DeleteApplication", json=application_data) 
                         if response.status_code == 200:

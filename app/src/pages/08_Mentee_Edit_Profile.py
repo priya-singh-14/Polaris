@@ -13,7 +13,7 @@ st.title("Edit Mentee Profile")
 st.write("Edit your profile details!")
 
 
-menteeId = 15
+menteeId = 27
 mentee_data = {}
 
 get_mentee_data = requests.get(f'http://web-api:4000/o/getMenteeData/{menteeId}')
