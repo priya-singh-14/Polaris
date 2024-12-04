@@ -994,7 +994,7 @@ def view_mentee_progress():
     return response
 
 # create an event
-@orbit.route('/Events', methods=['POST'])
+@orbit.route('/createEvent', methods=['POST'])
 def createEvent():
     the_data = request.json
     current_app.logger.info(the_data)
