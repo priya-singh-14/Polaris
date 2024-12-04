@@ -953,7 +953,7 @@ def return_applicant(menteeId):
 
     query = f'''
         SELECT *
-        FROM Applications a JOIN Mentee m ON a.studentId = m.menteeId JOIN JobPosting j on a.jobId = j.jobNum
+        FROM Applications a JOIN Mentee m ON a.studentId = m.menteeId JOIN JobPosting j on a.jobId = j.jobNum JOIN Company c on j.companyId = c.companyId
         WHERE menteeId = {menteeId}
     '''
 

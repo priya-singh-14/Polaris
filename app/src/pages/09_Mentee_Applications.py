@@ -29,12 +29,12 @@ mentee_applications = get_applications(menteeId)
 
 if mentee_applications:
         for application in mentee_applications:
-            with st.container():
-                st.write(f"**Company:** {application['company']}")
+            with st.container(border=True):
+                st.write(f"**Company:** {application['name']}")
                 st.write(f"**Role:** {application['role']}")
                 st.write(f"**Application Submitted:** {application['timeApplied']}")
                 
-                if st.button(f"Withdraw from {application['name']}"):
+                if st.button(f"Withdraw from Job"):
                     st.write("delete")
 else:
         st.warning("No applications found.")
