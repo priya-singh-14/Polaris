@@ -469,17 +469,18 @@ def post_new_job():
     role = the_data['role']
     jobDesc = the_data['jobDesc']
     filledBool = the_data['filledBool']
+    majors = the_data['majors']
 
     query = '''
-        INSERT INTO JobPosting (empId, companyId, role, jobDesc, filledbool)
-        VALUES (%s, %s, %s, %s, %s )
+        INSERT INTO JobPosting (empId, companyId, role, jobDesc, majors, filledbool)
+        VALUES (%s, %s, %s, %s, %s, %s )
     '''
 
     current_app.logger.info(query)
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
-    cursor.execute(query, (empId, companyId, role, jobDesc, filledBool))
+    cursor.execute(query, (empId, companyId, role, jobDesc, majors, filledBool))
     db.get_db().commit()
     
     response = make_response("Successfully added position")
