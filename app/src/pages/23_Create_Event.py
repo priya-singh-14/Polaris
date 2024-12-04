@@ -14,7 +14,7 @@ directory = "assets/"
 
 st.title('Schedule a Networking Event')
 
-def fetch_employers(empId):
+def fetch_employers():
     response = requests.get(f"http://web-api:4000/o/Employers")
     
     if response.status_code == 200:
