@@ -10,6 +10,7 @@ from flask import jsonify
 from flask import make_response
 from flask import current_app
 from backend.db_connection import db
+from datetime import datetime
 
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
@@ -923,6 +924,26 @@ def return_events():
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
+
+# returns a list of networking events and information
+@orbit.route('/Events/<date>', methods=['GET'])
+def return_events_on_date(date):
+    
+    input_date = datetime.strptime(date, '%Y-%m-%d')
+    query = '''
+            SELECT *
+            FROM Events
+            WHERE DATE(Events.when) = %s
+        '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (input_date.strftime('%Y-%m-%d'),))
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
 
 
 # remove an event from the schedule
