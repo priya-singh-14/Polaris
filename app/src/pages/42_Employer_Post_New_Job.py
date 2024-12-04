@@ -31,6 +31,7 @@ with st.form(key="new_job_form"):
     role = st.text_input("Role")
     description = st.text_input("Description")
     company = st.text_input("Company")
+    desiredMajors = st.text_input("Desired Majors (as a comma separated list)")
 
     submit_button = st.form_submit_button(label="Post Job")
 
@@ -41,6 +42,8 @@ with st.form(key="new_job_form"):
          st.error("Job description is required.")
         elif not company:
          st.error("Company is required.")
+        elif not desiredMajors:
+         st.error("Company is required.")
 
         else:
             job_data = {
@@ -48,7 +51,8 @@ with st.form(key="new_job_form"):
             "companyId": companyId,
             "jobDesc": description,
             "role": role,
-            "filledBool": status
+            "filledBool": status,
+            "majors": desiredMajors
             }
 
         st.write(job_data)

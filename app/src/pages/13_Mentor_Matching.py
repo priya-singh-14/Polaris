@@ -30,6 +30,17 @@ def fetch_mentor():
         st.error(f"Error fetching mentees: {response.json().get('error')}")
         return []
     
+
+def fetch_jobs(mentee_id):
+    response = requests.get(f"http://web-api:4000/o/MatchingJobs/{mentee_id}", params={"mentee_id": mentee_id})
+    
+    if response.status_code == 200:
+            return response.json()
+    else:
+        st.error(f"Error fetching jobs: {response.status_code} - {response.text}")
+        return []
+
+
 mentorId = fetch_mentor().get("MAX(mentorId)")
 
 if mentorId == 15 :
@@ -87,8 +98,43 @@ if mentees:
                     )
                 else:
                     st.write("Resume not available.")
-            
-        
     st.markdown("---")
+else:
+    st.write("No mentees found.")
 
-    st.subheader(f"Recommended Jobs for {selected_mentee['name']}")
+st.subheader(f"Recommended Jobs for {selected_mentee['name']}")
+
+st.write(selected_mentee['menteeId'])
+
+relevant_jobs = fetch_jobs(selected_mentee['menteeId'])
+if relevant_jobs:
+    for idx, job in enumerate(relevant_jobs):
+        with st.container(border=True):
+            st.text(f"Role: {job['role']}")
+            st.text(f"Description: {job['jobDesc']}")
+            if st.button(f"Notify {selected_mentee['name']}?", key=idx):
+                recipientId = selected_mentee['menteeId']
+
+                chat_data = {
+                 'senderId': mentorId,
+                 'recipientId': recipientId,
+                 'text': f"Hi, {selected_mentee['name']}, I think you should check out this opportunity: {job['jobDesc']}"
+                }
+
+                st.write(chat_data)
+
+                try:
+                    create_user_response = requests.post('http://web-api:4000/o/createNewChat', json=chat_data)
+                    if create_user_response.status_code == 200:
+                         st.success('Notified!')
+                    
+                    else:
+                        st.error("Error creating user profile. Please try again later.")
+                except requests.exceptions.RequestException as e:
+                            st.error(f"Error connecting to server: {str(e)}")
+
+
+else :
+            st.text("No Matching Jobs at This Time")             
+
+

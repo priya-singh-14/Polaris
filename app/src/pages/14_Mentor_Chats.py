@@ -43,12 +43,13 @@ def fetch_mentor():
         st.error(f"Error fetching mentees: {response.json().get('error')}")
         return []
 
-mentor_Id = fetch_mentor().get("MAX(mentorId)") 
+mentor_Id=2
+# mentor_Id = fetch_mentor().get("MAX(mentorId)") 
 
-if mentor_Id == 15 :
-    mentor_Id = fetch_mentor().get("MAX(mentorId)") 
-else : 
-    mentor_Id = fetch_mentor().get("MAX(mentorId)") + 1
+# if mentor_Id == 15 :
+#     mentor_Id = fetch_mentor().get("MAX(mentorId)") 
+# else : 
+#     mentor_Id = fetch_mentor().get("MAX(mentorId)") + 1
 
 mentees = fetch_mentees(mentor_Id)
 directory = "assets/"
