@@ -12,11 +12,26 @@ SideBarLinks()
 st.subheader(f"Here are some potential mentees, {st.session_state['first_name']}.")
 
 # session state these values somewhere
-mentorId = 3
+mentorId = 15
 college = "Khoury"
 major = "Computer Science"
 minor = "Finance"
 directory = "assets/"
+
+option = st.selectbox('Explore Mentees?', ('All', 'Related to You'))
+
+def fetch_all_mentees():
+     try:
+        response = requests.get(f"http://web-api:4000/o/AllMentees") 
+        if response.status_code == 200:
+            return response.json()
+        else:
+            st.error(f"Error retrieving profile: {response.json().get('error', 'Unknown error')}")
+     except requests.exceptions.RequestException as e:
+        st.error(f"Error connecting to server: {str(e)}")
+    
+     return None
+     
 
 def fetch_relevant_mentees(college, major, minor):
     try:
@@ -30,7 +45,14 @@ def fetch_relevant_mentees(college, major, minor):
     return None
 
 
-mentees = fetch_relevant_mentees(college, major, minor)
+if option == "All" :
+     mentees = fetch_all_mentees()
+
+elif option == "Related to You" :
+    mentees = fetch_relevant_mentees(college, major, minor)
+
+else :   
+    mentees = []
 
 if mentees:
     for idx, mentee in enumerate(mentees):

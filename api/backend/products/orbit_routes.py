@@ -173,6 +173,22 @@ def get_relevant_mentee(college, major, minor):
     response.status_code = 200
     return response
 
+@orbit.route('/AllMentees', methods=['GET'])
+def get_all_mentee_data():
+
+    query = f'''
+        SELECT User.name, Mentee.bio, Mentee.userId, Mentee.menteeId, Mentee.resume, User.email, User.profilepic, User.major, User.minor, User.college
+        FROM Mentee join User on Mentee.userId = User.userId
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
 @orbit.route('/getMentorData/<int:mentorId>', methods=['GET'])
 def get_mentor_data(mentorId):
 
