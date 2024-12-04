@@ -683,7 +683,7 @@ def add_application():
     return response
 
 # withdraw an application
-@orbit.route('/Applications/<jobId>', methods = ['DELETE'])
+@orbit.route('/DeleteApplication', methods = ['DELETE'])
 def delete_application():
 
     the_data = request.json
@@ -694,14 +694,14 @@ def delete_application():
 
     query = f'''
         DELETE FROM Applications
-        WHERE studentId = {studentId} AND jobId = {jobId};
+        WHERE Applications.studentId = {studentId} AND Applications.jobId = {jobId};
     '''
 
     cursor = db.get_db().cursor()
     cursor.execute(query)
-    theData = cursor.fetchall()
+    db.get_db().commit()
         
-    response = make_response(jsonify(theData))
+    response = make_response(jsonify(the_data))
     response.status_code = 200
     return response
 

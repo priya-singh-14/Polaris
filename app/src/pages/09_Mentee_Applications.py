@@ -34,7 +34,21 @@ if mentee_applications:
                 st.write(f"**Role:** {application['role']}")
                 st.write(f"**Application Submitted:** {application['timeApplied']}")
                 
+                application_data = {
+                     "studentId" : menteeId,
+                     "jobId" : application['jobId']
+                }
+                st.write(application_data)
+                jobId = application['jobId']
+
                 if st.button(f"Withdraw from Job"):
-                    st.write("delete")
+                    try:
+                        response = requests.delete(f"http://web-api:4000/o/DeleteApplication", json=application_data) 
+                        if response.status_code == 200:
+                            st.info("Application Withdrawn")
+                        else:
+                            st.error(f"Error withdrawing Applicaton: {response.json().get('error', 'Unknown error')}")
+                    except requests.exceptions.RequestException as e:
+                        st.error(f"Error connecting to server: {str(e)}")
 else:
         st.warning("No applications found.")
