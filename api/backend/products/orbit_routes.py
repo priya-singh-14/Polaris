@@ -1126,3 +1126,19 @@ def post_new_metrics():
     response = make_response(jsonify(the_data))
     response.status_code = 200
     return response
+
+@orbit.route('/Companies', methods=['GET'])
+def view_all_companies():
+    query = '''
+        SELECT companyId, name, bio
+        FROM Company
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    
+    return response
