@@ -82,6 +82,7 @@ CREATE TABLE JobPosting (
     companyId INT NOT NULL,
     role VARCHAR(100),
     jobDesc TEXT,
+    majors VARCHAR(100),
     filledBool BOOLEAN,
     FOREIGN KEY (empId) REFERENCES Employer(empId)
         ON DELETE CASCADE,
