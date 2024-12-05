@@ -87,7 +87,7 @@ st.markdown('---')
 
 st.subheader("Your Upcoming Events:")
 if confirmed_events:
-    st.write("You have pending invites:")
+    # st.write("You have pending invites:")
     for event in confirmed_events:
         with st.container(border=True) :
             st.write(f"{event['industry']} Event on {event['when']}")

@@ -19,7 +19,6 @@ from datetime import datetime
 # routes.
 user = Blueprint('user', __name__)
 
-
 @user.route('/createNewUser', methods=['POST'])
 def create_profile():
     the_data = request.json
