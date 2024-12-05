@@ -33,6 +33,23 @@ if all_jobs:
             st.text(f"{job['jobDesc']}")
             st.text(f"Position: {job['role']}")
             st.text(f"Position Status : {status}")
+
+            job_data = {
+            "empId" : 1,
+            "jobId" : job['jobNum']
+             }
+            
             if st.button(f"View Applications for Job {job['jobNum']}", key=job['jobNum']):
                 st.session_state['jobNum'] = job['jobNum']
                 st.switch_page('pages/44_Employer_View_Applicants.py')
+
+            if st.button(f"Delete Job {job['jobNum']}", type="primary", key=job['jobNum']+1):
+                st.session_state['jobNum'] = job['jobNum']
+                try:
+                        response = requests.delete(f"http://web-api:4000/o/DeleteJobPosting", json=job_data) 
+                        if response.status_code == 200:
+                            st.info("Job Posting Removed")
+                        else:
+                            st.error(f"Error withdrawing Applicaton: {response.json().get('error', 'Unknown error')}")
+                except requests.exceptions.RequestException as e:
+                        st.error(f"Error connecting to server: {str(e)}")

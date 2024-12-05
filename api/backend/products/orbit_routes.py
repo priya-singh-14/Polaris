@@ -489,7 +489,7 @@ def post_new_job():
 
 # Remove a job opportunity that is no longer available or hiring. 
 # DELETE/JobPosting/<jobId>
-@orbit.route('/JobPosting/<int:jobId>', methods = ['DELETE'])
+@orbit.route('/DeleteJobPosting', methods = ['DELETE'])
 def delete_job():
 
     the_data = request.json
@@ -504,9 +504,9 @@ def delete_job():
 
     cursor = db.get_db().cursor()
     cursor.execute(query)
-    theData = cursor.fetchall()
+    db.get_db().commit()
         
-    response = make_response(jsonify(theData))
+    response = make_response(jsonify(the_data))
     response.status_code = 200
     return response
 

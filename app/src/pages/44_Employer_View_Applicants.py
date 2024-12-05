@@ -13,7 +13,7 @@ directory = 'assets/'
 SideBarLinks()
 
 st.title(f"Submitted Applications")
-st.write(st.session_state['jobNum'])
+# st.write(st.session_state['jobNum'])
 
 jobId = st.session_state['jobNum']
 if isinstance(jobId, set):
@@ -39,7 +39,7 @@ if all_applications:
                 st.write(f"**Major:** {application['major']}")
                 st.write(f"**Minor:** {application['minor'] if application['minor'] else 'Not specified'}")
                 st.write(f"**Application Submitted:** {application['timeApplied']}")
-                
+
                 if application['resume'] and application['resume'].lower() != "none":
                     resume_path = os.path.join(directory, application['resume'])
                 if os.path.exists(resume_path):
