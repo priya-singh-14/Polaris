@@ -11,11 +11,6 @@ SideBarLinks()
 
 st.title('Welcome, Administrator')
 
-if st.button('Update ML Models', 
-             type='primary',
-             use_container_width=True):
-  st.switch_page('pages/21_ML_Model_Mgmt.py')
-
 if st.button('View Mentors and Mentees', 
              type='primary',
              use_container_width=True):

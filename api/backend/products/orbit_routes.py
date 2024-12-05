@@ -399,6 +399,24 @@ def get_recent_mentor():
     response.status_code = 200
     return response
 
+# Return the most recently created mentor profile
+@orbit.route('/Mentors/<int:advisorId>', methods=['GET'])
+def get_advisor_mentor(advisorId):
+
+    query = f'''
+        SELECT *
+        FROM Mentor Join User on Mentor.userId = User.userId
+        WHERE Mentor.advisorID = {advisorId}
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
 
 # Return the most recently created mentee profile
 @orbit.route('/mostRecentMentee', methods=['GET'])
@@ -527,6 +545,29 @@ def return_match():
     response.status_code = 200
     return response
 
+# Returns a match supervised by an advisor
+# GET/Match
+@orbit.route('/AdvisorMatch/<int:advisorId>', methods=['GET'])
+def return_advisor_match(advisorId):
+
+    query = f'''
+        SELECT *
+        FROM `Match`
+        JOIN Mentor ON `Match`.mentorId = Mentor.mentorId
+        JOIN Mentee ON `Match`.menteeId = Mentee.menteeId
+        JOIN User AS MentorUser ON Mentor.userId = MentorUser.userId
+        JOIN User AS MenteeUser ON Mentee.userId = MenteeUser.userId
+        WHERE Mentor.advisorId = {advisorId}
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
 # Returns mentor assigned to a given mentee 
 # GET/Match
 @orbit.route('/Match/<int:menteeId>', methods=['GET'])
@@ -608,25 +649,31 @@ def create_match():
 
 
 # change matches between mentors and mentees
-@orbit.route('/Match', methods = ['PUT'])
-def update_match(og_mentorId, og_menteeId, new_mentorId, new_menteeId):
+@orbit.route('/UpdateMatch', methods = ['PUT'])
+def update_match():
     
     the_data = request.json
-    current_app.logger.info(the_data)
+    og_mentorId = the_data['ogMentorId']
+    og_menteeId = the_data['ogMenteeId']
+    new_menteeId = the_data['newMenteeId']
+    new_mentorId = the_data['newMentorId']
 
-    query = f'''
+    query = '''
     UPDATE `Match`
-    SET mentorId = {new_mentorId}, menteeId = {new_menteeId}
-    WHERE mentorId = {og_mentorId}, menteeId = {og_menteeId}
+    SET mentorId = %s, menteeId = %s
+    WHERE mentorId = %s AND menteeId = %s
     '''
 
-    product_info = request.json
-    current_app.logger.info(product_info)
-
-    return "Success"
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (new_mentorId, new_menteeId, og_mentorId, og_menteeId))
+    db.get_db().commit()
+    
+    response = make_response("Successfully updated profile")
+    response.status_code = 200
+    return response
 
 # delete a match between a mentor and mentee
-@orbit.route('/Match', methods = ['DELETE'])
+@orbit.route('/DeleteMatch', methods = ['DELETE'])
 def delete_match():
 
     the_data = request.json
@@ -642,9 +689,9 @@ def delete_match():
 
     cursor = db.get_db().cursor()
     cursor.execute(query)
-    theData = cursor.fetchall()
+    db.get_db().commit()
         
-    response = make_response(jsonify(theData))
+    response = make_response(jsonify(the_data))
     response.status_code = 200
     return response
 
