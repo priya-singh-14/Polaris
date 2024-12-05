@@ -107,23 +107,24 @@ if mentees:
             metrics = fetch_metrics(menteeId)
             applications = fetch_application_data(menteeId)
 
-            if metrics :
-                for metric in metrics:
-                    st.write(f"**Progress**: {metric['progressNotes']}")
-                    st.write(f"**Adjustment**: {metric['adjustmentNotes']}")
+            with st.expander("Metric History"):
+                    if metrics :
+                        for metric in metrics:
+                            st.write(f"**Progress**: {metric['progressNotes']}")
+                            st.write(f"**Adjustment**: {metric['adjustmentNotes']}")
 
-            else :
-                st.text("No Metrics Available at This Time")
+                    else :
+                        st.text("No Metrics Available at This Time")
 
-                
+                    
 
-            if applications :
-                st.text(f"Applications Submitted: {applications[0]['total']}")
+                    if applications :
+                        st.text(f"Applications Submitted: {applications[0]['total']}")
 
-            else :
-                st.text("No Application Data Available at This Time")
+                    else :
+                        st.text("No Application Data Available at This Time")
             
-            with st.expander("Add Notes", expanded=False):
+            with st.expander("Add Metrics", expanded=False):
                 with st.form(key=f"MetricsForm_{idx}"):
                     progressNotes = st.text_input("Progress Notes")
                     adjustmentNotes = st.text_input("Adjustment Notes")
@@ -138,7 +139,7 @@ if mentees:
                             "menteeId": menteeId
                         }
 
-                        st.write("Data to be submitted:", metric_data)
+                        # st.write("Data to be submitted:", metric_data)
 
                         try:
                             create_metric = requests.post('http://web-api:4000/o/createMetric', json=metric_data)
