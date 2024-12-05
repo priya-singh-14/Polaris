@@ -848,28 +848,6 @@ def add_mentor(mentorId, userId, isWorking, isInSchool, company, currentPosition
     response.status_code = 200
     return response
 
-# change mentor details
-####
-####NOT DONE
-#####
-# @orbit.route('/Mentor/<mentorId>', methods = ['PUT'])
-# def update_mentor_details():
-    
-#     the_data = request.json
-#     current_app.logger.info(the_data)
-
-#     query = f'''
-#     UPDATE `Match`
-#     SET mentorId = {new_mentorId}, menteeId = {new_menteeId}
-#     WHERE mentorId = {og_mentorId}, menteeId = {og_menteeId}
-#     '''
-
-#     product_info = request.json
-#     current_app.logger.info(product_info)
-
-#     return "Success"
-
-# remove a mentor from the system
 @orbit.route('/Mentor', methods = ['DELETE'])
 def delete_mentor():
 
