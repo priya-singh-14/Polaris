@@ -121,6 +121,7 @@ CREATE TABLE `Events` (
     speakerName VARCHAR(50) NOT NULL,
     industry VARCHAR(100) NOT NULL,
     `when` DATETIME NOT NULL,
+    inviteAccepted BOOLEAN,
     PRIMARY KEY(eventId, organizerId),
     FOREIGN KEY (speakerId) REFERENCES Employer(empId),
     FOREIGN KEY (organizerId) REFERENCES Advisor(advisorId)

@@ -1031,6 +1031,7 @@ def return_events():
     query = '''
         SELECT  *
         FROM Events
+        WHERE Events.inviteAccepted = TRUE
     '''
 
     cursor = db.get_db().cursor()
@@ -1049,7 +1050,7 @@ def return_events_on_date(date):
     query = '''
             SELECT *
             FROM Events
-            WHERE DATE(Events.when) = %s
+            WHERE DATE(Events.when) = %s and Events.inviteAccepted = TRUE
         '''
 
     cursor = db.get_db().cursor()
