@@ -67,12 +67,15 @@ if recipientId is 0:
 
 else :
     chat_history = fetch_chats(menteeId, recipientId)
+    # st.write(chat_history)
 
-    for chat in chat_history:
-        senderId = chat['senderId']
-        role = "user" if menteeId == senderId else "assistant"
+chat_history = fetch_chats(menteeId, recipientId)
+
+for chat in chat_history:
+    senderId = chat['senderId']
+    role = "user" if menteeId == senderId else "assistant"
     with st.chat_message(role):
-            st.markdown(chat["text"])
+        st.markdown(chat["text"])
 
 if chat := st.chat_input("Ask your mentor a question..."):
   with st.chat_message("user"):

@@ -57,8 +57,8 @@ if mentees:
     for idx, mentee in enumerate(mentees):
         with st.container(border=True):
             img_path = os.path.join(directory, mentee["profilepic"])
-            if img_path!= "assets/":
-                if img_path!= "assets/":
+            if "assets/" not in mentee["profilepic"]:
+                    img_path = os.path.join(directory, mentee["profilepic"])
                     img = Image.open(img_path)
                     width, height = img.size
                     min_side = min(width, height)
@@ -78,8 +78,33 @@ if mentees:
                     
                     st.image(circular_img)
 
+                        # else:
+                        #     st.write("No profile picture available.")
+            elif "assets/" in mentee["profilepic"]:
+                    img_path = mentee["profilepic"]
+                    img = Image.open(img_path)
+                    width, height = img.size
+                    min_side = min(width, height)
+                    left = (width - min_side) / 2
+                    top = (height - min_side) / 2
+                    right = (width + min_side) / 2
+                    bottom = (height + min_side) / 2
+                    img = img.crop((left, top, right, bottom))
+                    
+                    mask = Image.new("L", (min_side, min_side), 0)
+                    draw = ImageDraw.Draw(mask)
+                    draw.ellipse((0, 0, min_side, min_side), fill=255)
+                    
+                    img = img.resize((140, 140)) 
+                    circular_img = Image.new("RGBA", (140, 140), (0, 0, 0, 0))
+                    circular_img.paste(img, (0, 0), mask.resize((140, 140)))
+                    
+                    st.image(circular_img)
+
+                        # else:
+                        #     st.write("No profile picture available.")
             else:
-                st.write("No profile picture available.")
+                    st.write("No profile picture available.")
 
             st.write(f"{mentee['name']}")
             if st.button(f"Chat with {mentee['name']}", key=mentee['menteeId']):

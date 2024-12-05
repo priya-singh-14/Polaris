@@ -15,7 +15,7 @@ selected_date = st.date_input("Select a date (leave blank for all events):", val
 
 def get_all_events() :
     try:
-            response = requests.get("http://web-api:4000/o/Events") 
+            response = requests.get("http://web-api:4000/c/Events") 
             if response.status_code == 200:
                 return response.json()
             else:
@@ -26,7 +26,7 @@ def get_all_events() :
 
 def get_event(date) :
     try:
-            response = requests.get(f"http://web-api:4000/o/Events/{date}") 
+            response = requests.get(f"http://web-api:4000/c/Events/{date}") 
             if response.status_code == 200:
                 return response.json()
             else:

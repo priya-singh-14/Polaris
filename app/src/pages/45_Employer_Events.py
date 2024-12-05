@@ -18,7 +18,7 @@ empId = 1
 def get_pending_invites(empId):
 
     try:
-        response = requests.get(f"http://web-api:4000/o/PendingEvents/{empId}") 
+        response = requests.get(f"http://web-api:4000/c/PendingEvents/{empId}") 
         if response.status_code == 200:
             return response.json()
         else:
@@ -31,7 +31,7 @@ def get_pending_invites(empId):
 def get_confirmed_events(empId):
 
     try:
-        response = requests.get(f"http://web-api:4000/o/Events/{empId}") 
+        response = requests.get(f"http://web-api:4000/c/Events/{empId}") 
         if response.status_code == 200:
             return response.json()
         else:
