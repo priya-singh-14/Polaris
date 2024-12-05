@@ -28,3 +28,8 @@ if st.button("Explore Candidates",
              type='primary',
              use_container_width=True):
   st.switch_page('pages/43_Employer_Find_Candidates.py')
+
+if st.button('Manage Events', 
+             type='primary',
+             use_container_width=True):
+  st.switch_page('pages/45_Employer_Events.py')

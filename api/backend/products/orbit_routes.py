@@ -89,6 +89,25 @@ def update_user_data():
     response.status_code = 200
     return response
 
+@orbit.route('/updateEvent', methods=['PUT'])
+def update_event_data():
+    
+    the_data = request.json
+    inviteAccepted = 1 if the_data['inviteAccepted'] else 0 
+
+    query = f'''
+        UPDATE Events 
+        SET inviteAccepted = %s
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (inviteAccepted))
+    db.get_db().commit()
+
+    response = make_response("Successfully updated profile")
+    response.status_code = 200
+    return response
+
 @orbit.route('/updateMentee', methods=['PUT'])
 def update_mentee_data():
     
@@ -1061,10 +1080,46 @@ def return_events_on_date(date):
     response.status_code = 200
     return response
 
+# returns a list of networking events and information
+@orbit.route('/PendingEvents/<int:empId>', methods=['GET'])
+def return_events_for_emp(empId):
+    
+    query = f'''
+            SELECT *
+            FROM Events Join Advisor on Events.organizerId = Advisor.advisorId 
+            Join User on Advisor.userId = User.userId
+            WHERE Events.speakerId = {empId} and Events.inviteAccepted = FALSE
+        '''
 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+# returns a list of networking events and information
+@orbit.route('/Events/<int:empId>', methods=['GET'])
+def return_confirmed_events_for_emp(empId):
+    
+    query = f'''
+            SELECT *
+            FROM Events Join Advisor on Events.organizerId = Advisor.advisorId 
+            Join User on Advisor.userId = User.userId
+            WHERE Events.speakerId = {empId} and Events.inviteAccepted = TRUE
+        '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
 
 # remove an event from the schedule
-@orbit.route('/Events', methods = ['DELETE'])
+@orbit.route('/DeleteEvent', methods = ['DELETE'])
 def delete_event():
 
     the_data = request.json
@@ -1074,14 +1129,14 @@ def delete_event():
 
     query = f'''
         DELETE FROM Events
-        WHERE userId = {eventId};
+        WHERE eventId = {eventId};
     '''
 
     cursor = db.get_db().cursor()
     cursor.execute(query)
-    theData = cursor.fetchall()
+    db.get_db().commit()
         
-    response = make_response(jsonify(theData))
+    response = make_response(jsonify(the_data))
     response.status_code = 200
     return response
 
