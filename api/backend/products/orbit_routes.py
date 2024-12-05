@@ -1160,20 +1160,20 @@ def createEvent():
     the_data = request.json
     current_app.logger.info(the_data)
 
-    eventId = the_data['eventId']
     speakerId = the_data['speakerId']
     organizerId = the_data['organizerId']
     speakerName = the_data['speakerName']
     industry = the_data['industry']
     when = the_data['when']
+    inviteAccepted = False
 
     query = '''
-        INSERT INTO `EVENTS` (eventId, speakerId, organizerId, speakerName, industry, `when`)
+        INSERT INTO Events (speakerId, organizerId, speakerName, industry, `when`, inviteAccepted)
         VALUES (%s, %s, %s, %s, %s, %s)
     '''
 
     cursor = db.get_db().cursor()
-    cursor.execute(query, (eventId, speakerId, organizerId, speakerName, industry, when) ) 
+    cursor.execute(query, (speakerId, organizerId, speakerName, industry, when, inviteAccepted) ) 
     db.get_db().commit()
 
     response = make_response("Successfully scheduled event")
