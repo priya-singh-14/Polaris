@@ -40,15 +40,26 @@ if all_applications:
                 st.write(f"**Minor:** {application['minor'] if application['minor'] else 'Not specified'}")
                 st.write(f"**Application Submitted:** {application['timeApplied']}")
 
-                if application['resume'] and application['resume'].lower() != "none":
+                if "assets/" not in application["resume"] and application['resume'] and application['resume'].lower() != "none":
                     resume_path = os.path.join(directory, application['resume'])
-                if os.path.exists(resume_path):
-                    st.download_button(
-                    label="Download Resume",
-                    data=open(resume_path, "rb").read(),
-                    file_name=f"{application['name']}_Resume.pdf",
-                    mime="application/pdf",
-                )
+                    if os.path.exists(resume_path):
+                        st.download_button(
+                        label="Download Resume",
+                        data=open(resume_path, "rb").read(),
+                        file_name=f"{application['name']}_Resume.pdf",
+                        mime="application/pdf",
+                        key=f"resume_{application['menteeId']}" 
+                    )
+                elif "assets/" in application["resume"] and application['resume'] and application['resume'].lower() != "none":
+                        resume_path = application['resume']
+                        if os.path.exists(resume_path):
+                            st.download_button(
+                            label="Download Resume",
+                            data=open(resume_path, "rb").read(),
+                            file_name=f"{application['name']}_Resume.pdf",
+                            mime="application/pdf",
+                            key=f"resume_{application['menteeId']}" 
+                        )
                 else:
                     st.write("Resume not available.")
 

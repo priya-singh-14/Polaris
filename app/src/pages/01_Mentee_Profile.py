@@ -2,6 +2,7 @@ import requests
 from PIL import Image
 import streamlit as st
 from modules.nav import SideBarLinks
+from PIL import Image, ImageDraw
 import os
 
 SideBarLinks()
@@ -45,10 +46,29 @@ else :
 if mentee_data:
     st.session_state['profile_built'] = True
     mentee_data = mentee_data[0] 
+    # st.write(f'{mentee_data.get("profilepic")}')
+
     
     if mentee_data.get("profilepic"):
-        img = Image.open(mentee_data['profilepic']) 
-        st.image(img, width=200)
+                img = Image.open(mentee_data['profilepic']) 
+                width, height = img.size
+                min_side = min(width, height)
+                left = (width - min_side) / 2
+                top = (height - min_side) / 2
+                right = (width + min_side) / 2
+                bottom = (height + min_side) / 2
+                img = img.crop((left, top, right, bottom))
+        
+                mask = Image.new("L", (min_side, min_side), 0)
+                draw = ImageDraw.Draw(mask)
+                draw.ellipse((0, 0, min_side, min_side), fill=255)
+
+
+                img = img.resize((140, 140)) 
+                circular_img = Image.new("RGBA", (140, 140), (0, 0, 0, 0))
+                circular_img.paste(img, (0, 0), mask.resize((140, 140)))
+        
+                st.image(circular_img)
     else:
         st.warning("No profile picture uploaded. Uploading a profile picture will make you more noticeable to employers and mentors!")
 

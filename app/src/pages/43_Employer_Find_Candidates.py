@@ -17,6 +17,8 @@ st.set_page_config(layout='wide')
 # Display appropriate sidebar links
 SideBarLinks()
 
+directory = "assets/"
+
 # Initialize session state variables
 if 'pdf_ref' not in ss:
     ss.pdf_ref = None
@@ -40,32 +42,57 @@ for mentee in results:
     response = requests.get(f"{FLASK_BACKEND}/o/viewMenteeProfile/{mentee['menteeId']}", timeout=10)
     response.raise_for_status()  # Raise exception for HTTP errors
     mentee_info = response.json()
+    profilepic = mentee_info[0]["profilepic"]
+    # st.write(profilepic)
     # Display mentee details
+    if "assets/" not in profilepic:
+                    img_path = os.path.join(directory, profilepic)
+                    img = Image.open(img_path)
+                    width, height = img.size
+                    min_side = min(width, height)
+                    left = (width - min_side) / 2
+                    top = (height - min_side) / 2
+                    right = (width + min_side) / 2
+                    bottom = (height + min_side) / 2
+                    img = img.crop((left, top, right, bottom))
+                    
+                    mask = Image.new("L", (min_side, min_side), 0)
+                    draw = ImageDraw.Draw(mask)
+                    draw.ellipse((0, 0, min_side, min_side), fill=255)
+                    
+                    img = img.resize((140, 140)) 
+                    circular_img = Image.new("RGBA", (140, 140), (0, 0, 0, 0))
+                    circular_img.paste(img, (0, 0), mask.resize((140, 140)))
+                    
+                    st.image(circular_img)
 
-    # Load the JPG image
-    image_path = f"/appcode/assets/{mentee_info[0]['profilepic']}" 
-    
-    if image_path != "/appcode/assets/":
-        img = Image.open(image_path)
-        width, height = img.size
-        min_side = min(width, height)
-        left = (width - min_side) / 2
-        top = (height - min_side) / 2
-        right = (width + min_side) / 2
-        bottom = (height + min_side) / 2
-        img = img.crop((left, top, right, bottom))
-                        
-        mask = Image.new("L", (min_side, min_side), 0)
-        draw = ImageDraw.Draw(mask)
-        draw.ellipse((0, 0, min_side, min_side), fill=255)
-                        
-        img = img.resize((140, 140)) 
-        circular_img = Image.new("RGBA", (140, 140), (0, 0, 0, 0))
-        circular_img.paste(img, (0, 0), mask.resize((140, 140)))
-                        
-        st.image(circular_img)
+                        # else:
+                        #     st.write("No profile picture available.")
+    elif "assets/" in profilepic:
+                    img_path = profilepic
+                    img = Image.open(img_path)
+                    width, height = img.size
+                    min_side = min(width, height)
+                    left = (width - min_side) / 2
+                    top = (height - min_side) / 2
+                    right = (width + min_side) / 2
+                    bottom = (height + min_side) / 2
+                    img = img.crop((left, top, right, bottom))
+                    
+                    mask = Image.new("L", (min_side, min_side), 0)
+                    draw = ImageDraw.Draw(mask)
+                    draw.ellipse((0, 0, min_side, min_side), fill=255)
+                    
+                    img = img.resize((140, 140)) 
+                    circular_img = Image.new("RGBA", (140, 140), (0, 0, 0, 0))
+                    circular_img.paste(img, (0, 0), mask.resize((140, 140)))
+                    
+                    st.image(circular_img)
+
+                        # else:
+                        #     st.write("No profile picture available.")
     else:
-        st.write("No profile picture available.")
+                    st.write("No profile picture available.")
     
 
     st.subheader(f"{mentee_info[0]['name']}")
@@ -74,7 +101,10 @@ for mentee in results:
     st.text(f"Email: {mentee_info[0]['email']}")
 
     file_name = mentee['resume'] 
-    pdf_path = Path(f"/appcode/assets/{file_name}")
+    if 'assets' not in file_name:
+        pdf_path = Path(f"/appcode/assets/{file_name}")
+    else :
+        pdf_path = Path(f"/appcode/{file_name}")
 
 # Check if the file exists
     if os.path.isfile(pdf_path) and pdf_path != "/appcode/assets":
