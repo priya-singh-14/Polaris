@@ -653,7 +653,7 @@ def delete_match():
 def return_spec_apps(jobNum):
 
     query = f'''
-        SELECT User.name, User.major, User.minor, Applications.timeApplied, Mentee.resume, Mentee.menteeId
+        SELECT User.name, User.major, User.minor, User.email, Applications.timeApplied, Mentee.resume, Mentee.menteeId
         FROM Applications JOIN Mentee ON Applications.studentId = Mentee.menteeId JOIN User ON Mentee.userId = User.userId
         WHERE jobId = {jobNum}
     '''

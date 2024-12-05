@@ -4,8 +4,11 @@ import requests
 
 import streamlit as st
 from modules.nav import SideBarLinks
+import os
 
 st.set_page_config(layout = 'wide')
+
+directory = 'assets/'
 
 SideBarLinks()
 
@@ -37,8 +40,23 @@ if all_applications:
                 st.write(f"**Minor:** {application['minor'] if application['minor'] else 'Not specified'}")
                 st.write(f"**Application Submitted:** {application['timeApplied']}")
                 
-                # if st.button(f"Visit {application['name']}'s Profile"):
-                #     st.session_state['menteeId'] = application['menteeId']
-                #     st.switch_page('pages/45_Employer_Visit_Profile.py')
+                if application['resume'] and application['resume'].lower() != "none":
+                    resume_path = os.path.join(directory, application['resume'])
+                if os.path.exists(resume_path):
+                    st.download_button(
+                    label="Download Resume",
+                    data=open(resume_path, "rb").read(),
+                    file_name=f"{application['name']}_Resume.pdf",
+                    mime="application/pdf",
+                )
+                else:
+                    st.write("Resume not available.")
+
+        
+
+                mailto_link = f"mailto:{application['email']}"
+                st.markdown(f"[Contact {application['name']}]({mailto_link})", unsafe_allow_html=True)
+                    
+                    
 else:
         st.warning("No applications found.")
