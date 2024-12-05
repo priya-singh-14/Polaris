@@ -55,7 +55,7 @@ if pending_invites:
                         "inviteAccepted": True
                 }
                     try:
-                        update_event = requests.put('http://web-api:4000/o/updateEvent', json=event_data)
+                        update_event = requests.put('http://web-api:4000/c/updateEvent', json=event_data)
 
                         if update_event.status_code == 200:
                             st.success("Invite Accepted!")
@@ -70,7 +70,7 @@ if pending_invites:
                     }
                     
                     try:
-                        update_event = requests.delete('http://web-api:4000/o/DeleteEvent', json=event_data)
+                        update_event = requests.delete('http://web-api:4000/c/DeleteEvent', json=event_data)
 
                         if update_event.status_code == 200:
                             st.success("Invite Declined!")
@@ -97,7 +97,7 @@ if confirmed_events:
                             }
                             
                             try:
-                                update_event = requests.delete('http://web-api:4000/o/DeleteEvent', json=event_data)
+                                update_event = requests.delete('http://web-api:4000/c/DeleteEvent', json=event_data)
 
                                 if update_event.status_code == 200:
                                     st.success("Event Canceled.")

@@ -18,7 +18,7 @@ menteeId = 27
 
 def get_all_jobs():
     try:
-        response = requests.get("http://web-api:4000/o/JobPosting") 
+        response = requests.get("http://web-api:4000/c/JobPosting") 
         if response.status_code == 200:
             return response.json()
         else:
@@ -49,7 +49,7 @@ if all_jobs:
                 st.write(applicant_data)
 
                 try:
-                    create_application = requests.post(f'http://web-api:4000/o/NewApplications', json=applicant_data)
+                    create_application = requests.post(f'http://web-api:4000/c/NewApplications', json=applicant_data)
                 
                     if create_application.status_code == 200:
                         st.success(f"Application submitted for {job['role']} at {job['name']}")

@@ -13,7 +13,7 @@ st.write("Edit your profile details!")
 menteeId = 27
 mentee_data = {}
 
-get_mentee_data = requests.get(f'http://web-api:4000/o/getMenteeData/{menteeId}')
+get_mentee_data = requests.get(f'http://web-api:4000/u/getMenteeData/{menteeId}')
 if get_mentee_data.status_code == 200:
     mentee_data = get_mentee_data.json()
 
@@ -63,14 +63,14 @@ if submit_button:
         st.write(profile_data)
 
         try:
-            update_user_response = requests.put('http://web-api:4000/o/updateUser', json=profile_data)
+            update_user_response = requests.put('http://web-api:4000/u/updateUser', json=profile_data)
 
             if update_user_response.status_code == 200:
                 st.success("User profile updated successfully!")
             else:
                 st.error("Error updating user profile. Please try again later.")
 
-            update_mentee_response = requests.put('http://web-api:4000/o/updateMentee', json=profile_data)
+            update_mentee_response = requests.put('http://web-api:4000/u/updateMentee', json=profile_data)
 
             if update_mentee_response.status_code == 200:
                 st.success("Mentee profile updated successfully!")

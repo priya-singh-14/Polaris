@@ -14,7 +14,7 @@ st.title(f"Jobs You've Posted, {st.session_state['first_name']}.")
 
 def fetch_job_postings(empId):
     try:
-        response = requests.get(f"http://web-api:4000/o/EmployerJobs/{empId}") 
+        response = requests.get(f"http://web-api:4000/c/EmployerJobs/{empId}") 
         if response.status_code == 200:
             return response.json()
         else:
@@ -46,7 +46,7 @@ if all_jobs:
             if st.button(f"Delete Job {job['jobNum']}", type="primary", key=job['jobNum']+1):
                 st.session_state['jobNum'] = job['jobNum']
                 try:
-                        response = requests.delete(f"http://web-api:4000/o/DeleteJobPosting", json=job_data) 
+                        response = requests.delete(f"http://web-api:4000/c/DeleteJobPosting", json=job_data) 
                         if response.status_code == 200:
                             st.info("Job Posting Removed")
                         else:

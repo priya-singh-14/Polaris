@@ -11,7 +11,7 @@ st.title('Schedule a Networking Event')
 
 # Fetch Employers
 def fetch_employers():
-    response = requests.get("http://web-api:4000/o/Employers")
+    response = requests.get("http://web-api:4000/u/Employers")
     if response.status_code == 200:
         return response.json()
     else:
@@ -20,7 +20,7 @@ def fetch_employers():
 
 # Fetch Companies
 def fetch_companies():
-    response = requests.get("http://web-api:4000/o/Companies")
+    response = requests.get("http://web-api:4000/c/Companies")
     if response.status_code == 200:
         return response.json()
     else:
@@ -29,7 +29,7 @@ def fetch_companies():
 
 # Fetch User Details by userId
 def fetch_user(user_id):
-    response = requests.get(f"http://web-api:4000/o/User/{user_id}")
+    response = requests.get(f"http://web-api:4000/u/User/{user_id}")
     if response.status_code == 200:
         return response.json()
     else:
@@ -88,7 +88,7 @@ if st.button("Submit"):
         }
         try:
             # POST Request to Create Event
-            response = requests.post("http://web-api:4000/o/createEvent", json=the_data)
+            response = requests.post("http://web-api:4000/c/createEvent", json=the_data)
             if response.status_code == 200:
                 st.success("Event successfully scheduled!")
             else:

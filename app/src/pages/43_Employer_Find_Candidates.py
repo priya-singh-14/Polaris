@@ -28,7 +28,7 @@ FLASK_BACKEND = "http://api:4000"
 
 # Fetch mentees data
 try:
-    response = requests.get(f"{FLASK_BACKEND}/o/Mentees", timeout=10)
+    response = requests.get(f"{FLASK_BACKEND}/u/Mentees", timeout=10)
     response.raise_for_status()  # Raise exception for HTTP errors
     results = response.json()
 except requests.exceptions.RequestException as e:
@@ -39,7 +39,7 @@ except requests.exceptions.RequestException as e:
 st.title(f"Explore Candidates, {ss.get('first_name', 'User')}.")
 
 for mentee in results:
-    response = requests.get(f"{FLASK_BACKEND}/o/viewMenteeProfile/{mentee['menteeId']}", timeout=10)
+    response = requests.get(f"{FLASK_BACKEND}/u/viewMenteeProfile/{mentee['menteeId']}", timeout=10)
     response.raise_for_status()  # Raise exception for HTTP errors
     mentee_info = response.json()
     profilepic = mentee_info[0]["profilepic"]

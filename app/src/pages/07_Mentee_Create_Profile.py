@@ -51,7 +51,7 @@ if submit_button:
             with open(resume_path, "wb") as f:
                 f.write(uploaded_resume.getbuffer())  
 
-        generate_userid_response = requests.get('http://web-api:4000/o/generateUserID')
+        generate_userid_response = requests.get('http://web-api:4000/u/generateUserID')
         if generate_userid_response.status_code == 200:
                 new_userID = generate_userid_response.json().get("new_userID")
                 st.info(f"Generated userID: {new_userID}")
@@ -74,7 +74,7 @@ if submit_button:
         st.session_state["profile_built"] = True
         
         try:
-            create_user_response = requests.post('http://web-api:4000/o/createNewUser', json=profile_data)
+            create_user_response = requests.post('http://web-api:4000/u/createNewUser', json=profile_data)
              
             if create_user_response.status_code == 200:
                 st.info("View Profile Details on the Previous Page")
@@ -82,7 +82,7 @@ if submit_button:
             else:
                 st.error("Error creating user profile. Please try again later.")
 
-            create_mentee_response = requests.post('http://web-api:4000/o/createNewMentee', json=profile_data)
+            create_mentee_response = requests.post('http://web-api:4000/u/createNewMentee', json=profile_data)
 
             if create_mentee_response.status_code == 200:
                 st.success("Mentee profile created successfully!")

@@ -14,7 +14,7 @@ st.header(f"Here Are Your Submitted Applications, {st.session_state['first_name'
 
 def get_applications(menteeId):
     try:
-        response = requests.get(f"http://web-api:4000/o/Applications/{menteeId}") 
+        response = requests.get(f"http://web-api:4000/c/Applications/{menteeId}") 
         if response.status_code == 200:
             return response.json()
         else:
@@ -43,7 +43,7 @@ if mentee_applications:
 
                 if st.button(f"Withdraw from Job", key=application['jobId']):
                     try:
-                        response = requests.delete(f"http://web-api:4000/o/DeleteApplication", json=application_data) 
+                        response = requests.delete(f"http://web-api:4000/c/DeleteApplication", json=application_data) 
                         if response.status_code == 200:
                             st.info("Application Withdrawn")
                         else:

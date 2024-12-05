@@ -26,7 +26,7 @@ Welcome to your mentor dashboard! This page allows you to interact with your mat
 """)
 
 def fetch_mentees(mentor_id):
-    response = requests.get(f"http://web-api:4000/o/MentorMentees/{mentor_id}", params={"mentor_id": mentor_id})
+    response = requests.get(f"http://web-api:4000/u/MentorMentees/{mentor_id}", params={"mentor_id": mentor_id})
     
     if response.status_code == 200:
         return response.json() 
@@ -35,7 +35,7 @@ def fetch_mentees(mentor_id):
         return []
 
 def fetch_mentor():
-    response = requests.get("http://web-api:4000/o/mostRecentMentor")
+    response = requests.get("http://web-api:4000/u/mostRecentMentor")
     
     if response.status_code == 200:
         return response.json() 

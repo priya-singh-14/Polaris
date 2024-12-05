@@ -1,7 +1,11 @@
 from flask import Flask
 
 from backend.db_connection import db
-from backend.products.orbit_routes import orbit
+from backend.outcome.outcome_routes import outcome
+from backend.users.user_routes import user
+from backend.career.career_routes import career
+
+
 import os
 from dotenv import load_dotenv
 
@@ -39,7 +43,10 @@ def create_app():
     # route is an HTTP verb and a resource (ex. GET cutomers)
     # gives app which collection of routes to respond to
     app.logger.info('current_app(): registering blueprints with Flask app object.')
-    app.register_blueprint(orbit, url_prefix='/o')
+    app.register_blueprint(outcome, url_prefix='/o')
+    app.register_blueprint(user, url_prefix='/u')
+    app.register_blueprint(career, url_prefix='/c')
+
 
     # Don't forget to return the app object
     return app

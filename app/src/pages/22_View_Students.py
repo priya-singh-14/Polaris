@@ -19,7 +19,7 @@ directory = 'assets/'
 def view_mentors():
 
     try:
-        response = requests.get(f"http://web-api:4000/o/viewMentorList") 
+        response = requests.get(f"http://web-api:4000/u/viewMentorList") 
         if response.status_code == 200:
             return response.json()
         else:
@@ -33,7 +33,7 @@ mentors = view_mentors()
 
 def view_mentees():
     try:
-        response = requests.get(f"http://web-api:4000/o/AllMentees") 
+        response = requests.get(f"http://web-api:4000/u/AllMentees") 
         if response.status_code == 200:
             return response.json()
         else:
@@ -46,7 +46,7 @@ mentees = view_mentees()
 
 def delete_mentor(mentorId):
     try:
-        response = requests.delete(f"http://web-api:4000/o/delete_mentor/{mentorId}")
+        response = requests.delete(f"http://web-api:4000/u/delete_mentor/{mentorId}")
         if response.status_code == 200:
             st.success("Mentor successfully removed!")
             st.experimental_rerun()  # Refresh the page to update the list
@@ -57,7 +57,7 @@ def delete_mentor(mentorId):
 
 def delete_mentee(menteeId):
     try:
-        response = requests.delete(f"http://web-api:4000/o/delete_mentee/{menteeId}")
+        response = requests.delete(f"http://web-api:4000/u/delete_mentee/{menteeId}")
         if response.status_code == 200:
             st.success("Mentor successfully removed!")
             st.experimental_rerun()  # Refresh the page to update the list

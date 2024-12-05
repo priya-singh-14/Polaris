@@ -16,7 +16,7 @@ st.write("Edit your profile details!")
 mentorId = 15
 mentor_data = {}
 
-get_mentor_data = requests.get(f'http://web-api:4000/o/getMentorData/{mentorId}')
+get_mentor_data = requests.get(f'http://web-api:4000/u/getMentorData/{mentorId}')
 if get_mentor_data.status_code == 200:
     mentor_data = get_mentor_data.json()
 
@@ -62,14 +62,14 @@ if submit_button:
        # st.write(profile_data)
 
         try:
-            update_user_response = requests.put('http://web-api:4000/o/updateUser', json=profile_data)
+            update_user_response = requests.put('http://web-api:4000/u/updateUser', json=profile_data)
 
             if update_user_response.status_code == 200:
                 st.success("User profile updated successfully!")
             else:
                 st.error("Error updating user profile. Please try again later.")
 
-            update_mentor_response = requests.put('http://web-api:4000/o/updateMentor', json=profile_data)
+            update_mentor_response = requests.put('http://web-api:4000/u/updateMentor', json=profile_data)
 
             if update_mentor_response.status_code == 200:
                 st.success("Mentor profile updated successfully!")

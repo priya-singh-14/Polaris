@@ -9,7 +9,7 @@ SideBarLinks()
 
 def get_advisor(college):
     try:
-        response = requests.get(f"http://web-api:4000/o/PairAdvisor/{college}") 
+        response = requests.get(f"http://web-api:4000/u/PairAdvisor/{college}") 
         if response.status_code == 200:
             return response.json()
         else:
@@ -59,7 +59,7 @@ if submit_button:
             with open(profile_pic_path, "wb") as f:
                 f.write(profile_pic.getbuffer())
 
-        generate_userid_response = requests.get('http://web-api:4000/o/generateUserID')
+        generate_userid_response = requests.get('http://web-api:4000/u/generateUserID')
         if generate_userid_response.status_code == 200:
                 new_userID = generate_userid_response.json().get("new_userID")
                 # st.info(f"Generated userID: {new_userID}")
@@ -84,14 +84,14 @@ if submit_button:
         st.session_state['profile_built'] = True
 
         try:
-            create_user_response = requests.post('http://web-api:4000/o/createNewUser', json=profile_data)
+            create_user_response = requests.post('http://web-api:4000/u/createNewUser', json=profile_data)
              
             # if create_user_response.status_code == 200:
             #     st.info("View Profile Details on the Previous Page")
             # else:
             #     st.error("Error creating user profile. Please try again later.")
 
-            create_mentor_response = requests.post('http://web-api:4000/o/createNewMentor', json=profile_data)
+            create_mentor_response = requests.post('http://web-api:4000/u/createNewMentor', json=profile_data)
 
             if create_mentor_response.status_code == 200:
                 st.success("Mentor profile created successfully!")

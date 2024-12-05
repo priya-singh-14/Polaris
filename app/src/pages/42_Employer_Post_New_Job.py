@@ -59,7 +59,7 @@ with st.form(key="new_job_form"):
 
 
         try:
-            create_new_job = requests.post('http://web-api:4000/o/NewJobPosting', json=job_data)
+            create_new_job = requests.post('http://web-api:4000/c/NewJobPosting', json=job_data)
              
             if create_new_job.status_code == 200:
                 st.info("Job Posted")

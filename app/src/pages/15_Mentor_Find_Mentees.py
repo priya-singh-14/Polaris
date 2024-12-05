@@ -22,7 +22,7 @@ option = st.selectbox('Explore Mentees?', ('All', 'Related to You'))
 
 def fetch_all_mentees():
      try:
-        response = requests.get(f"http://web-api:4000/o/AllMentees") 
+        response = requests.get(f"http://web-api:4000/u/AllMentees") 
         if response.status_code == 200:
             return response.json()
         else:
@@ -35,7 +35,7 @@ def fetch_all_mentees():
 
 def fetch_relevant_mentees(college, major, minor):
     try:
-        response = requests.get(f"http://web-api:4000/o/Mentees/{college}/{major}/{minor}") 
+        response = requests.get(f"http://web-api:4000/u/Mentees/{college}/{major}/{minor}") 
         if response.status_code == 200:
             return response.json()
         else:

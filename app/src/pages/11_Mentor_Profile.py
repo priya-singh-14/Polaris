@@ -11,7 +11,7 @@ SideBarLinks()
 
 def fetch_mentor_profile(mentorId):
     try:
-        response = requests.get(f"http://web-api:4000/o/viewMentorProfile/{mentorId}") 
+        response = requests.get(f"http://web-api:4000/u/viewMentorProfile/{mentorId}") 
         if response.status_code == 200:
             return response.json()
         else:
@@ -21,7 +21,7 @@ def fetch_mentor_profile(mentorId):
     return None
 
 def fetch_mentor():
-    response = requests.get("http://web-api:4000/o/mostRecentMentor")
+    response = requests.get("http://web-api:4000/u/mostRecentMentor")
     
     if response.status_code == 200:
         return response.json() 

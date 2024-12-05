@@ -21,7 +21,7 @@ if isinstance(jobId, set):
 
 def fetch_job_applications(jobId):
     try:
-        response = requests.get(f"http://web-api:4000/o/JobApplications/{jobId}") 
+        response = requests.get(f"http://web-api:4000/c/JobApplications/{jobId}") 
         if response.status_code == 200:
             return response.json()
         else:

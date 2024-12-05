@@ -18,7 +18,7 @@ mentorId = 15
 SideBarLinks()
 
 def fetch_mentees(mentor_id):
-    response = requests.get(f"http://web-api:4000/o/MentorMentees/{mentor_id}", params={"mentor_id": mentor_id})
+    response = requests.get(f"http://web-api:4000/u/MentorMentees/{mentor_id}", params={"mentor_id": mentor_id})
     
     if response.status_code == 200:
         return response.json() 
@@ -36,7 +36,7 @@ def fetch_metrics(mentee_id):
         return []
     
 def fetch_application_data(mentee_id):
-    response = requests.get(f"http://web-api:4000/o/ApplicationTotal/{menteeId}")
+    response = requests.get(f"http://web-api:4000/c/ApplicationTotal/{menteeId}")
     
     if response.status_code == 200:
        return response.json() 
@@ -45,7 +45,7 @@ def fetch_application_data(mentee_id):
         return []
     
 def fetch_detailed_application_data(mentee_id):
-    response = requests.get(f"http://web-api:4000/o/Applications/{menteeId}")
+    response = requests.get(f"http://web-api:4000/c/Applications/{menteeId}")
     
     if response.status_code == 200:
        return response.json() 

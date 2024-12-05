@@ -18,7 +18,7 @@ st.title("Mentee Chat Dashboard 💬")
 
 
 def fetch_mentee():
-    response = requests.get("http://web-api:4000/o/mostRecentMentee")
+    response = requests.get("http://web-api:4000/u/mostRecentMentee")
     
     if response.status_code == 200:
         return response.json() 
