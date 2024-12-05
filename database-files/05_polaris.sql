@@ -127,11 +127,12 @@ CREATE TABLE `Events` (
 );
 
 CREATE TABLE Metrics (
+    metricId INT NOT NULL AUTO_INCREMENT,
     mentorId INT NOT NULL,
     menteeId INT NOT NULL,
     progressNotes TEXT NOT NULL,
     adjustmentNotes TEXT NOT NULL,
-    PRIMARY KEY(mentorId, menteeId),
+    PRIMARY KEY(metricId, mentorId, menteeId),
     FOREIGN KEY (mentorId) REFERENCES Mentor(mentorId),
     FOREIGN KEY (menteeId) REFERENCES Mentee(menteeId)
 );

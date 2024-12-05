@@ -109,8 +109,8 @@ if mentees:
 
             if metrics :
                 for metric in metrics:
-                    st.text(f"Progress: {metric['progressNotes']}")
-                    st.text(f"Adjustment: {metric['adjustmentNotes']}")
+                    st.write(f"**Progress**: {metric['progressNotes']}")
+                    st.write(f"**Adjustment**: {metric['adjustmentNotes']}")
 
             else :
                 st.text("No Metrics Available at This Time")
@@ -150,6 +150,7 @@ if mentees:
                                 st.error(f"Error creating metrics. Status code: {create_metric.status_code}")
                         except requests.exceptions.RequestException as e:
                             st.error(f"Error connecting to server: {str(e)}")
+
 else:
     st.write("No mentees found.")
 
