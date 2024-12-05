@@ -471,8 +471,9 @@ def add_mentor(mentorId, userId, isWorking, isInSchool, company, currentPosition
     response.status_code = 200
     return response
 
-@user.route('/Mentor', methods = ['DELETE'])
+@user.route('/DeleteMentor', methods = ['DELETE'])
 def delete_mentor():
+
 
     the_data = request.json
     current_app.logger.info(the_data)
@@ -486,13 +487,13 @@ def delete_mentor():
 
     cursor = db.get_db().cursor()
     cursor.execute(query)
-    theData = cursor.fetchall()
+    db.get_db().commit()
         
-    response = make_response(jsonify(theData))
+    response = make_response(jsonify(the_data))
     response.status_code = 200
     return response
 
-@user.route('/Mentee', methods = ['DELETE'])
+@user.route('/DeleteMentee', methods = ['DELETE'])
 def delete_mentee():
 
     the_data = request.json
@@ -501,15 +502,15 @@ def delete_mentee():
     menteeId = the_data['menteeId']
 
     query = f'''
-        DELETE FROM Mentee
-        WHERE mentorId = {menteeId};
+        DELETE FROM Mentee 
+        WHERE menteeId = {menteeId};
     '''
 
     cursor = db.get_db().cursor()
     cursor.execute(query)
-    theData = cursor.fetchall()
+    db.get_db().commit()
         
-    response = make_response(jsonify(theData))
+    response = make_response(jsonify(the_data))
     response.status_code = 200
     return response
 
@@ -560,8 +561,7 @@ def delete_user():
 
     cursor = db.get_db().cursor()
     cursor.execute(query)
-    theData = cursor.fetchall()
-        
+
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response

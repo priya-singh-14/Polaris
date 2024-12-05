@@ -72,8 +72,10 @@ CREATE TABLE `Match` (
     matchId INT AUTO_INCREMENT PRIMARY KEY,
     mentorId INT NOT NULL,
     menteeId INT NOT NULL,
-    FOREIGN KEY (mentorId) REFERENCES Mentor(mentorId),
+    FOREIGN KEY (mentorId) REFERENCES Mentor(mentorId)
+    ON DELETE CASCADE,
     FOREIGN KEY (menteeId) REFERENCES Mentee(menteeId)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE JobPosting (

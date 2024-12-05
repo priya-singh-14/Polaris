@@ -54,7 +54,7 @@ if submit_button:
         generate_userid_response = requests.get('http://web-api:4000/u/generateUserID')
         if generate_userid_response.status_code == 200:
                 new_userID = generate_userid_response.json().get("new_userID")
-                st.info(f"Generated userID: {new_userID}")
+                # st.info(f"Generated userID: {new_userID}")
                 
         else:
                 st.error("Error generating userID. Please try again later.")

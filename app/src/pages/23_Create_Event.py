@@ -90,7 +90,7 @@ if st.button("Submit"):
             # POST Request to Create Event
             response = requests.post("http://web-api:4000/c/createEvent", json=the_data)
             if response.status_code == 200:
-                st.success("Event successfully scheduled!")
+                st.success("Event Invite Sent!")
             else:
                 st.error("Error creating event. Please try again later.")
         except requests.exceptions.RequestException as e:

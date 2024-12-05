@@ -44,28 +44,6 @@ def view_mentees():
 
 mentees = view_mentees()
 
-def delete_mentor(mentorId):
-    try:
-        response = requests.delete(f"http://web-api:4000/u/delete_mentor/{mentorId}")
-        if response.status_code == 200:
-            st.success("Mentor successfully removed!")
-            st.experimental_rerun()  # Refresh the page to update the list
-        else:
-            st.error(f"Error deleting mentor: {response.json().get('error', 'Unknown error')}")
-    except requests.exceptions.RequestException as e:
-        st.error(f"Error connecting to server: {str(e)}")
-
-def delete_mentee(menteeId):
-    try:
-        response = requests.delete(f"http://web-api:4000/u/delete_mentee/{menteeId}")
-        if response.status_code == 200:
-            st.success("Mentor successfully removed!")
-            st.experimental_rerun()  # Refresh the page to update the list
-        else:
-            st.error(f"Error deleting mentor: {response.json().get('error', 'Unknown error')}")
-    except requests.exceptions.RequestException as e:
-        st.error(f"Error connecting to server: {str(e)}")
-
 # used code from pg 12_Mentor_Network
 if mentors:
     st.title('Active Mentors')
@@ -120,10 +98,22 @@ if mentors:
 
             st.write(f"**Name**: {mentor['name']}")
             st.write(f"**Major**: {mentor['major']}")
-
+            mentorId = mentor['mentorId']
 
             if st.button(f"Delete {mentor['name']}", key=f"delete_mentor_{idx}"):
-                delete_mentor(mentor['id'])
+                
+                mentor_data = {
+                    'mentorId' : mentorId
+                }
+
+                try:
+                        response = requests.delete(f"http://web-api:4000/u/DeleteMentor", json=mentor_data) 
+                        if response.status_code == 200:
+                            st.info("Mentor Removed")
+                        else:
+                            st.error(f"Error withdrawing Applicaton: {response.json().get('error', 'Unknown error')}")
+                except requests.exceptions.RequestException as e:
+                        st.error(f"Error connecting to server: {str(e)}")
 else:
     st.write("No mentors found.")
 
@@ -183,6 +173,7 @@ if mentees:
             st.write(f"**Name**: {mentee['name']}")
             st.write(f"**Major**: {mentee['major']}")
             st.write(f"**Bio**: {mentee['bio']}")
+            menteeId = mentee['menteeId']
 
             if "assets/" not in mentee["resume"] and mentee['resume'] and mentee['resume'].lower() != "none":
                     resume_path = os.path.join(directory, mentee['resume'])
@@ -208,6 +199,17 @@ if mentees:
                     st.write("Resume not available.")
 
             if st.button(f"Delete {mentee['name']}", key=f"delete_mentee_{idx}"):
-                delete_mentee(mentee['id'])
+                mentee_data = {
+                    'menteeId' : menteeId
+                }
+
+                try:
+                        response = requests.delete(f"http://web-api:4000/u/DeleteMentee", json=mentee_data) 
+                        if response.status_code == 200:
+                            st.info("Mentee Removed")
+                        else:
+                            st.error(f"Error withdrawing Applicaton: {response.json().get('error', 'Unknown error')}")
+                except requests.exceptions.RequestException as e:
+                        st.error(f"Error connecting to server: {str(e)}")
 else:
     st.write("No mentees found.")

@@ -32,8 +32,8 @@ def fetch_mentee_profile(menteeId):
 
 menteeId = fetch_mentee().get("MAX(menteeId)")
 
-st.write(st.session_state['profile_built'])
-st.write(menteeId)
+# st.write(st.session_state['profile_built'])
+# st.write(menteeId)
 
 if menteeId == 27 :
     menteeId = fetch_mentee().get("MAX(menteeId)")

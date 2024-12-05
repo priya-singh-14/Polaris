@@ -38,7 +38,7 @@ if mentee_applications:
                      "studentId" : menteeId,
                      "jobId" : application['jobId']
                 }
-                st.write(application_data)
+                # st.write(application_data)
                 jobId = application['jobId']
 
                 if st.button(f"Withdraw from Job", key=application['jobId']):

@@ -46,7 +46,7 @@ if all_jobs:
                 "timeApplied": formatted_timestamp
             }
             
-                st.write(applicant_data)
+                # st.write(applicant_data)
 
                 try:
                     create_application = requests.post(f'http://web-api:4000/c/NewApplications', json=applicant_data)

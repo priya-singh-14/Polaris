@@ -55,7 +55,7 @@ with st.form(key="new_job_form"):
             "majors": desiredMajors
             }
 
-        st.write(job_data)
+        # st.write(job_data)
 
 
         try:
