@@ -32,9 +32,8 @@ mentors = view_mentors()
 
 
 def view_mentees():
-
     try:
-        response = requests.get(f"http://web-api:4000/o/viewMentorList") 
+        response = requests.get(f"http://web-api:4000/o/AllMentees") 
         if response.status_code == 200:
             return response.json()
         else:
@@ -72,29 +71,16 @@ if mentors:
     st.title('Active Mentors')
     for idx, mentor in enumerate(mentors):
         with st.container(border=True):
-            img_path = os.path.join(directory, mentors[0]["profilepic"])
+            img_path = os.path.join(directory, mentor["profilepic"])
             if os.path.exists(img_path):
                 img = Image.open(img_path)
                 st.image(img, width=200)
             else:
                 st.write("No profile picture available.")
 
-            st.write(f"**Name**: {mentors['name']}")
-            st.write(f"**Major**: {mentors['major']}")
-            st.write(f"**Bio**: {mentors['bio']}")
+            st.write(f"**Name**: {mentor['name']}")
+            st.write(f"**Major**: {mentor['major']}")
 
-            if mentors['resume'] and mentors['resume'].lower() != "none":
-                resume_path = os.path.join(directory, mentors['resume'])
-                if os.path.exists(resume_path):
-                    st.download_button(
-                    label="Download Resume",
-                    data=open(resume_path, "rb").read(),
-                    file_name=f"{mentors['name']}_Resume.pdf",
-                    mime="application/pdf",
-                    key=f"resume_{idx}" 
-                )
-            else:
-                st.write("Resume not available.")
 
             if st.button(f"Delete {mentor['name']}", key=f"delete_mentor_{idx}"):
                 delete_mentor(mentor['id'])
@@ -108,7 +94,7 @@ if mentees:
     st.title('Active Mentees')
     for idx, mentee in enumerate(mentees):
         with st.container(border=True):
-            img_path = os.path.join(directory, mentee[0]["profilepic"])
+            img_path = os.path.join(directory, mentee["profilepic"])
             if os.path.exists(img_path):
                 img = Image.open(img_path)
                 st.image(img, width=200)
