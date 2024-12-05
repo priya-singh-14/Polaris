@@ -26,7 +26,7 @@ if st.button('Update Mentor/Mentee Matches',
              use_container_width=True):
   st.switch_page('pages/24_Match_Management.py')
 
-if st.button('Chat with Other Users', 
+if st.button('Monitor Chats', 
              type='primary',
              use_container_width=True):
   st.switch_page('pages/25_Advisor_Chat.py')

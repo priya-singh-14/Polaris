@@ -25,6 +25,7 @@ Necessary packages and files include:
 
 ## How to Use
 The home page displays four personas you can enter as. User authentication is not required and you can access the page of any persona! You can choose to navigate the website as a mentee, mentor, advisor, or an employer, and each have different functionalities and uses for the site. Navigate through the pages using the buttons that prompt your accessible actions and resources. Additions to a profile, chat log, event, etc. will be added to the database for future reference and use. 
+Demo Link: [DONT FORGET TO INSERT DEMO LINK HERE AHHHHHHHHHHHHHHHHHH]
 
 ## Credits
 This project was created for CS3200 Database Design taught by Dr. Mark Fontenot in the fall of 2024 at Northeastern University. 

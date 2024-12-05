@@ -2,8 +2,7 @@ import logging
 import streamlit as st
 from streamlit_extras.app_logo import add_logo
 from modules.nav import SideBarLinks
-import random
-import time
+import requests
 
 # Logging setup
 logger = logging.getLogger(__name__)
@@ -15,89 +14,59 @@ SideBarLinks()
 add_logo("assets/logo.png", height=400)
 
 # Page title
-st.title("Alumni Chat Dashboard 🎓")
+st.title("Advisor Chat Dashboard 🎓")
 
 # Page description
 st.markdown("""
-Welcome to your Alumni Chat Dashboard! Use this space to connect with mentees, mentors, and other alumni, share resources, and coordinate events for networking and guidance.
+Welcome to your Advisor Chat Dashboard! Use this space monitor messages between your mentors and their mentees.
 """)
 
-# Initialize session state for chat history and user lists
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-if "connected_users" not in st.session_state:
-    st.session_state.connected_users = [
-        {"name": "Tyler Dipper", "role": "Mentee", "tags": ["CS", "Math", "Co-op"]},
-        {"name": "Sarah Star", "role": "Mentor", "tags": ["Finance", "Investment", "Alumni"]}
-    ]
-if "events" not in st.session_state:
-    st.session_state.events = [
-        {"title": "Networking Night", "date": "2024-12-10", "description": "Connect with peers in Finance and Tech."},
-        {"title": "Career Growth Workshop", "date": "2024-12-15", "description": "Learn strategies to advance your career."}
-    ]
 
-# Display connected users (mentors and mentees)
-st.subheader("Connected Users")
-for user in st.session_state.connected_users:
-    st.markdown(f"**Name:** {user['name']}")
-    st.markdown(f"**Role:** {user['role']}")
-    st.markdown(f"**Tags:** {', '.join(user['tags'])}")
-    st.markdown("---")
+advisorId = 1
 
-# Event Coordination Section
-st.subheader("Upcoming Events")
-for event in st.session_state.events:
-    st.markdown(f"**Title:** {event['title']}")
-    st.markdown(f"**Date:** {event['date']}")
-    st.markdown(f"**Description:** {event['description']}")
-    st.markdown("---")
-
-# Add a new event
-st.subheader("Plan a New Event")
-event_title = st.text_input("Event Title")
-event_date = st.date_input("Event Date")
-event_description = st.text_area("Event Description")
-
-if st.button("Add Event"):
-    if event_title and event_description:
-        st.session_state.events.append({"title": event_title, "date": str(event_date), "description": event_description})
-        st.success(f"Event '{event_title}' added successfully!")
+def get_all_matches(advisorId) :
+    response = requests.get(f"http://web-api:4000/o/AdvisorMatch/{advisorId}",)
+    
+    if response.status_code == 200:
+        return response.json() 
     else:
-        st.error("Please fill in all fields to add an event.")
+        st.error(f"Error fetching mentees: Please Build Profile First{response.json().get('error')}")
+        return []
+    
+def fetch_chats(senderId, recipientId):
+  try:
+        response = requests.get(f"http://web-api:4000/o/Chats/{senderId}/{recipientId}") 
+        if response.status_code == 200:
+            return response.json()
+        else:
+            st.error(f"Error retrieving chats: {response.json().get('error', 'Unknown error')}")
+  except requests.exceptions.RequestException as e:
+        st.error(f"Error connecting to server: {str(e)}")
+        return None
+  
+if "messages" not in st.session_state:
+   st.session_state.messages = []
 
-# Response generator for chat
-def response_generator():
-    responses = [
-        "Thank you for sharing! Let's coordinate on that.",
-        "I'll follow up with the mentees about this.",
-        "Great point! Let’s add that to our next event."
-    ]
-    response = random.choice(responses)
-    for word in response.split():
-        yield word + " "
-        time.sleep(0.05)
+advisorMatches = get_all_matches(advisorId)
 
-# Display chat history
-st.subheader("Chat History")
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+match_to_edit = st.selectbox("Select a match to view messages", options=range(len(advisorMatches)), format_func=lambda i: f"{advisorMatches[i]['name']} ↔ {advisorMatches[i]['MenteeUser.name']}")
 
-# Alumni-to-Mentee/Mentor Interaction
-if prompt := st.chat_input("Send a message to your mentees or mentors..."):
-    # Display alumni's message
-    with st.chat_message("alumni"):
-        st.markdown(f"**You:** {prompt}")
-        st.session_state.messages.append({"role": "alumni", "content": prompt})
+if match_to_edit is not None:
+    selected_match = advisorMatches[match_to_edit]
 
-    # Simulate a response from a mentee or mentor
-    with st.chat_message("user"):
-        response = st.write_stream(response_generator())
-        st.session_state.messages.append({"role": "user", "content": response})
+    mentorId = selected_match['Mentor.mentorId']
+    menteeId = selected_match['Mentee.menteeId']
 
-# Resource Sharing Section
-st.subheader("Share Resources")
-uploaded_file = st.file_uploader("Upload a resource (PDF only)", type="pdf")
-if uploaded_file:
-    st.success("Resource uploaded successfully!")
-    st.write(f"Shared: {uploaded_file.name}")
+    chat_history = fetch_chats(mentorId, menteeId)
+    
+    if chat_history :
+        with st.container(border=True) :
+            for chat in chat_history:
+                senderId = chat['senderId']
+                role = "user" if mentorId == senderId else "assistant"
+                with st.chat_message(role):
+                    st.markdown(chat["text"])
+    else :
+         st.info("No Chats Found")
+else :
+    st.info("Match Not Found")
