@@ -55,7 +55,7 @@ for company in companies:
     for employer in filtered_employers:
         user_info = fetch_user(employer['userId'])
         if user_info:
-            employer_names.append({"name": user_info[0]['name'], "userId": employer['userId']})
+            employer_names.append({"name": user_info[0]['name'], "empId": employer['empId']})
     
     # Store the employer names in the dictionary
     employee_dropdowns[company_name] = employer_names
@@ -74,13 +74,13 @@ selected_employer = next((emp for emp in employer_options if emp['name'] == sele
 # Other inputs
 industry = st.text_input("Industry")
 when = st.date_input("When")
-
+st.write(selected_employer)
 # Submit Button
 if st.button("Submit"):
     if selected_employer:
         # Populate the data for the API request
         the_data = {
-            "speakerId": selected_employer["userId"],  # The selected employer's userId
+            "speakerId": selected_employer['empId'],  # The selected employer's empId
             "organizerId": advisorId,  # Replace with actual organizerId logic if needed
             "speakerName": selected_employer_name,
             "industry": industry,

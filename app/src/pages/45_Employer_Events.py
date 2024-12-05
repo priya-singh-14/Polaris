@@ -50,7 +50,7 @@ if pending_invites:
     for invite in pending_invites:
         with st.container(border=True) :
             st.write(f"{invite['name']} has invited you to speak at {invite['industry']} on {invite['when']}")
-            if st.button("Accept Invite") :
+            if st.button("Accept Invite", key=invite['eventId']) :
                     event_data = {
                         "inviteAccepted": True
                 }
@@ -64,7 +64,7 @@ if pending_invites:
                             
                     except requests.exceptions.RequestException as e:
                             st.error(f"Error connecting to server: {str(e)}")
-            if st.button("Decline Invite", type='primary') :
+            if st.button("Decline Invite", type='primary', key=invite['eventId']*-1) :
                     event_data = {
                             "eventId": invite['eventId']
                     }
