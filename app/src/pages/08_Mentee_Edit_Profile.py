@@ -3,11 +3,8 @@ import requests
 import logging
 logger = logging.getLogger(__name__)
 from modules.nav import SideBarLinks
-import os
 
 SideBarLinks()
-
-directory = "assets/"
 
 st.title("Edit Mentee Profile")
 st.write("Edit your profile details!")
@@ -41,13 +38,13 @@ with st.form(key="mentee_profile_form"):
 if submit_button:
         profile_pic_path = mentee_data.get("profilepic")
         if profile_pic:
-            profile_pic_path = os.path.join(directory, profile_pic.name)
+            profile_pic_path = profile_pic.name
             with open(profile_pic_path, "wb") as f:
                 f.write(profile_pic.getbuffer())
 
         resume_path = mentee_data.get("resume")
         if uploaded_resume:
-            resume_path = os.path.join(directory, uploaded_resume.name)
+            resume_path = uploaded_resume.name
             with open(resume_path, "wb") as f:
                 f.write(uploaded_resume.getbuffer())
 

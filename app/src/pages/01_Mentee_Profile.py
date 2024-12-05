@@ -2,10 +2,12 @@ import requests
 from PIL import Image
 import streamlit as st
 from modules.nav import SideBarLinks
+import os
 
 SideBarLinks()
 
 st.title("Your Profile")
+directory = "assets/"
 
 def fetch_mentee():
     response = requests.get("http://web-api:4000/o/mostRecentMentee")

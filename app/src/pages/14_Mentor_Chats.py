@@ -88,9 +88,9 @@ if mentees:
 else:
     st.info("No mentees found.")
 
-st.subheader("Share Resources with All Your Mentees")
-uploaded_file = st.file_uploader("Upload a guide, article, or book recommendation (PDF only)", type="pdf")
-if uploaded_file:
-    st.success("Resource uploaded successfully!")
-    st.write(f"Shared: {uploaded_file.name}")
+# st.subheader("Share Resources with All Your Mentees")
+# uploaded_file = st.file_uploader("Upload a guide, article, or book recommendation (PDF only)", type="pdf")
+# if uploaded_file:
+#     st.success("Resource uploaded successfully!")
+#     st.write(f"Shared: {uploaded_file.name}")
 
