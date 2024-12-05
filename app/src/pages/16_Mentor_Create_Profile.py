@@ -7,52 +7,16 @@ import os
 
 SideBarLinks()
 
-# st.title("Mentor Profile")
-# st.write("Fill out your profile details below to connect with mentees!")
-
-
-# with st.form(key="mentee_profile_form"):
-#     name = st.text_input("Name")
-#     profile_pic = st.file_uploader("Upload Profile Picture", type=["jpg", "png", "jpeg"])
-#     email = st.text_input("Email")
-#     major = st.text_input("Major")
-#     minor = st.text_input("Minor (if applicable)")
-#     isInSchool = st.checkbox("Are you currently a student?")
-#     isWorking = st.checkbox("Are you currently working?")
-#     currentPosition = st.text_input("If you work, what is your title and position")
-#     college = st.selectbox(
-#         "College When Admitted",
-#         ["College of Engineering", "College of Social Sciences and Humanities", "Khoury College of Computer Science", 
-#          "Bouve College of Health Sciences", "College of Arts, Media, and Design", "D'Amore-McKim College of Business", "College of Science"]
-#     )
-
-#     submit_button = st.form_submit_button(label="Submit")
-
-# if submit_button:
-#      if not name:
-#         st.error("Name is required.")
-#      elif not email:
-#         st.error("Email is required.")
-#      elif not major:
-#         st.error("Major is required.")
-#      elif not college:
-#         st.error("College is required.")
-#      else:
-#         # All required fields are filled, save the data
-#         st.session_state["mentor_data"] = {
-#             "name": name,
-#             "profile_pic": profile_pic,
-#             "email": email,
-#             "major": major,
-#             "minor": minor,
-#             "college": college,
-#             "isInSchool": isInSchool,
-#             "isWorking": isWorking,
-#             "currentPosition": currentPosition
-#         }
-#         st.success("Profile created successfully!")
-#         st.write("Return to the profile page to view your details.")
-
+def get_advisor(college):
+    try:
+        response = requests.get(f"http://web-api:4000/o/PairAdvisor/{college}") 
+        if response.status_code == 200:
+            return response.json()
+        else:
+            st.error(f"Error retrieving profile: {response.json().get('error', 'Unknown error')}")
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error connecting to server: {str(e)}")
+    return None
 
 directory = "assets/"
 
@@ -87,7 +51,8 @@ if submit_button:
      elif not college:
         st.error("College is required.")
      else:
-        advisorID = 1
+        advisorID = get_advisor(college)['advisorId']
+        
         profile_pic_path = ""
         if profile_pic:
             profile_pic_path = os.path.join(directory, profile_pic.name)
@@ -97,7 +62,7 @@ if submit_button:
         generate_userid_response = requests.get('http://web-api:4000/o/generateUserID')
         if generate_userid_response.status_code == 200:
                 new_userID = generate_userid_response.json().get("new_userID")
-                st.info(f"Generated userID: {new_userID}")
+                # st.info(f"Generated userID: {new_userID}")
                 
         else:
                 st.error("Error generating userID. Please try again later.")
@@ -116,22 +81,15 @@ if submit_button:
             "userID": new_userID,
             "advisorID": advisorID
         }
-
-        st.write(profile_data['userID'])
-        st.write(profile_data['isWorking'])
-        st.write(profile_data['isInSchool'])
-        st.write(profile_data['company'])
-        st.write(profile_data['currentPosition'])
-        st.write(profile_data['advisorID'])
         st.session_state['profile_built'] = True
 
         try:
             create_user_response = requests.post('http://web-api:4000/o/createNewUser', json=profile_data)
              
-            if create_user_response.status_code == 200:
-                st.info("View Profile Details on the Previous Page")
-            else:
-                st.error("Error creating user profile. Please try again later.")
+            # if create_user_response.status_code == 200:
+            #     st.info("View Profile Details on the Previous Page")
+            # else:
+            #     st.error("Error creating user profile. Please try again later.")
 
             create_mentor_response = requests.post('http://web-api:4000/o/createNewMentor', json=profile_data)
 

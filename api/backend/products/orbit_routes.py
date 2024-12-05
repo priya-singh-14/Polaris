@@ -256,17 +256,16 @@ def create_mentor_profile():
     currentPosition = the_data['currentPosition']
     advisorID = the_data['advisorID']
 
-    query = f'''
+    query = '''
         INSERT INTO Mentor (userID, isWorking, isInSchool, company, currentPosition, advisorID)
-        VALUES ('{userID}', '{isWorking}', '{isInSchool}', '{company}', '{currentPosition}', '{advisorID}')
+        VALUES (%s, %s, %s, %s, %s, %s)
     '''
 
     cursor = db.get_db().cursor()
-    cursor.execute(query) 
+    cursor.execute(query, (userID, isWorking, isInSchool, company, currentPosition, advisorID)) 
     db.get_db().commit()
 
     response = make_response("Successfully created profile", 200)
-
     return response
 
 # view all mentors
@@ -669,6 +668,23 @@ def update_match():
     db.get_db().commit()
     
     response = make_response("Successfully updated profile")
+    response.status_code = 200
+    return response
+
+@orbit.route('/PairAdvisor/<string:college>', methods = ['GET'])
+def advisor_pairing(college):
+
+    query = '''
+        SELECT Advisor.advisorId, Advisor.userId
+        FROM Advisor
+        WHERE Advisor.department = %s
+        '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (college,)) 
+    the_data = cursor.fetchone()
+
+    response = make_response(jsonify(the_data))
     response.status_code = 200
     return response
 
