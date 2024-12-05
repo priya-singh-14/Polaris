@@ -6,7 +6,9 @@ import requests
 from PIL import Image, ImageDraw
 import os
 import matplotlib.pyplot as plt
-import numpy as np
+import matplotlib.dates as mdates
+from matplotlib.ticker import MaxNLocator
+from datetime import datetime
 
 directory = 'assets/'
 st.set_page_config(layout='wide')
@@ -35,6 +37,15 @@ def fetch_metrics(mentee_id):
     
 def fetch_application_data(mentee_id):
     response = requests.get(f"http://web-api:4000/o/ApplicationTotal/{menteeId}")
+    
+    if response.status_code == 200:
+       return response.json() 
+    else:
+        st.error(f"Error fetching metrics")
+        return []
+    
+def fetch_detailed_application_data(mentee_id):
+    response = requests.get(f"http://web-api:4000/o/Applications/{menteeId}")
     
     if response.status_code == 200:
        return response.json() 
@@ -117,9 +128,33 @@ if mentees:
                         st.text("No Metrics Available at This Time")
 
                     
-
                     if applications :
                         st.text(f"Applications Submitted: {applications[0]['total']}")
+                        detailed_application = fetch_detailed_application_data(menteeId)
+                        timestamps = []
+                        applicationInc = []
+
+                        for index, application in enumerate(detailed_application):
+                            timestamp = datetime.strptime(application['timeApplied'], '%a, %d %b %Y %H:%M:%S GMT')
+                            timestamps.append(timestamp)
+                            applicationInc.append(index)
+                            
+                        # st.write(timestamp)
+                        # st.write(applicationInc)    
+                        plt.figure(figsize=(10, 6))
+                        plt.plot(timestamps, applicationInc, marker='o', linestyle='-', color='b')
+
+                        plt.title('Applications Over Time')
+                        plt.xlabel('Date')
+                        plt.ylabel('Number of Applications')
+
+                        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
+                        plt.gca().xaxis.set_major_locator(mdates.DayLocator())
+                        plt.gca().yaxis.set_major_locator(MaxNLocator(integer=True))
+                        plt.gcf().autofmt_xdate()
+                        st.pyplot(plt)  
+
+                        plt.grid(True)
 
                     else :
                         st.text("No Application Data Available at This Time")

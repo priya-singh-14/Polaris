@@ -98,42 +98,53 @@ if mentees:
                 else:
                     st.write("Resume not available.")
     st.markdown("---")
+        
+    if selected_mentee:
+            st.subheader(f"Recommended Jobs for {selected_mentee['name']}")
+
+            st.write(selected_mentee['menteeId'])
+
+            relevant_jobs = fetch_jobs(selected_mentee['menteeId'])
+            if relevant_jobs:
+                for idx, job in enumerate(relevant_jobs):
+                    with st.container(border=True):
+                        st.text(f"Role: {job['role']}")
+                        st.text(f"Description: {job['jobDesc']}")
+                        if st.button(f"Notify {selected_mentee['name']}?", key=idx):
+                            recipientId = selected_mentee['menteeId']
+
+                            chat_data = {
+                            'senderId': mentorId,
+                            'recipientId': recipientId,
+                            'text': f"Hi, {selected_mentee['name']}, I think you should check out this opportunity: {job['jobDesc']}"
+                            }
+
+                            st.write(chat_data)
+
+                            try:
+                                create_user_response = requests.post('http://web-api:4000/o/createNewChat', json=chat_data)
+                                if create_user_response.status_code == 200:
+                                    st.success('Notified!')
+                                
+                                else:
+                                    st.error("Error creating user profile. Please try again later.")
+                            except requests.exceptions.RequestException as e:
+                                        st.error(f"Error connecting to server: {str(e)}")
+
+
+    else :
+                        st.text("No Matching Jobs at This Time")             
+
+
+
 else:
-    st.write("No mentees found.")
+    st.warning("No mentees found.")
+    st.write('')
+    st.write('')
 
-st.subheader(f"Recommended Jobs for {selected_mentee['name']}")
-
-st.write(selected_mentee['menteeId'])
-
-relevant_jobs = fetch_jobs(selected_mentee['menteeId'])
-if relevant_jobs:
-    for idx, job in enumerate(relevant_jobs):
-        with st.container(border=True):
-            st.text(f"Role: {job['role']}")
-            st.text(f"Description: {job['jobDesc']}")
-            if st.button(f"Notify {selected_mentee['name']}?", key=idx):
-                recipientId = selected_mentee['menteeId']
-
-                chat_data = {
-                 'senderId': mentorId,
-                 'recipientId': recipientId,
-                 'text': f"Hi, {selected_mentee['name']}, I think you should check out this opportunity: {job['jobDesc']}"
-                }
-
-                st.write(chat_data)
-
-                try:
-                    create_user_response = requests.post('http://web-api:4000/o/createNewChat', json=chat_data)
-                    if create_user_response.status_code == 200:
-                         st.success('Notified!')
-                    
-                    else:
-                        st.error("Error creating user profile. Please try again later.")
-                except requests.exceptions.RequestException as e:
-                            st.error(f"Error connecting to server: {str(e)}")
-
-
-else :
-            st.text("No Matching Jobs at This Time")             
+    if st.button('Find More Mentees', 
+                type='primary',
+                use_container_width=True):
+        st.switch_page('pages/15_Mentor_Find_Mentees.py')
 
 
