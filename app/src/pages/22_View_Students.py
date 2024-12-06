@@ -43,7 +43,7 @@ def view_mentees():
     return None
 
 mentees = view_mentees()
-st.write(mentees)
+
 # used code from pg 12_Mentor_Network
 if mentors:
     st.title('Active Mentors')

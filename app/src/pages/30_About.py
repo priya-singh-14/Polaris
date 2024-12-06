@@ -23,9 +23,9 @@ st.markdown(
 
     .centered-card {
         margin: 35px;
-        margin-top: 30px;
+        margin-top: 90px;
         position: absolute;
-        background: rgba(255, 255, 255, 0.7);
+        background: rgba(255, 255, 255, 0.8);
         padding: 30px;
         border-radius: 8px;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -33,9 +33,9 @@ st.markdown(
     } 
 
     .centered-card h1 {
-        font-size: 2.9em;
+        font-size: 2.8em;
         font-family: monospace;
-        margin-bottom: 0px;
+        margin-bottom: 20px;
     }
 
     .centered-card p {
@@ -44,6 +44,10 @@ st.markdown(
         color: #555;
     }
 
+    .centered-card ul {
+        margin-bottom: 30px;
+        color: #555;
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -53,12 +57,28 @@ st.markdown(
     """
     <div class="parent-container">
     <div class="centered-card">
-        <h1>You Just Found Your North Star</h1>
-        <p>Orbit Polaris is a dynamic networking platform designed to guide Northeastern students toward career success by connecting them with student mentors and industry professionals based on their career-interests and experience. Like the North Star, Orbit Polaris provides direction and support, helping students navigate their career journeys with confidence. This data-driven app is important because it helps young professionals establish their network early, so they can develop better career habits under the guidance of the Northeastern Student Network. Unlike other platforms like LinkedIn or Northeastern MentorHub, Polaris is both confined to the Northeastern academic network, and aims to help students improve their communication skills as they delve into experiential learning. By storing data such as major, career interest, organizations, academic standing, and career materials like resumes and portfolios-- Polaris allows mentees to be paired with mentors that are tailored to their interests. Unlike other platforms that provide connections at face value, our data-driven networking tool eliminates pain points such as uncomfortable cold-messaging, incompatible mentor-mentee relationships, and the struggle that comes with breaking into an industry for the first time. The primary users are student mentees, student/alumni mentors, advisors/admins, and potential employers. With mentor-mentee relationship recommendations, detailed user profiles, and real-time communication, Orbit Polaris lights the way to meaningful mentor-mentee relationships and collective professional growth.
-</p>
+        <h1>You Just Found Your North Star.</h1>
+
+<h5>Orbit Polaris is a dynamic networking platform designed to guide Northeastern students toward career success through peer mentorship.</h5>
+<hr/>
+
+<h3>What is Polaris?</h3>
+<p>Like the North Star, Polaris provides direction and support, helping students navigate their career journeys with confidence. This data-driven app is essential for young professionals looking to build their networks early and develop strong career habits within the Northeastern Student Network.</p>
+
+<h3>Why Polaris Stands Out</h3>
+<p>Unlike platforms like LinkedIn or Northeastern MentorHub, Polaris is tailored specifically for the Northeastern academic community. We focus on helping students enhance their communication skills while engaging in experiential learning.</p>
+
+<h3>Key Features</h3>
+<ul>
+  <li>Data-driven mentor-mentee pairing based on major, career interests, organizations, academic standing, and materials like resumes.</li>
+  <li>Eliminates challenges like cold-messaging, incompatible relationships, and barriers to industry entry.</li>
+  <li>Built in job search and application functionality, and opportunities to find and attend networking events with employers.</li>
+</ul>
+
+<h5>With mentor-mentee relationship recommendations, detailed user profiles, and real-time communication, Orbit Polaris creates meaningful connections that foster professional growth for everyone.</h5>    
     """,
     unsafe_allow_html=True,
 )
 
-st.image("assets/star.svg", use_container_width=True, width=50)
+st.image("assets/about.png", use_container_width=True, width=50)
 
