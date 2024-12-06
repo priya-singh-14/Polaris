@@ -14,7 +14,7 @@ st.set_page_config(layout = 'wide')
 SideBarLinks()
 
 directory = 'assets/'
-
+default = 'assets/default.jpg'
 
 def view_mentors():
 
@@ -43,14 +43,13 @@ def view_mentees():
     return None
 
 mentees = view_mentees()
-
+st.write(mentees)
 # used code from pg 12_Mentor_Network
 if mentors:
     st.title('Active Mentors')
     for idx, mentor in enumerate(mentors):
         with st.container(border=True):
-            
-            if "assets/" not in mentor["profilepic"]:
+            if mentor["profilepic"] and "assets/" not in mentor["profilepic"]:
                     img_path = os.path.join(directory, mentor["profilepic"])
                     img = Image.open(img_path)
                     width, height = img.size
@@ -73,7 +72,7 @@ if mentors:
 
                         # else:
                         #     st.write("No profile picture available.")
-            elif "assets/" in mentor["profilepic"]:
+            elif mentor["profilepic"] and "assets/" in mentor["profilepic"]:
                     img_path = mentor["profilepic"]
                     img = Image.open(img_path)
                     width, height = img.size
@@ -94,7 +93,25 @@ if mentors:
                     
                     st.image(circular_img)
             else:
-                    st.write("No profile picture available.")
+                    img = Image.open(default) 
+                    width, height = img.size
+                    min_side = min(width, height)
+                    left = (width - min_side) / 2
+                    top = (height - min_side) / 2
+                    right = (width + min_side) / 2
+                    bottom = (height + min_side) / 2
+                    img = img.crop((left, top, right, bottom))
+            
+                    mask = Image.new("L", (min_side, min_side), 0)
+                    draw = ImageDraw.Draw(mask)
+                    draw.ellipse((0, 0, min_side, min_side), fill=255)
+
+
+                    img = img.resize((140, 140)) 
+                    circular_img = Image.new("RGBA", (140, 140), (0, 0, 0, 0))
+                    circular_img.paste(img, (0, 0), mask.resize((140, 140)))
+            
+                    st.image(circular_img)
 
             st.write(f"**Name**: {mentor['name']}")
             st.write(f"**Major**: {mentor['major']}")
@@ -124,7 +141,7 @@ if mentees:
     st.title('Active Mentees')
     for idx, mentee in enumerate(mentees):
         with st.container(border=True):
-            if "assets/" not in mentee["profilepic"]:
+            if mentee["profilepic"] and "assets/" not in mentee["profilepic"]:
                     img_path = os.path.join(directory, mentee["profilepic"])
                     img = Image.open(img_path)
                     width, height = img.size
@@ -168,14 +185,33 @@ if mentees:
                     
                     st.image(circular_img)
             else:
-                    st.write("No profile picture available.")
+                    img = Image.open(default) 
+                    width, height = img.size
+                    min_side = min(width, height)
+                    left = (width - min_side) / 2
+                    top = (height - min_side) / 2
+                    right = (width + min_side) / 2
+                    bottom = (height + min_side) / 2
+                    img = img.crop((left, top, right, bottom))
+            
+                    mask = Image.new("L", (min_side, min_side), 0)
+                    draw = ImageDraw.Draw(mask)
+                    draw.ellipse((0, 0, min_side, min_side), fill=255)
+
+
+                    img = img.resize((140, 140)) 
+                    circular_img = Image.new("RGBA", (140, 140), (0, 0, 0, 0))
+                    circular_img.paste(img, (0, 0), mask.resize((140, 140)))
+            
+                    st.image(circular_img)
 
             st.write(f"**Name**: {mentee['name']}")
             st.write(f"**Major**: {mentee['major']}")
             st.write(f"**Bio**: {mentee['bio']}")
+            
             menteeId = mentee['menteeId']
 
-            if "assets/" not in mentee["resume"] and mentee['resume'] and mentee['resume'].lower() != "none":
+            if mentee['resume'] and mentee['resume'].lower() != "none" and "assets/" not in mentee["resume"]:
                     resume_path = os.path.join(directory, mentee['resume'])
                     if os.path.exists(resume_path):
                         st.download_button(

@@ -11,6 +11,8 @@ from matplotlib.ticker import MaxNLocator
 from datetime import datetime
 
 directory = 'assets/'
+default = "assets/default.jpg"
+
 st.set_page_config(layout='wide')
 
 mentorId = 15
@@ -70,7 +72,7 @@ st.title(f"Your Network, {st.session_state['first_name']}.")
 if mentees:
     for idx, mentee in enumerate(mentees):
         with st.container(border=True):
-            if "assets/" not in mentee["profilepic"]:
+            if mentee["profilepic"] and "assets/" not in mentee["profilepic"]:
                     img_path = os.path.join(directory, mentee["profilepic"])
                     img = Image.open(img_path)
                     width, height = img.size
@@ -117,7 +119,25 @@ if mentees:
                         # else:
                         #     st.write("No profile picture available.")
             else:
-                    st.write("No profile picture available.")
+                    img = Image.open(default) 
+                    width, height = img.size
+                    min_side = min(width, height)
+                    left = (width - min_side) / 2
+                    top = (height - min_side) / 2
+                    right = (width + min_side) / 2
+                    bottom = (height + min_side) / 2
+                    img = img.crop((left, top, right, bottom))
+            
+                    mask = Image.new("L", (min_side, min_side), 0)
+                    draw = ImageDraw.Draw(mask)
+                    draw.ellipse((0, 0, min_side, min_side), fill=255)
+
+
+                    img = img.resize((140, 140)) 
+                    circular_img = Image.new("RGBA", (140, 140), (0, 0, 0, 0))
+                    circular_img.paste(img, (0, 0), mask.resize((140, 140)))
+            
+                    st.image(circular_img)
 
             st.write(f"**Name**: {mentee['name']}")
             st.write(f"**Major**: {mentee['major']}")

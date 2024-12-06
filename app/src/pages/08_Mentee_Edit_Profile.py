@@ -3,6 +3,7 @@ import requests
 import logging
 logger = logging.getLogger(__name__)
 from modules.nav import SideBarLinks
+import os
 
 SideBarLinks()
 
@@ -12,6 +13,7 @@ st.write("Edit your profile details!")
 
 menteeId = 27
 mentee_data = {}
+directory = "assets/"
 
 get_mentee_data = requests.get(f'http://web-api:4000/u/getMenteeData/{menteeId}')
 if get_mentee_data.status_code == 200:
@@ -36,17 +38,17 @@ with st.form(key="mentee_profile_form"):
     submit_button = st.form_submit_button(label="Submit")
 
 if submit_button:
-        profile_pic_path = mentee_data.get("profilepic")
+        profile_pic_path = ""
         if profile_pic:
-            profile_pic_path = profile_pic.name
+            profile_pic_path = os.path.join(directory, profile_pic.name)
             with open(profile_pic_path, "wb") as f:
                 f.write(profile_pic.getbuffer())
 
-        resume_path = mentee_data.get("resume")
+        resume_path = ""
         if uploaded_resume:
-            resume_path = uploaded_resume.name
+            resume_path = os.path.join(directory, uploaded_resume.name)
             with open(resume_path, "wb") as f:
-                f.write(uploaded_resume.getbuffer())
+                f.write(uploaded_resume.getbuffer())  
 
         profile_data = {
             "name": name,
@@ -60,7 +62,7 @@ if submit_button:
             "id": mentee_data.get("userId")
         }
     
-        st.write(profile_data)
+        # st.write(profile_data)
 
         try:
             update_user_response = requests.put('http://web-api:4000/u/updateUser', json=profile_data)

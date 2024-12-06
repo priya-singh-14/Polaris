@@ -74,7 +74,8 @@ selected_employer = next((emp for emp in employer_options if emp['name'] == sele
 # Other inputs
 industry = st.text_input("Industry")
 when = st.date_input("When")
-st.write(selected_employer)
+# st.write(selected_employer)
+
 # Submit Button
 if st.button("Submit"):
     if selected_employer:
