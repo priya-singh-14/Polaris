@@ -48,7 +48,7 @@ if mentor_data:
 
     if mentor_data.get("profilepic"):
                 img = Image.open(mentor_data['profilepic']) 
-                st.write(f'{mentor_data.get("profilepic")}')
+                # st.write(f'{mentor_data.get("profilepic")}')
                 width, height = img.size
                 min_side = min(width, height)
                 left = (width - min_side) / 2

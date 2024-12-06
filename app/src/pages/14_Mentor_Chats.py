@@ -58,7 +58,7 @@ if mentees:
     for idx, mentee in enumerate(mentees):
         with st.container(border=True):
             img_path = os.path.join(directory, mentee["profilepic"])
-            if mentee["profilepic"]:
+            if mentee["profilepic"] and "assets/" not in mentee["profilepic"]:
                     img_path = os.path.join(directory, mentee["profilepic"])
                     img = Image.open(img_path)
                     width, height = img.size
