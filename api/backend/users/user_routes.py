@@ -561,7 +561,7 @@ def delete_user():
     cursor = db.get_db().cursor()
     cursor.execute(query)
 
-    response = make_response(jsonify(theData))
+    response = make_response(jsonify(the_data))
     response.status_code = 200
     return response
 
