@@ -15,7 +15,7 @@ st.title("Match Management Dashboard 🔗")
 
 # Description
 st.markdown("""
-This page allows advisors to manage mentor-mentee matches effectively. You can view, add, edit, and remove matches to ensure the best connections.
+This page allows advisors to manage your mentor-mentee matches effectively. You can view, add, edit, and remove matches within Khoury to ensure the best connections.
 """)
 
 advisorId = 1

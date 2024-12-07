@@ -144,7 +144,7 @@ if st.button('Sara, a Northeastern Alumni and Mentor, who works at McKinsey',
     st.session_state['first_name'] = 'Sara'
     st.switch_page('pages/10_Mentor_Home.py')
 
-if st.button('Billy, an Advisor at Northeastern', 
+if st.button('Billy, a Khoury Advisor at Northeastern', 
             type='secondary', 
             use_container_width=True):
     st.session_state['authenticated'] = True

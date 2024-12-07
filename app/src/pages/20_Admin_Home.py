@@ -11,7 +11,7 @@ SideBarLinks()
 
 st.title('Welcome, Administrator')
 
-if st.button('View Mentors and Mentees', 
+if st.button('View All Mentors and Mentees', 
              type='primary',
              use_container_width=True):
   st.switch_page('pages/22_View_Students.py')
@@ -21,7 +21,7 @@ if st.button('Schedule a Networking Event',
              use_container_width=True):
   st.switch_page('pages/23_Create_Event.py')
 
-if st.button('Update Mentor/Mentee Matches', 
+if st.button('Update Mentor/Mentee Matches That You Advise', 
              type='primary',
              use_container_width=True):
   st.switch_page('pages/24_Match_Management.py')
