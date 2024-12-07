@@ -23,9 +23,9 @@ Necessary packages and files include:
 - Streamlit library for app functionality and UI
 - Flask for API design and use
 
-Begin by cloning this repository locally. You will need to duplicate the .env.template file and rename it to .env
-Replace DB_NAME=northwind, to DB_NAME=polaris, which is our database, and create a MYSQL_ROOT_PASSWORD.
-Since our docker-compose.yaml is all set up, you can open docker and start the containers using docker compose up.
+- Begin by cloning this repository locally. You will need to duplicate the .env.template file and rename it to .env
+- Replace DB_NAME=northwind, to DB_NAME=polaris, which is our database, and create a MYSQL_ROOT_PASSWORD.
+- Since our docker-compose.yaml is all set up, you can open docker and start the containers using docker compose up.
 
 ## How to Use
 The home page displays four personas you can enter as. User authentication is not required and you can access the page of any persona! You can choose to navigate the website as a mentee, mentor, advisor, or an employer, and each have different functionalities and uses for the site. Navigate through the pages using the buttons that prompt your accessible actions and resources. Additions to a profile, chat log, event, etc. will be added to the database for future reference and use. 
