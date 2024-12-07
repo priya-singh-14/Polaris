@@ -13,7 +13,7 @@ st.title("Edit Mentor Profile")
 st.write("Edit your profile details!")
 
 
-mentorId = 15
+mentorId = 28
 mentor_data = {}
 
 get_mentor_data = requests.get(f'http://web-api:4000/u/getMentorData/{mentorId}')

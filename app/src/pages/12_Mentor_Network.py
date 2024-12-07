@@ -15,7 +15,7 @@ default = "assets/default.jpg"
 
 st.set_page_config(layout='wide')
 
-mentorId = 15
+mentorId = 28
 
 SideBarLinks()
 

@@ -14,7 +14,7 @@ st.title("Chat With Your Mentee")
 
 # st.write(st.session_state['recipientId'])
 # write routes to set these vals to the max menteeID and mentorID, consider limiting behavior to those two tables only
-mentorId = 15
+mentorId = 28
 recipientId = st.session_state['recipientId']
 
 def fetch_chats(senderId, recipientId):

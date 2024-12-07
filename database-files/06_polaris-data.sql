@@ -103,7 +103,8 @@ VALUES
     ('Meera Nair', 'nair.m@example.com', 'meera.jpg', 'Khoury College of Computer Science', 'Cybersecurity', NULL),
     ('Aditi Rao', 'rao.a@example.com', 'aditi.jpg', 'College of Science', 'Neuroscience', NULL),
     ('Karen Gill', 'gill.k@example.com', 'karen.jpg', 'D''Amore McKim School of Business', "Business and Information Technology", NULL),
-    ('Siddharth Bose', 'bose.s@example.com', 'siddharth.jpg', "Bouve College of Health Sciences", "Public Health", "Business");
+    ('Siddharth Bose', 'bose.s@example.com', 'siddharth.jpg', "Bouve College of Health Sciences", "Public Health", "Business"),
+    ('Lisa Ashido', 'lisa.a@example.com', 'lisa.jpg', "Bouve College of Health Sciences", "Public Health", "Business");
 
 INSERT INTO Advisor (userid, department)
 VALUES
@@ -191,7 +192,8 @@ VALUES
     (77, FALSE, TRUE, NULL, NULL, 1),
     (78, FALSE, TRUE, NULL, NULL, 4),
     (79, FALSE, TRUE, NULL, NULL, 5),
-    (80, FALSE, TRUE, NULL, NULL, 8);
+    (80, FALSE, TRUE, NULL, NULL, 8),
+    (81, FALSE, TRUE, NULL, NULL, 8);
 
 
 INSERT INTO Mentee (userid, bio, resume)

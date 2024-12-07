@@ -92,7 +92,7 @@ if chat := st.chat_input("Ask your mentor a question..."):
   try:
             create_new_chat = requests.post('http://web-api:4000/o/createNewChat', json=chat_data)
             if create_new_chat.status_code == 200:
-                st.info("View Profile Details on the Previous Page")
+                st.info("Chat Sent")
             else:
                 st.error("Error creating user profile. Please try again later.")
 

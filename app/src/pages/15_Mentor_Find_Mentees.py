@@ -12,7 +12,7 @@ SideBarLinks()
 st.subheader(f"Here are some potential mentees, {st.session_state['first_name']}.")
 
 # session state these values somewhere
-mentorId = 15
+mentorId = 28
 college = "Khoury"
 major = "Computer Science"
 minor = "Finance"

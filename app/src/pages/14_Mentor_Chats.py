@@ -45,7 +45,7 @@ def fetch_mentor():
 
 mentor_Id = fetch_mentor().get("MAX(mentorId)") 
 
-if mentor_Id == 15 :
+if mentor_Id == 28 :
     mentor_Id = fetch_mentor().get("MAX(mentorId)") 
 else : 
     mentor_Id = fetch_mentor().get("MAX(mentorId)") + 1
