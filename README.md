@@ -19,10 +19,6 @@ Employers can use the platform to locate students to fill positions at their com
 
 ## How to Install and Run 
 Create and run the docker containers using the docker-compose.yaml file that connects the API, webpage, and SQL database. Then, run on your machine using the local port. 
-Necessary packages and files include:
-- Streamlit library for app functionality and UI
-- Flask for API design and use
-
 - Begin by cloning this repository locally. You will need to duplicate the .env.template file and rename it to .env
 - Replace DB_NAME=northwind, to DB_NAME=polaris, which is our database, and create a MYSQL_ROOT_PASSWORD.
 - Since our docker-compose.yaml is all set up, you can open docker and start the containers using docker compose up.
